@@ -7,3 +7,8 @@
 (def discovery-data (discovery/parse-discovery-schema discovery-url))
 
 (client/def-api discovery-data)
+
+;; Aliases for user-friendly usage
+(def find-notes notes-list)
+(def read-note notes-get)
+(def create-note notes-create)

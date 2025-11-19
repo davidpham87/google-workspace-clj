@@ -63,7 +63,12 @@
     (is (resolve 'google-clj-workspace.keep/notes-create))
 
     ;; Verify name conversion (camelCase -> kebab-case)
-    (is (resolve 'google-clj-workspace.keep/notes-permissions-batch-create))))
+    (is (resolve 'google-clj-workspace.keep/notes-permissions-batch-create))
+
+    ;; Verify aliases
+    (is (resolve 'google-clj-workspace.keep/find-notes))
+    (is (resolve 'google-clj-workspace.keep/read-note))
+    (is (resolve 'google-clj-workspace.keep/create-note))))
 
 (defn -main []
   (run-tests 'test))
