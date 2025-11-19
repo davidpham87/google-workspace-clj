@@ -1,4 +1,4 @@
-(ns google-workspace.discovery
+(ns google-clj-workspace.discovery
   (:require [malli.core :as m]
             [cheshire.core :as json]
             [babashka.curl :as curl]))
@@ -84,9 +84,11 @@
 
 (defn- json-schema-node->malli [node]
   (let [type (:type node)
-        ref (:$ref node)]
+        ref (:$ref node)
+        enum (:enum node)]
     (cond
       ref [:ref ref]
+      enum (into [:enum] enum)
       (= type "string") :string
       (= type "integer") :int
       (= type "boolean") :boolean

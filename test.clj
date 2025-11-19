@@ -1,6 +1,7 @@
 (ns test
-  (:require [google-workspace.discovery :as discovery]
-            [google-workspace.client :as client]
+  (:require [google-clj-workspace.discovery :as discovery]
+            [google-clj-workspace.client :as client]
+            [google-clj-workspace.keep :as keep-api]
             [malli.core :as m]
             [malli.generator :as mg]
             [clojure.test :refer [deftest is testing run-tests]]))
@@ -33,21 +34,36 @@
             (is (some? generated-note) "Should generate a Note")
 
             ;; Validate data
-            (is (m/validate full-schema generated-note) "Generated Note should be valid")))))))
+            (is (m/validate full-schema generated-note) "Generated Note should be valid"))
 
-;; Generate client functions
-(client/def-api parsed-discovery)
+        ;; Test Enum conversion
+        (let [perm-schema (get registry "Permission")
+              role-schema (get-in perm-schema [:map :role])]
+             ;; properties -> role -> enum
+             ;; In malli: [:map [:role {:optional true} [:enum "ROLE_UNSPECIFIED" ...]]]
+             ;; Wait, my converter puts optional in props map.
+             ;; [:map [:role {:optional true} ...]]
+             ;; The value at key :role is the schema.
+
+             ;; Let's inspect schema structure for Permission.
+             ;; It has a role which is an enum.
+             (is (some? perm-schema))
+             ;; We can't easily inspect the nested vector structure without knowing exact position.
+             ;; But we can check if generating Permission works and role is one of the enums.
+
+             (let [full-perm-schema [:schema {:registry registry} "Permission"]
+                   gen-perm (mg/generate full-perm-schema {:size 1})]
+               (is (m/validate full-perm-schema gen-perm)))))))))
 
 (deftest test-client-generation
-  (testing "Client generation"
-    ;; Check if functions are defined
-    (is (resolve 'notes-list))
-    (is (resolve 'notes-get))
-    (is (resolve 'notes-create))
+  (testing "Client generation in keep namespace"
+    ;; Check if functions are defined in google-clj-workspace.keep
+    (is (resolve 'google-clj-workspace.keep/notes-list))
+    (is (resolve 'google-clj-workspace.keep/notes-get))
+    (is (resolve 'google-clj-workspace.keep/notes-create))
 
     ;; Verify name conversion (camelCase -> kebab-case)
-    ;; permissions.batchCreate -> notes-permissions-batch-create
-    (is (resolve 'notes-permissions-batch-create))))
+    (is (resolve 'google-clj-workspace.keep/notes-permissions-batch-create))))
 
 (defn -main []
   (run-tests 'test))

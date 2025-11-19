@@ -1,7 +1,8 @@
-(ns google-workspace.client
+(ns google-clj-workspace.client
   (:require [babashka.curl :as curl]
             [clojure.string :as str]
-            [cheshire.core :as json]))
+            [cheshire.core :as json]
+            [camel-snake-kebab.core :as csk]))
 
 (defn make-request [method url params body opts]
   (let [curl-opts (merge {:method (keyword (str/lower-case method))
@@ -27,16 +28,11 @@
                              params)]
     [interpolated @used-keys]))
 
-(defn- kebab-case [s]
-  (-> s
-      (str/replace #"([a-z])([A-Z])" "$1-$2")
-      (str/lower-case)))
-
 (defn- generate-fn-name [resource-path method-id]
   (let [parts (str/split method-id #"\.")
         parts (rest parts)] ;; Remove service name
     (->> parts
-         (map kebab-case)
+         (map csk/->kebab-case)
          (str/join "-")
          symbol)))
 
@@ -66,9 +62,9 @@
                           http-method (:httpMethod method-def)
                           fn-name (generate-fn-name nil id)]
                       `(defn ~fn-name [params# & [opts#]]
-                         (let [[path-str# used-keys#] (google-workspace.client/interpolate-path ~path params#)
+                         (let [[path-str# used-keys#] (google-clj-workspace.client/interpolate-path ~path params#)
                                query-params# (apply dissoc params# used-keys#)
                                full-url# (str ~base-url path-str#)]
-                           (google-workspace.client/make-request ~http-method full-url# query-params# (:body opts#) opts#)))))
+                           (google-clj-workspace.client/make-request ~http-method full-url# query-params# (:body opts#) opts#)))))
                   methods)]
     `(do ~@defs)))
