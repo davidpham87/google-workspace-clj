@@ -4,6 +4,8 @@
             [google-clj-workspace.keep :as keep-api]
             [malli.core :as m]
             [malli.generator :as mg]
+            [clojure.string :as str]
+            [babashka.curl :as curl]
             [clojure.test :refer [deftest is testing run-tests]]))
 
 (def discovery-url "https://keep.googleapis.com/$discovery/rest?version=v1")
@@ -40,16 +42,7 @@
         (let [perm-schema (get registry "Permission")
               role-schema (get-in perm-schema [:map :role])]
              ;; properties -> role -> enum
-             ;; In malli: [:map [:role {:optional true} [:enum "ROLE_UNSPECIFIED" ...]]]
-             ;; Wait, my converter puts optional in props map.
-             ;; [:map [:role {:optional true} ...]]
-             ;; The value at key :role is the schema.
-
-             ;; Let's inspect schema structure for Permission.
-             ;; It has a role which is an enum.
              (is (some? perm-schema))
-             ;; We can't easily inspect the nested vector structure without knowing exact position.
-             ;; But we can check if generating Permission works and role is one of the enums.
 
              (let [full-perm-schema [:schema {:registry registry} "Permission"]
                    gen-perm (mg/generate full-perm-schema {:size 1})]
@@ -69,6 +62,36 @@
     (is (resolve 'google-clj-workspace.keep/find-notes))
     (is (resolve 'google-clj-workspace.keep/read-note))
     (is (resolve 'google-clj-workspace.keep/create-note))))
+
+(deftest test-client-functionality-verification
+  (testing "Client internals and request construction"
+    (let [last-request (atom nil)]
+      (with-redefs [babashka.curl/request (fn [opts] (reset! last-request opts) {:status 200 :body "{}"})]
+
+        (testing "notes-get: Path interpolation"
+          (keep-api/notes-get {:name "notes/123"})
+          (let [req @last-request]
+            (is (= :get (:method req)))
+            (is (str/includes? (:url req) "/v1/notes/123"))))
+
+        (testing "notes-list: Query params"
+          (keep-api/notes-list {:pageSize 10 :pageToken "abc"})
+          (let [req @last-request]
+            (is (= :get (:method req)))
+            (is (str/includes? (:url req) "/v1/notes"))
+            (is (= 10 (:pageSize (:query-params req))))
+            (is (= "abc" (:pageToken (:query-params req))))))
+
+        (testing "notes-create: Body and JSON"
+          (keep-api/notes-create {} {:body {:title "My Note"}})
+          (let [req @last-request]
+            (is (= :post (:method req)))
+            (is (= "{\"title\":\"My Note\"}" (:body req)))))
+
+        (testing "Authentication header"
+          (keep-api/notes-list {} {:token "secret-token"})
+          (let [req @last-request]
+            (is (= "Bearer secret-token" (get-in req [:headers "Authorization"])))))))))
 
 (defn -main []
   (run-tests 'test))

@@ -5,12 +5,15 @@
             [camel-snake-kebab.core :as csk]))
 
 (defn make-request [method url params body opts]
-  (let [curl-opts (merge {:method (keyword (str/lower-case method))
+  (let [token (:token opts)
+        headers (cond-> (merge {"Content-Type" "application/json"}
+                               (:headers opts))
+                  token (assoc "Authorization" (str "Bearer " token)))
+        curl-opts (merge {:method (keyword (str/lower-case method))
                           :url url
                           :query-params params
                           :body (when body (json/generate-string body))
-                          :headers (merge {"Content-Type" "application/json"}
-                                          (:headers opts))}
+                          :headers headers}
                          (select-keys opts [:throw]))]
     (curl/request curl-opts)))
 
