@@ -98,3 +98,5 @@
 
 (when (= *file* (System/getProperty "babashka.file"))
   (-main))
+
+;; End of test suite
