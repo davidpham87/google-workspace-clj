@@ -1,9 +1,9 @@
-(ns google-clj-workspace.keep
+(ns google-clj-workspace.sheets
   (:require [google-clj-workspace.discovery :as discovery]
             [google-clj-workspace.client :as client]
-            [google-clj-workspace.schema.keep :as schema]))
+            [google-clj-workspace.schema.sheets :as schema]))
 
-(def discovery-url "https://keep.googleapis.com/$discovery/rest?version=v1")
+(def discovery-url "https://sheets.googleapis.com/$discovery/rest?version=v4")
 
 (def discovery-data (discovery/parse-discovery-schema discovery-url))
 
@@ -14,6 +14,5 @@
 (client/def-api discovery-data)
 
 ;; Aliases for user-friendly usage
-(def find-notes notes-list)
-(def read-note notes-get)
-(def create-note notes-create)
+(def get-spreadsheet spreadsheets-get)
+(def create-spreadsheet spreadsheets-create)
