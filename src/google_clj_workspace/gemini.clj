@@ -7,8 +7,6 @@
 
 (def discovery-data (discovery/parse-discovery-schema discovery-url))
 
-
-
 (def registry schema/registry)
 
 (client/def-api discovery-data)
