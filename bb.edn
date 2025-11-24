@@ -1,3 +1,4 @@
 {:paths ["src"]
  :deps {metosin/malli {:mvn/version "0.20.0"}
-        camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.3"}}}
+        camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.3"}}
+ :tasks {update-api (do (require 'google-clj-workspace.gen) ((resolve 'google-clj-workspace.gen/-main)))}}

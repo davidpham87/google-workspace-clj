@@ -31,43 +31,19 @@
                              params)]
     [interpolated @used-keys]))
 
-(defn- generate-fn-name [resource-path method-id]
-  (let [parts (str/split method-id #"\.")
-        parts (rest parts)] ;; Remove service name
-    (->> parts
-         (map csk/->kebab-case)
-         (str/join "-")
-         symbol)))
+(defn- transform-keys [t coll]
+  (cond
+    (map? coll) (reduce-kv (fn [m k v] (assoc m (t k) (transform-keys t v))) {} coll)
+    (vector? coll) (mapv #(transform-keys t %) coll)
+    :else coll))
 
-(defn- collect-methods [resources]
-  (let [methods (atom [])]
-    (letfn [(walk [res]
-              (when (:methods res)
-                (doseq [[_ m] (:methods res)]
-                  (swap! methods conj m)))
-              (when (:resources res)
-                (doseq [[_ r] (:resources res)]
-                  (walk r))))]
-      (doseq [[_ r] resources]
-        (walk r)))
-    @methods))
+(defn invoke-endpoint [method path-template params opts base-url]
+  (let [params (transform-keys csk/->camelCaseKeyword params)
+        opts (if (:body opts)
+               (update opts :body #(transform-keys csk/->camelCaseKeyword %))
+               opts)
 
-(defmacro def-api [discovery-data-expr]
-  (let [discovery-data (if (map? discovery-data-expr)
-                         discovery-data-expr
-                         (eval discovery-data-expr))
-        base-url (:baseUrl discovery-data)
-        resources (:resources discovery-data)
-        methods (collect-methods resources)
-        defs (map (fn [method-def]
-                    (let [id (:id method-def)
-                          path (:path method-def)
-                          http-method (:httpMethod method-def)
-                          fn-name (generate-fn-name nil id)]
-                      `(defn ~fn-name [params# & [opts#]]
-                         (let [[path-str# used-keys#] (google-clj-workspace.client/interpolate-path ~path params#)
-                               query-params# (apply dissoc params# used-keys#)
-                               full-url# (str ~base-url path-str#)]
-                           (google-clj-workspace.client/make-request ~http-method full-url# query-params# (:body opts#) opts#)))))
-                  methods)]
-    `(do ~@defs)))
+        [path-str used-keys] (interpolate-path path-template params)
+        query-params (apply dissoc params used-keys)
+        full-url (str base-url path-str)]
+    (make-request method full-url query-params (:body opts) opts)))
