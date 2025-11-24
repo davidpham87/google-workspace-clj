@@ -10,67 +10,33 @@
  (case
   (:op opts)
   :create
-  (let
-   [[path-str used-keys]
-    (google-clj-workspace.client/interpolate-path "v1/forms" params)
-    query-params
-    (apply dissoc params used-keys)
-    full-url
-    (str "https://forms.googleapis.com/" path-str)]
-   (google-clj-workspace.client/make-request
-    "POST"
-    full-url
-    query-params
-    (:body opts)
-    opts))
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1/forms"
+   params
+   opts
+   "https://forms.googleapis.com/")
   :get
-  (let
-   [[path-str used-keys]
-    (google-clj-workspace.client/interpolate-path
-     "v1/forms/{formId}"
-     params)
-    query-params
-    (apply dissoc params used-keys)
-    full-url
-    (str "https://forms.googleapis.com/" path-str)]
-   (google-clj-workspace.client/make-request
-    "GET"
-    full-url
-    query-params
-    (:body opts)
-    opts))
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1/forms/{formId}"
+   params
+   opts
+   "https://forms.googleapis.com/")
   :batch-update
-  (let
-   [[path-str used-keys]
-    (google-clj-workspace.client/interpolate-path
-     "v1/forms/{formId}:batchUpdate"
-     params)
-    query-params
-    (apply dissoc params used-keys)
-    full-url
-    (str "https://forms.googleapis.com/" path-str)]
-   (google-clj-workspace.client/make-request
-    "POST"
-    full-url
-    query-params
-    (:body opts)
-    opts))
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1/forms/{formId}:batchUpdate"
+   params
+   opts
+   "https://forms.googleapis.com/")
   :set-publish-settings
-  (let
-   [[path-str used-keys]
-    (google-clj-workspace.client/interpolate-path
-     "v1/forms/{formId}:setPublishSettings"
-     params)
-    query-params
-    (apply dissoc params used-keys)
-    full-url
-    (str "https://forms.googleapis.com/" path-str)]
-   (google-clj-workspace.client/make-request
-    "POST"
-    full-url
-    query-params
-    (:body opts)
-    opts))
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1/forms/{formId}:setPublishSettings"
+   params
+   opts
+   "https://forms.googleapis.com/")
   (throw (ex-info "Unknown op" {:op (:op opts)}))))
 
 (defn
@@ -79,37 +45,19 @@
  (case
   (:op opts)
   :get
-  (let
-   [[path-str used-keys]
-    (google-clj-workspace.client/interpolate-path
-     "v1/forms/{formId}/responses/{responseId}"
-     params)
-    query-params
-    (apply dissoc params used-keys)
-    full-url
-    (str "https://forms.googleapis.com/" path-str)]
-   (google-clj-workspace.client/make-request
-    "GET"
-    full-url
-    query-params
-    (:body opts)
-    opts))
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1/forms/{formId}/responses/{responseId}"
+   params
+   opts
+   "https://forms.googleapis.com/")
   :list
-  (let
-   [[path-str used-keys]
-    (google-clj-workspace.client/interpolate-path
-     "v1/forms/{formId}/responses"
-     params)
-    query-params
-    (apply dissoc params used-keys)
-    full-url
-    (str "https://forms.googleapis.com/" path-str)]
-   (google-clj-workspace.client/make-request
-    "GET"
-    full-url
-    query-params
-    (:body opts)
-    opts))
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1/forms/{formId}/responses"
+   params
+   opts
+   "https://forms.googleapis.com/")
   (throw (ex-info "Unknown op" {:op (:op opts)}))))
 
 (defn
@@ -118,69 +66,33 @@
  (case
   (:op opts)
   :create
-  (let
-   [[path-str used-keys]
-    (google-clj-workspace.client/interpolate-path
-     "v1/forms/{formId}/watches"
-     params)
-    query-params
-    (apply dissoc params used-keys)
-    full-url
-    (str "https://forms.googleapis.com/" path-str)]
-   (google-clj-workspace.client/make-request
-    "POST"
-    full-url
-    query-params
-    (:body opts)
-    opts))
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1/forms/{formId}/watches"
+   params
+   opts
+   "https://forms.googleapis.com/")
   :list
-  (let
-   [[path-str used-keys]
-    (google-clj-workspace.client/interpolate-path
-     "v1/forms/{formId}/watches"
-     params)
-    query-params
-    (apply dissoc params used-keys)
-    full-url
-    (str "https://forms.googleapis.com/" path-str)]
-   (google-clj-workspace.client/make-request
-    "GET"
-    full-url
-    query-params
-    (:body opts)
-    opts))
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1/forms/{formId}/watches"
+   params
+   opts
+   "https://forms.googleapis.com/")
   :renew
-  (let
-   [[path-str used-keys]
-    (google-clj-workspace.client/interpolate-path
-     "v1/forms/{formId}/watches/{watchId}:renew"
-     params)
-    query-params
-    (apply dissoc params used-keys)
-    full-url
-    (str "https://forms.googleapis.com/" path-str)]
-   (google-clj-workspace.client/make-request
-    "POST"
-    full-url
-    query-params
-    (:body opts)
-    opts))
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1/forms/{formId}/watches/{watchId}:renew"
+   params
+   opts
+   "https://forms.googleapis.com/")
   :delete
-  (let
-   [[path-str used-keys]
-    (google-clj-workspace.client/interpolate-path
-     "v1/forms/{formId}/watches/{watchId}"
-     params)
-    query-params
-    (apply dissoc params used-keys)
-    full-url
-    (str "https://forms.googleapis.com/" path-str)]
-   (google-clj-workspace.client/make-request
-    "DELETE"
-    full-url
-    query-params
-    (:body opts)
-    opts))
+  (google-clj-workspace.client/invoke-endpoint
+   "DELETE"
+   "v1/forms/{formId}/watches/{watchId}"
+   params
+   opts
+   "https://forms.googleapis.com/")
   (throw (ex-info "Unknown op" {:op (:op opts)}))))
 
 (deftest

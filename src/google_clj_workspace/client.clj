@@ -1,7 +1,8 @@
 (ns google-clj-workspace.client
   (:require [babashka.curl :as curl]
             [clojure.string :as str]
-            [cheshire.core :as json]))
+            [cheshire.core :as json]
+            [camel-snake-kebab.core :as csk]))
 
 (defn make-request [method url params body opts]
   (let [token (:token opts)
@@ -29,3 +30,20 @@
                              path
                              params)]
     [interpolated @used-keys]))
+
+(defn- transform-keys [t coll]
+  (cond
+    (map? coll) (reduce-kv (fn [m k v] (assoc m (t k) (transform-keys t v))) {} coll)
+    (vector? coll) (mapv #(transform-keys t %) coll)
+    :else coll))
+
+(defn invoke-endpoint [method path-template params opts base-url]
+  (let [params (transform-keys csk/->camelCaseKeyword params)
+        opts (if (:body opts)
+               (update opts :body #(transform-keys csk/->camelCaseKeyword %))
+               opts)
+
+        [path-str used-keys] (interpolate-path path-template params)
+        query-params (apply dissoc params used-keys)
+        full-url (str base-url path-str)]
+    (make-request method full-url query-params (:body opts) opts)))

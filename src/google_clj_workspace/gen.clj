@@ -36,11 +36,7 @@
 (defn generate-method-body [method-def base-url]
   (let [path (:path method-def)
         http-method (:httpMethod method-def)]
-    (list 'let
-          [['path-str 'used-keys] (list 'google-clj-workspace.client/interpolate-path path 'params)
-           'query-params (list 'apply 'dissoc 'params 'used-keys)
-           'full-url (list 'str base-url 'path-str)]
-          (list 'google-clj-workspace.client/make-request http-method 'full-url 'query-params '(:body opts) 'opts))))
+    (list 'google-clj-workspace.client/invoke-endpoint http-method path 'params 'opts base-url)))
 
 (defn generate-resource-fn [resource-name methods base-url]
   (let [clauses (mapcat (fn [m]
@@ -94,9 +90,14 @@
   [{:name "keep"
     :url "https://keep.googleapis.com/$discovery/rest?version=v1"
     :examples '((deftest test-example-notes-list
-                  (testing "Example: notes list mock"
-                   (with-redefs [client/make-request (fn [_ _ _ _ _] {:status 200 :body "{}"})]
-                     (is (= 200 (:status (notes {} {:op :list}))))))))}
+                  (testing "Example: notes list mock with kebab-case params"
+                   (with-redefs [client/make-request (fn [_ _ params _ _]
+                                                       ;; Check if params converted to camelCase (e.g. page-size -> pageSize)
+                                                       (if (= 10 (:pageSize params))
+                                                         {:status 200 :body "{}"}
+                                                         {:status 400 :error "Params not converted"}))]
+                     ;; Pass {:page-size 10}
+                     (is (= 200 (:status (notes {:page-size 10} {:op :list}))))))))}
    {:name "forms"
     :url "https://forms.googleapis.com/$discovery/rest?version=v1"
     :examples '((deftest test-example-forms-create

@@ -10,61 +10,33 @@
  (case
   (:op opts)
   :create
-  (let
-   [[path-str used-keys]
-    (google-clj-workspace.client/interpolate-path "v1/notes" params)
-    query-params
-    (apply dissoc params used-keys)
-    full-url
-    (str "https://keep.googleapis.com/" path-str)]
-   (google-clj-workspace.client/make-request
-    "POST"
-    full-url
-    query-params
-    (:body opts)
-    opts))
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1/notes"
+   params
+   opts
+   "https://keep.googleapis.com/")
   :get
-  (let
-   [[path-str used-keys]
-    (google-clj-workspace.client/interpolate-path "v1/{+name}" params)
-    query-params
-    (apply dissoc params used-keys)
-    full-url
-    (str "https://keep.googleapis.com/" path-str)]
-   (google-clj-workspace.client/make-request
-    "GET"
-    full-url
-    query-params
-    (:body opts)
-    opts))
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1/{+name}"
+   params
+   opts
+   "https://keep.googleapis.com/")
   :list
-  (let
-   [[path-str used-keys]
-    (google-clj-workspace.client/interpolate-path "v1/notes" params)
-    query-params
-    (apply dissoc params used-keys)
-    full-url
-    (str "https://keep.googleapis.com/" path-str)]
-   (google-clj-workspace.client/make-request
-    "GET"
-    full-url
-    query-params
-    (:body opts)
-    opts))
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1/notes"
+   params
+   opts
+   "https://keep.googleapis.com/")
   :delete
-  (let
-   [[path-str used-keys]
-    (google-clj-workspace.client/interpolate-path "v1/{+name}" params)
-    query-params
-    (apply dissoc params used-keys)
-    full-url
-    (str "https://keep.googleapis.com/" path-str)]
-   (google-clj-workspace.client/make-request
-    "DELETE"
-    full-url
-    query-params
-    (:body opts)
-    opts))
+  (google-clj-workspace.client/invoke-endpoint
+   "DELETE"
+   "v1/{+name}"
+   params
+   opts
+   "https://keep.googleapis.com/")
   (throw (ex-info "Unknown op" {:op (:op opts)}))))
 
 (defn
@@ -73,37 +45,19 @@
  (case
   (:op opts)
   :batch-create
-  (let
-   [[path-str used-keys]
-    (google-clj-workspace.client/interpolate-path
-     "v1/{+parent}/permissions:batchCreate"
-     params)
-    query-params
-    (apply dissoc params used-keys)
-    full-url
-    (str "https://keep.googleapis.com/" path-str)]
-   (google-clj-workspace.client/make-request
-    "POST"
-    full-url
-    query-params
-    (:body opts)
-    opts))
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1/{+parent}/permissions:batchCreate"
+   params
+   opts
+   "https://keep.googleapis.com/")
   :batch-delete
-  (let
-   [[path-str used-keys]
-    (google-clj-workspace.client/interpolate-path
-     "v1/{+parent}/permissions:batchDelete"
-     params)
-    query-params
-    (apply dissoc params used-keys)
-    full-url
-    (str "https://keep.googleapis.com/" path-str)]
-   (google-clj-workspace.client/make-request
-    "POST"
-    full-url
-    query-params
-    (:body opts)
-    opts))
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1/{+parent}/permissions:batchDelete"
+   params
+   opts
+   "https://keep.googleapis.com/")
   (throw (ex-info "Unknown op" {:op (:op opts)}))))
 
 (defn
@@ -112,25 +66,24 @@
  (case
   (:op opts)
   :download
-  (let
-   [[path-str used-keys]
-    (google-clj-workspace.client/interpolate-path "v1/{+name}" params)
-    query-params
-    (apply dissoc params used-keys)
-    full-url
-    (str "https://keep.googleapis.com/" path-str)]
-   (google-clj-workspace.client/make-request
-    "GET"
-    full-url
-    query-params
-    (:body opts)
-    opts))
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1/{+name}"
+   params
+   opts
+   "https://keep.googleapis.com/")
   (throw (ex-info "Unknown op" {:op (:op opts)}))))
 
 (deftest
  test-example-notes-list
  (testing
-  "Example: notes list mock"
+  "Example: notes list mock with kebab-case params"
   (with-redefs
-   [client/make-request (fn [_ _ _ _ _] {:status 200, :body "{}"})]
-   (is (= 200 (:status (notes {} {:op :list})))))))
+   [client/make-request
+    (fn
+     [_ _ params _ _]
+     (if
+      (= 10 (:pageSize params))
+      {:status 200, :body "{}"}
+      {:status 400, :error "Params not converted"}))]
+   (is (= 200 (:status (notes {:page-size 10} {:op :list})))))))
