@@ -74,6 +74,9 @@
    "https://keep.googleapis.com/")
   (throw (ex-info "Unknown op" {:op (:op opts)}))))
 
+
+(client/def-api discovery-data)
+
 (deftest
  test-example-notes-list
  (testing
