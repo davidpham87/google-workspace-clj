@@ -1,104 +1,22 @@
-(ns
- google-clj-workspace.forms
- (:require
-  [google-clj-workspace.client :as client]
-  [clojure.test :refer [deftest is testing]]))
+(ns google-clj-workspace.forms
+  (:require
+   [google-clj-workspace.core :as core]
+   [google-clj-workspace.imp.forms]))
 
-(defn
- forms
- [params & [opts]]
- (case
-  (:op opts)
-  :create
-  (google-clj-workspace.client/invoke-endpoint
-   "POST"
-   "v1/forms"
-   params
-   opts
-   "https://forms.googleapis.com/")
-  :get
-  (google-clj-workspace.client/invoke-endpoint
-   "GET"
-   "v1/forms/{formId}"
-   params
-   opts
-   "https://forms.googleapis.com/")
-  :batch-update
-  (google-clj-workspace.client/invoke-endpoint
-   "POST"
-   "v1/forms/{formId}:batchUpdate"
-   params
-   opts
-   "https://forms.googleapis.com/")
-  :set-publish-settings
-  (google-clj-workspace.client/invoke-endpoint
-   "POST"
-   "v1/forms/{formId}:setPublishSettings"
-   params
-   opts
-   "https://forms.googleapis.com/")
-  (throw (ex-info "Unknown op" {:op (:op opts)}))))
+(defn forms
+  "Manages forms.
+  - op: :create, :get, :batch-update, :set-publish-settings"
+  [params & [opts]]
+  (core/dispatch [:forms :forms (:op opts)] params opts))
 
-(defn
- responses
- [params & [opts]]
- (case
-  (:op opts)
-  :get
-  (google-clj-workspace.client/invoke-endpoint
-   "GET"
-   "v1/forms/{formId}/responses/{responseId}"
-   params
-   opts
-   "https://forms.googleapis.com/")
-  :list
-  (google-clj-workspace.client/invoke-endpoint
-   "GET"
-   "v1/forms/{formId}/responses"
-   params
-   opts
-   "https://forms.googleapis.com/")
-  (throw (ex-info "Unknown op" {:op (:op opts)}))))
+(defn responses
+  "Manages responses.
+  - op: :get, :list"
+  [params & [opts]]
+  (core/dispatch [:forms :responses (:op opts)] params opts))
 
-(defn
- watches
- [params & [opts]]
- (case
-  (:op opts)
-  :create
-  (google-clj-workspace.client/invoke-endpoint
-   "POST"
-   "v1/forms/{formId}/watches"
-   params
-   opts
-   "https://forms.googleapis.com/")
-  :list
-  (google-clj-workspace.client/invoke-endpoint
-   "GET"
-   "v1/forms/{formId}/watches"
-   params
-   opts
-   "https://forms.googleapis.com/")
-  :renew
-  (google-clj-workspace.client/invoke-endpoint
-   "POST"
-   "v1/forms/{formId}/watches/{watchId}:renew"
-   params
-   opts
-   "https://forms.googleapis.com/")
-  :delete
-  (google-clj-workspace.client/invoke-endpoint
-   "DELETE"
-   "v1/forms/{formId}/watches/{watchId}"
-   params
-   opts
-   "https://forms.googleapis.com/")
-  (throw (ex-info "Unknown op" {:op (:op opts)}))))
-
-(deftest
- test-example-forms-create
- (testing
-  "Example: forms create mock"
-  (with-redefs
-   [client/make-request (fn [_ _ _ _ _] {:status 200, :body "{}"})]
-   (is (= 200 (:status (forms {} {:op :create})))))))
+(defn watches
+  "Manages watches.
+  - op: :create, :list, :renew, :delete"
+  [params & [opts]]
+  (core/dispatch [:forms :watches (:op opts)] params opts))
