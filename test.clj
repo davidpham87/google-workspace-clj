@@ -1,40 +1,44 @@
 (ns test
-  (:require [clojure.test :refer [run-tests]]
+  (:require [clojure.test :refer [run-tests deftest is testing]]
             [google-clj-workspace.keep]
-            [google-clj-workspace.forms]))
+            [google-clj-workspace.forms]
+            [google-clj-workspace.docs]
+            [google-clj-workspace.sheets]
+            [google-clj-workspace.gemini]
+            [clojure.string :as str]
+            [babashka.curl]))
 
 (deftest test-docs-client
   (testing "Docs client generation"
-    (is (resolve 'google-clj-workspace.docs/documents-get))
-    (is (resolve 'google-clj-workspace.docs/documents-create))
-    (is (resolve 'google-clj-workspace.docs/get-document))
-    (is (resolve 'google-clj-workspace.docs/create-document))))
+    (is (resolve 'google-clj-workspace.docs/documents))))
 
 (deftest test-sheets-client
   (testing "Sheets client generation"
-    (is (resolve 'google-clj-workspace.sheets/spreadsheets-get))
-    (is (resolve 'google-clj-workspace.sheets/spreadsheets-create))
-    (is (resolve 'google-clj-workspace.sheets/get-spreadsheet))
-    (is (resolve 'google-clj-workspace.sheets/create-spreadsheet))))
+    (is (resolve 'google-clj-workspace.sheets/spreadsheets))))
 
 (deftest test-gemini-client
   (testing "Gemini client generation"
-    (is (resolve 'google-clj-workspace.gemini/models-list))
-    (is (resolve 'google-clj-workspace.gemini/models-generate-content))
-    (is (resolve 'google-clj-workspace.gemini/list-models))
-    (is (resolve 'google-clj-workspace.gemini/generate-content)))
+    (is (resolve 'google-clj-workspace.gemini/models)))
 
   (testing "Gemini request construction"
     (let [last-request (atom nil)]
       (with-redefs [babashka.curl/request (fn [opts] (reset! last-request opts) {:status 200 :body "{}"})]
-        (gemini-api/generate-content {:model "models/gemini-pro"} {:body {:contents [{:parts [{:text "Hello"}]}]}})
+        (google-clj-workspace.gemini/models
+         {:model "models/gemini-pro"}
+         {:op :generate-content
+          :body {:contents [{:parts [{:text "Hello"}]}]}})
         (let [req @last-request]
           (is (= :post (:method req)))
           (is (str/includes? (:url req) "/v1beta/models/gemini-pro:generateContent"))
           (is (str/includes? (:body req) "Hello")))))))
 
 (defn -main []
-  (run-tests 'google-clj-workspace.keep 'google-clj-workspace.forms))
+  (run-tests 'google-clj-workspace.keep
+             'google-clj-workspace.forms
+             'google-clj-workspace.docs
+             'google-clj-workspace.sheets
+             'google-clj-workspace.gemini
+             'test))
 
 (when (= *file* (System/getProperty "babashka.file"))
   (-main))
