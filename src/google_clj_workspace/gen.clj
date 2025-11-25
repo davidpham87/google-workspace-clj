@@ -39,10 +39,12 @@
     (list 'google-clj-workspace.client/invoke-endpoint http-method path 'params 'opts base-url)))
 
 (defn generate-resource-fn [resource-name methods base-url]
-  (let [clauses (mapcat (fn [m]
-                          [(get-op-name (:id m))
-                           (generate-method-body m base-url)])
-                        methods)]
+  (let [ops (group-by #(get-op-name (:id %)) methods)
+        clauses (mapcat (fn [[op ms]]
+                          ;; ms is a list of methods mapping to this op
+                          ;; We just take the first one for now to avoid duplicates.
+                          [op (generate-method-body (first ms) base-url)])
+                        ops)]
     (list 'defn (symbol resource-name)
           ['params '& ['opts]]
           (concat (list 'case (list :op 'opts))
@@ -52,17 +54,6 @@
 (defn generate-service [service-config]
   (let [{:keys [name url examples]} service-config
         discovery-data (discovery/parse-discovery-schema url)
-
-        ;; Save schema
-        schema-file (str "schema/" name "-discovery.json")
-        _ (fs/create-dirs "schema")
-        _ (spit schema-file (json/generate-string discovery-data {:pretty true}))
-
-        ;; Save registry
-        schemas (:schemas discovery-data)
-        registry (discovery/json-schemas->malli-registry schemas)
-        registry-file (str "schema/" name "-registry.edn")
-        _ (spit registry-file (with-out-str (pprint registry)))
 
         base-url (:baseUrl discovery-data)
         resources (:resources discovery-data)
@@ -103,7 +94,19 @@
     :examples '((deftest test-example-forms-create
                   (testing "Example: forms create mock"
                    (with-redefs [client/make-request (fn [_ _ _ _ _] {:status 200 :body "{}"})]
-                     (is (= 200 (:status (forms {} {:op :create}))))))))}])
+                     (is (= 200 (:status (forms {} {:op :create}))))))))}
+   {:name "docs"
+    :url "https://docs.googleapis.com/$discovery/rest?version=v1"
+    :examples '((deftest test-example-documents-get
+                  (testing "Example: documents get mock"
+                    (with-redefs [client/make-request (fn [_ _ _ _ _] {:status 200 :body "{}"})]
+                      (is (= 200 (:status (documents {} {:op :get}))))))))}
+   {:name "sheets"
+    :url "https://sheets.googleapis.com/$discovery/rest?version=v4"
+    :examples '()}
+   {:name "gemini"
+    :url "https://generativelanguage.googleapis.com/$discovery/rest?version=v1beta"
+    :examples '()}])
 
 (defn generate-all []
   (doseq [service services]

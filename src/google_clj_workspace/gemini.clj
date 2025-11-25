@@ -1,17 +1,566 @@
-(ns google-clj-workspace.gemini
-  (:require [google-clj-workspace.discovery :as discovery]
-            [google-clj-workspace.client :as client]
-            [google-clj-workspace.schema.gemini :as schema]))
+(ns
+ google-clj-workspace.gemini
+ (:require
+  [google-clj-workspace.client :as client]
+  [clojure.test :refer [deftest is testing]]))
 
-(def discovery-url "https://generativelanguage.googleapis.com/$discovery/rest?version=v1beta")
+(defn
+ permissions
+ [params & [opts]]
+ (case
+  (:op opts)
+  :create
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+parent}/permissions"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :get
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :list
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/{+parent}/permissions"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :patch
+  (google-clj-workspace.client/invoke-endpoint
+   "PATCH"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :delete
+  (google-clj-workspace.client/invoke-endpoint
+   "DELETE"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  (throw (ex-info "Unknown op" {:op (:op opts)}))))
 
-(def discovery-data (discovery/parse-discovery-schema discovery-url))
+(defn
+ dynamic
+ [params & [opts]]
+ (case
+  (:op opts)
+  :generate-content
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:generateContent"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :stream-generate-content
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:streamGenerateContent"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  (throw (ex-info "Unknown op" {:op (:op opts)}))))
 
-(def registry schema/registry)
+(defn
+ file-search-stores
+ [params & [opts]]
+ (case
+  (:op opts)
+  :create
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/fileSearchStores"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :get
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :delete
+  (google-clj-workspace.client/invoke-endpoint
+   "DELETE"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :list
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/fileSearchStores"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :import-file
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+fileSearchStoreName}:importFile"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  (throw (ex-info "Unknown op" {:op (:op opts)}))))
 
-(client/def-api discovery-data)
+(defn
+ media
+ [params & [opts]]
+ (case
+  (:op opts)
+  :upload
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/files"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :upload-to-file-search-store
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+fileSearchStoreName}:uploadToFileSearchStore"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  (throw (ex-info "Unknown op" {:op (:op opts)}))))
 
-;; Aliases for user-friendly usage
-(def list-models models-list)
-(def get-model models-get)
-(def generate-content models-generate-content)
+(defn
+ batches
+ [params & [opts]]
+ (case
+  (:op opts)
+  :list
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :get
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :delete
+  (google-clj-workspace.client/invoke-endpoint
+   "DELETE"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :cancel
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+name}:cancel"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :update-generate-content-batch
+  (google-clj-workspace.client/invoke-endpoint
+   "PATCH"
+   "v1beta/{+name}:updateGenerateContentBatch"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :update-embed-content-batch
+  (google-clj-workspace.client/invoke-endpoint
+   "PATCH"
+   "v1beta/{+name}:updateEmbedContentBatch"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  (throw (ex-info "Unknown op" {:op (:op opts)}))))
+
+(defn
+ cached-contents
+ [params & [opts]]
+ (case
+  (:op opts)
+  :list
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/cachedContents"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :create
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/cachedContents"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :get
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :patch
+  (google-clj-workspace.client/invoke-endpoint
+   "PATCH"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :delete
+  (google-clj-workspace.client/invoke-endpoint
+   "DELETE"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  (throw (ex-info "Unknown op" {:op (:op opts)}))))
+
+(defn
+ files
+ [params & [opts]]
+ (case
+  (:op opts)
+  :list
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/files"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :get
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :delete
+  (google-clj-workspace.client/invoke-endpoint
+   "DELETE"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  (throw (ex-info "Unknown op" {:op (:op opts)}))))
+
+(defn
+ corpora
+ [params & [opts]]
+ (case
+  (:op opts)
+  :create
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/corpora"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :get
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :delete
+  (google-clj-workspace.client/invoke-endpoint
+   "DELETE"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :list
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/corpora"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  (throw (ex-info "Unknown op" {:op (:op opts)}))))
+
+(defn
+ tuned-models
+ [params & [opts]]
+ (case
+  (:op opts)
+  :get
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :stream-generate-content
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:streamGenerateContent"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :patch
+  (google-clj-workspace.client/invoke-endpoint
+   "PATCH"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :async-batch-embed-content
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:asyncBatchEmbedContent"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :create
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/tunedModels"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :generate-content
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:generateContent"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :generate-text
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:generateText"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :delete
+  (google-clj-workspace.client/invoke-endpoint
+   "DELETE"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :batch-generate-content
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:batchGenerateContent"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :list
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/tunedModels"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :transfer-ownership
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+name}:transferOwnership"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  (throw (ex-info "Unknown op" {:op (:op opts)}))))
+
+(defn
+ documents
+ [params & [opts]]
+ (case
+  (:op opts)
+  :get
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :delete
+  (google-clj-workspace.client/invoke-endpoint
+   "DELETE"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :list
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/{+parent}/documents"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  (throw (ex-info "Unknown op" {:op (:op opts)}))))
+
+(defn
+ generated-files
+ [params & [opts]]
+ (case
+  (:op opts)
+  :list
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/generatedFiles"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  (throw (ex-info "Unknown op" {:op (:op opts)}))))
+
+(defn
+ models
+ [params & [opts]]
+ (case
+  (:op opts)
+  :batch-embed-text
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:batchEmbedText"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :get
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :embed-text
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:embedText"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :stream-generate-content
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:streamGenerateContent"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :async-batch-embed-content
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:asyncBatchEmbedContent"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :generate-content
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:generateContent"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :generate-text
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:generateText"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :batch-generate-content
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:batchGenerateContent"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :predict-long-running
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:predictLongRunning"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :generate-message
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:generateMessage"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :count-message-tokens
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:countMessageTokens"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :list
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/models"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :count-text-tokens
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:countTextTokens"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :generate-answer
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:generateAnswer"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :predict
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:predict"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :batch-embed-contents
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:batchEmbedContents"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :embed-content
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:embedContent"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :count-tokens
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1beta/{+model}:countTokens"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  (throw (ex-info "Unknown op" {:op (:op opts)}))))
+
+(defn
+ operations
+ [params & [opts]]
+ (case
+  (:op opts)
+  :list
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/{+name}/operations"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  :get
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1beta/{+name}"
+   params
+   opts
+   "https://generativelanguage.googleapis.com/")
+  (throw (ex-info "Unknown op" {:op (:op opts)}))))
+
