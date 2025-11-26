@@ -40,12 +40,15 @@
 
 (defn generate-resource-fn [resource-name methods base-url]
   (let [ops (group-by #(get-op-name (:id %)) methods)
+        op-keywords (keys ops)
+        docstring (str "Manages " resource-name ".\n  - op: " (clojure.string/join ", " (map name op-keywords)))
         clauses (mapcat (fn [[op ms]]
                           ;; ms is a list of methods mapping to this op
                           ;; We just take the first one for now to avoid duplicates.
                           [op (generate-method-body (first ms) base-url)])
                         ops)]
     (list 'defn (symbol resource-name)
+          docstring
           ['params '& ['opts]]
           (concat (list 'case (list :op 'opts))
                   clauses
@@ -82,25 +85,25 @@
     :url "https://keep.googleapis.com/$discovery/rest?version=v1"
     :examples '((deftest test-example-notes-list
                   (testing "Example: notes list mock with kebab-case params"
-                   (with-redefs [client/make-request (fn [_ _ params _ _]
-                                                       ;; Check if params converted to camelCase (e.g. page-size -> pageSize)
-                                                       (if (= 10 (:pageSize params))
-                                                         {:status 200 :body "{}"}
-                                                         {:status 400 :error "Params not converted"}))]
-                     ;; Pass {:page-size 10}
+                   (with-redefs [babashka.curl/request
+                                 (fn [req]
+                                   ;; Our client converts kebab to camel
+                                   (if (= 10 (-> req :query-params :pageSize))
+                                     {:status 200 :body "{}"}
+                                     {:status 400 :error "Params not converted"}))]
                      (is (= 200 (:status (notes {:page-size 10} {:op :list}))))))))}
    {:name "forms"
     :url "https://forms.googleapis.com/$discovery/rest?version=v1"
     :examples '((deftest test-example-forms-create
                   (testing "Example: forms create mock"
-                   (with-redefs [client/make-request (fn [_ _ _ _ _] {:status 200 :body "{}"})]
+                   (with-redefs [babashka.curl/request (fn [_] {:status 200 :body "{}"})]
                      (is (= 200 (:status (forms {} {:op :create}))))))))}
    {:name "docs"
     :url "https://docs.googleapis.com/$discovery/rest?version=v1"
     :examples '((deftest test-example-documents-get
                   (testing "Example: documents get mock"
-                    (with-redefs [client/make-request (fn [_ _ _ _ _] {:status 200 :body "{}"})]
-                      (is (= 200 (:status (documents {} {:op :get}))))))))}
+                   (with-redefs [babashka.curl/request (fn [_] {:status 200 :body "{}"})]
+                     (is (= 200 (:status (documents {} {:op :get}))))))))}
    {:name "sheets"
     :url "https://sheets.googleapis.com/$discovery/rest?version=v4"
     :examples '()}
@@ -113,7 +116,14 @@
     (let [code (generate-service service)
           file (str "src/google_clj_workspace/" (:name service) ".clj")]
       (spit file code)
-      (println "Generated" file))))
+      (println "Generated" file)))
+  ;; Also need to update the ns decl in the main test file to require curl
+  (let [test-file "test.clj"
+        content (slurp test-file)
+        new-content (str/replace-first content
+                                       "(:require [clojure.test :refer [run-tests deftest is testing]]"
+                                       "(:require [babashka.curl :as curl]\n            [clojure.test :refer [run-tests deftest is testing]]")]
+    (spit test-file new-content)))
 
 (defn -main []
   (generate-all))

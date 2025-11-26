@@ -1,49 +1,40 @@
 (ns google-clj-workspace.client
-  (:require [babashka.curl :as curl]
-            [clojure.string :as str]
+  (:require [google-clj-workspace.util :as util]
+            [camel-snake-kebab.core :as csk]
             [cheshire.core :as json]
-            [camel-snake-kebab.core :as csk]))
+            [babashka.curl :as curl]
+            [clojure.string :as str]))
 
-(defn make-request [method url params body opts]
+(defn- ->camel-case-keys [m]
+  (let [f (fn [[k v]] [(csk/->camelCase k) v])]
+    (into {} (map f m))))
+
+(defn invoke-endpoint
+  "Makes an HTTP request to a Google API endpoint, handling path interpolation,
+  parameter casing, and authentication."
+  [http-method path params opts base-url]
   (let [token (:token opts)
-        headers (cond-> (merge {"Content-Type" "application/json"}
-                               (:headers opts))
-                  token (assoc "Authorization" (str "Bearer " token)))
-        curl-opts (merge {:method (keyword (str/lower-case method))
-                          :url url
-                          :query-params params
-                          :body (when body (json/generate-string body))
-                          :headers headers}
-                         (select-keys opts [:throw]))]
-    (curl/request curl-opts)))
-
-(defn interpolate-path [path params]
-  (let [used-keys (atom #{})
-        interpolated (reduce (fn [p [k v]]
-                               (let [k-str (name k)
-                                     ;; Matches {name} or {+name}
-                                     pattern (re-pattern (str "\\{\\+?" k-str "\\}"))]
-                                 (if (re-find pattern p)
-                                   (do (swap! used-keys conj k)
-                                       (str/replace p pattern (str v)))
-                                   p)))
-                             path
-                             params)]
-    [interpolated @used-keys]))
-
-(defn- transform-keys [t coll]
-  (cond
-    (map? coll) (reduce-kv (fn [m k v] (assoc m (t k) (transform-keys t v))) {} coll)
-    (vector? coll) (mapv #(transform-keys t %) coll)
-    :else coll))
-
-(defn invoke-endpoint [method path-template params opts base-url]
-  (let [params (transform-keys csk/->camelCaseKeyword params)
-        opts (if (:body opts)
-               (update opts :body #(transform-keys csk/->camelCaseKeyword %))
-               opts)
-
-        [path-str used-keys] (interpolate-path path-template params)
-        query-params (apply dissoc params used-keys)
-        full-url (str base-url path-str)]
-    (make-request method full-url query-params (:body opts) opts)))
+        [interpolated-path used-path-keys] (util/interpolate-path path params)
+        query-params (apply dissoc params used-path-keys)
+        final-query-params (->camel-case-keys query-params)
+        body (when (:body opts)
+               (-> (:body opts)
+                   (->camel-case-keys)
+                   (json/generate-string)))
+        url (str base-url interpolated-path)
+        req {:method (-> http-method str/lower-case keyword)
+             :url url
+             :throw false
+             :headers (when token {"Authorization" (str "Bearer " token)})
+             :query-params final-query-params
+             :body body}
+        ;; for GET requests, body must be nil
+        req (if (= http-method :get) (dissoc req :body) req)
+        response (curl/request req)]
+    (if-let [body-str (:body response)]
+      (try
+        (assoc response :body (json/parse-string body-str true))
+        (catch Exception _
+          ;; Not json, return as is
+          response))
+      response)))
