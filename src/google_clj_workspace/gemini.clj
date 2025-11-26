@@ -1,7 +1,7 @@
 (ns google-clj-workspace.gemini
   (:require
    [google-clj-workspace.core :as core]
-   [google-clj-workspace.imp.gemini]))
+   [google-clj-workspace.impl.gemini]))
 
 (defn permissions
   "Manages permissions.

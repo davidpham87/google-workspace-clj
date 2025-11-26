@@ -1,7 +1,7 @@
 (ns google-clj-workspace.keep
   (:require
    [google-clj-workspace.core :as core]
-   [google-clj-workspace.imp.keep]))
+   [google-clj-workspace.impl.keep]))
 
 (defn notes
   "Manages notes.

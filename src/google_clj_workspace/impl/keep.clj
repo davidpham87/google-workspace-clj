@@ -1,12 +1,12 @@
-(ns google-clj-workspace.imp.keep
+(ns google-clj-workspace.impl.keep
   (:require
    [google-clj-workspace.client :as client]
    [google-clj-workspace.core :as core]
    [google-clj-workspace.util :as util]))
 
-(def ^:private base-url "https://keep.googleapis.com/")
+(def base-url "https://keep.googleapis.com/")
 
-(def ^:private ops
+(def ops
   {[:notes :create] {:method "POST" :path "v1/notes"}
    [:notes :get] {:method "GET" :path "v1/{+name}"}
    [:notes :list] {:method "GET" :path "v1/notes"}
@@ -15,7 +15,7 @@
    [:permissions :batch-delete] {:method "POST" :path "v1/{+parent}/permissions:batchDelete"}
    [:media :download] {:method "GET" :path "v1/{+name}"}})
 
-(defn- invoke-keep-api
+(defn invoke-keep-api
   [dispatch-val params opts]
   (let [[_service resource op] dispatch-val
         {:keys [method path]} (get ops [resource op])

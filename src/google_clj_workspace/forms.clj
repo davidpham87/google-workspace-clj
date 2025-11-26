@@ -1,7 +1,7 @@
 (ns google-clj-workspace.forms
   (:require
    [google-clj-workspace.core :as core]
-   [google-clj-workspace.imp.forms]))
+   [google-clj-workspace.impl.forms]))
 
 (defn forms
   "Manages forms.

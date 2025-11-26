@@ -1,12 +1,12 @@
-(ns google-clj-workspace.imp.gemini
+(ns google-clj-workspace.impl.gemini
   (:require
    [google-clj-workspace.client :as client]
    [google-clj-workspace.core :as core]
    [google-clj-workspace.util :as util]))
 
-(def ^:private base-url "https://generativelanguage.googleapis.com/")
+(def base-url "https://generativelanguage.googleapis.com/")
 
-(def ^:private ops
+(def ops
   {[:permissions :create] {:method "POST" :path "v1beta/{+parent}/permissions"}
    [:permissions :get] {:method "GET" :path "v1beta/{+name}"}
    [:permissions :list] {:method "GET" :path "v1beta/{+parent}/permissions"}
@@ -75,7 +75,7 @@
    [:operations :list] {:method "GET" :path "v1beta/{+name}/operations"}
    [:operations :get] {:method "GET" :path "v1beta/{+name}"}})
 
-(defn- invoke-gemini-api
+(defn invoke-gemini-api
   [dispatch-val params opts]
   (let [[_service resource op] dispatch-val
         {:keys [method path]} (get ops [resource op])

@@ -1,17 +1,17 @@
-(ns google-clj-workspace.imp.docs
+(ns google-clj-workspace.impl.docs
   (:require
    [google-clj-workspace.client :as client]
    [google-clj-workspace.core :as core]
    [google-clj-workspace.util :as util]))
 
-(def ^:private base-url "https://docs.googleapis.com/")
+(def base-url "https://docs.googleapis.com/")
 
-(def ^:private ops
+(def ops
   {[:documents :get] {:method "GET" :path "v1/documents/{documentId}"}
    [:documents :create] {:method "POST" :path "v1/documents"}
    [:documents :batch-update] {:method "POST" :path "v1/documents/{documentId}:batchUpdate"}})
 
-(defn- invoke-docs-api
+(defn invoke-docs-api
   [dispatch-val params opts]
   (let [[_service resource op] dispatch-val
         {:keys [method path]} (get ops [resource op])

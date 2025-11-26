@@ -1,7 +1,7 @@
 (ns google-clj-workspace.docs
   (:require
    [google-clj-workspace.core :as core]
-   [google-clj-workspace.imp.docs]))
+   [google-clj-workspace.impl.docs]))
 
 (defn documents
   "Manages documents.

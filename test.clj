@@ -72,6 +72,15 @@
           (is (str/includes? (:url req) "/v1beta/models/gemini-pro:generateContent"))
           (is (str/includes? (:body req) "Hello")))))))
 
+(deftest test-help-url
+  (testing "Help URL construction"
+    (is (= "https://developers.google.com/docs/api/reference/rest/v1/document.documents/create"
+           (google-clj-workspace.util/help-url {:service :docs :resource :documents :op :create})))
+    (is (= "https://ai.google.dev/api/rest/v1beta/models/generateContent"
+           (google-clj-workspace.util/help-url {:service :gemini :resource :models :op :generateContent})))
+    (is (= "https://developers.google.com/docs/api/reference/rest/v1/spreadsheet.values/get"
+           (google-clj-workspace.util/help-url {:service :sheets :resource :values :op :get})))))
+
 (defn -main []
   (let [test-results (run-tests 'test)]
     (when (pos? (+ (:fail test-results) (:error test-results)))

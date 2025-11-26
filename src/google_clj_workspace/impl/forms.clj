@@ -1,12 +1,12 @@
-(ns google-clj-workspace.imp.forms
+(ns google-clj-workspace.impl.forms
   (:require
    [google-clj-workspace.client :as client]
    [google-clj-workspace.core :as core]
    [google-clj-workspace.util :as util]))
 
-(def ^:private base-url "https://forms.googleapis.com/")
+(def base-url "https://forms.googleapis.com/")
 
-(def ^:private ops
+(def ops
   {[:forms :create] {:method "POST" :path "v1/forms"}
    [:forms :get] {:method "GET" :path "v1/forms/{formId}"}
    [:forms :batch-update] {:method "POST" :path "v1/forms/{formId}:batchUpdate"}
@@ -18,7 +18,7 @@
    [:watches :renew] {:method "POST" :path "v1/forms/{formId}/watches/{watchId}:renew"}
    [:watches :delete] {:method "DELETE" :path "v1/forms/{formId}/watches/{watchId}"}})
 
-(defn- invoke-forms-api
+(defn invoke-forms-api
   [dispatch-val params opts]
   (let [[_service resource op] dispatch-val
         {:keys [method path]} (get ops [resource op])

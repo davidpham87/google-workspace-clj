@@ -1,7 +1,7 @@
 (ns google-clj-workspace.sheets
   (:require
    [google-clj-workspace.core :as core]
-   [google-clj-workspace.imp.sheets]))
+   [google-clj-workspace.impl.sheets]))
 
 (defn spreadsheets
   "Manages spreadsheets.
