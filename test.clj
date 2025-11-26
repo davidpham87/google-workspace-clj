@@ -10,22 +10,26 @@
             [babashka.curl]))
 
 (deftest test-keep-client
-  (testing "Keep notes list mock with kebab-case params"
-    (with-redefs
-     [client/make-request
-      (fn
-       [_ _ params _ _]
-       (if
-        (= 10 (:pageSize params))
-        {:status 200, :body "{}"}
-        {:status 400, :error "Params not converted"}))]
-     (is (= 200 (:status (keep/notes {:page-size 10} {:op :list})))))))
+  (testing "Keep services"
+    (with-redefs [client/make-request (fn [_ _ _ _ _] {:status 200, :body "{}"})]
+      (testing "notes"
+        (is (= 200 (:status (keep/notes {:page-size 10} {:op :list})))))
+      (testing "permissions"
+        (is (= 200 (:status (keep/permissions {:parent "notes/123"} {:op :batch-create :body {:requests [{:permission {:grantee {:user {:emailAddress "user@example.com"}} :role "writer"}}]}}))))))))
 
 (deftest test-forms-client
-  (testing "Forms create mock"
-    (with-redefs
-     [client/make-request (fn [_ _ _ _ _] {:status 200, :body "{}"})]
-     (is (= 200 (:status (forms/forms {} {:op :create})))))))
+  (testing "Forms services"
+    (with-redefs [client/make-request (fn [_ _ _ _ _] {:status 200, :body "{}"})]
+      (testing "forms"
+        (is (= 200 (:status (forms/forms {} {:op :create}))))
+        (is (= 200 (:status (forms/forms {:formId "123"} {:op :get})))))
+      (testing "responses"
+        (is (= 200 (:status (forms/responses {:formId "123"} {:op :list})))))
+      (testing "watches"
+        (is (= 200 (:status (forms/watches {:formId "123"}
+                                          {:op :create
+                                           :body {:watch {:target {:topic {:topicName "projects/p/topics/t"}}
+                                                          :eventType "RESPONSES"}}}))))))))
 
 (deftest test-docs-client
   (testing "Docs documents get mock"
@@ -34,16 +38,26 @@
      (is (= 200 (:status (docs/documents {} {:op :get})))))))
 
 (deftest test-sheets-client
-  (testing "Sheets spreadsheets get mock"
-    (with-redefs
-     [client/make-request (fn [_ _ _ _ _] {:status 200, :body "{}"})]
-     (is (= 200 (:status (sheets/spreadsheets {} {:op :get})))))))
+  (testing "Sheets services"
+    (with-redefs [client/make-request (fn [_ _ _ _ _] {:status 200, :body "{}"})]
+      (testing "spreadsheets"
+        (is (= 200 (:status (sheets/spreadsheets {} {:op :get})))))
+      (testing "values"
+        (is (= 200 (:status (sheets/values {:spreadsheetId "123" :range "A1:B2"} {:op :get})))))
+      (testing "developer-metadata"
+        (is (= 200 (:status (sheets/developer-metadata {:spreadsheetId "123" :metadataId 456} {:op :get})))))
+      (testing "sheets"
+        (is (= 200 (:status (sheets/sheets {:spreadsheetId "123" :sheetId 456}
+                                          {:op :copy-to
+                                           :body {:destinationSpreadsheetId "789"}}))))))))
 
 (deftest test-gemini-client
-  (testing "Gemini models generateContent mock"
-    (with-redefs
-     [client/make-request (fn [_ _ _ _ _] {:status 200, :body "{}"})]
-     (is (= 200 (:status (gemini/models {} {:op :generate-content})))))))
+  (testing "Gemini services"
+    (with-redefs [client/make-request (fn [_ _ _ _ _] {:status 200, :body "{}"})]
+      (testing "models"
+        (is (= 200 (:status (gemini/models {} {:op :generate-content})))))
+      (testing "permissions"
+        (is (= 200 (:status (gemini/permissions {:parent "tunedModels/123"} {:op :create :body {:granteeType "EVERYONE" :role "reader"}}))))))))
 
 (deftest test-gemini-request-construction
   (testing "Gemini request construction"
@@ -57,6 +71,15 @@
           (is (= :post (:method req)))
           (is (str/includes? (:url req) "/v1beta/models/gemini-pro:generateContent"))
           (is (str/includes? (:body req) "Hello")))))))
+
+(deftest test-help-url
+  (testing "Help URL construction"
+    (is (= "https://developers.google.com/docs/api/reference/rest/v1/document.documents/create"
+           (google-clj-workspace.util/help-url {:service :docs :resource :documents :op :create})))
+    (is (= "https://ai.google.dev/api/rest/v1beta/models/generateContent"
+           (google-clj-workspace.util/help-url {:service :gemini :resource :models :op :generateContent})))
+    (is (= "https://developers.google.com/docs/api/reference/rest/v1/spreadsheet.values/get"
+           (google-clj-workspace.util/help-url {:service :sheets :resource :values :op :get})))))
 
 (defn -main []
   (let [test-results (run-tests 'test)]
