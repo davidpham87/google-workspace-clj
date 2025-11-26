@@ -17,7 +17,7 @@
    [path #{}]
    params))
 
-(def ^:private service-docs-config
+(def service-docs-config
   {:docs   {:group "document"}
    :sheets {:group "spreadsheet"}
    :forms  {:group "forms"}
