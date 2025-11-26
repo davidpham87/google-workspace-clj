@@ -1,31 +1,34 @@
 (ns google-clj-workspace.imp.docs
   (:require
+   [google-clj-workspace.client :as client]
    [google-clj-workspace.core :as core]
-   [google-clj-workspace.client :as client]))
+   [google-clj-workspace.util :as util]))
 
-(defmethod core/dispatch [:docs :documents :get]
-  [_ params opts]
-  (client/invoke-endpoint
-   "GET"
-   "v1/documents/{documentId}"
-   params
-   opts
-   "https://docs.googleapis.com/"))
+(def ^:private base-url "https://docs.googleapis.com/")
 
-(defmethod core/dispatch [:docs :documents :create]
-  [_ params opts]
-  (client/invoke-endpoint
-   "POST"
-   "v1/documents"
-   params
-   opts
-   "https://docs.googleapis.com/"))
+(def ^:private ops
+  {[:documents :get] {:method "GET" :path "v1/documents/{documentId}"}
+   [:documents :create] {:method "POST" :path "v1/documents"}
+   [:documents :batch-update] {:method "POST" :path "v1/documents/{documentId}:batchUpdate"}})
 
-(defmethod core/dispatch [:docs :documents :batch-update]
-  [_ params opts]
-  (client/invoke-endpoint
-   "POST"
-   "v1/documents/{documentId}:batchUpdate"
-   params
-   opts
-   "https://docs.googleapis.com/"))
+(defn- invoke-docs-api
+  [dispatch-val params opts]
+  (let [[_service resource op] dispatch-val
+        {:keys [method path]} (get ops [resource op])
+        [interpolated-path used-params] (util/interpolate-path path params)]
+    (client/invoke-endpoint
+     method
+     interpolated-path
+     (apply dissoc params used-params)
+     opts
+     base-url)))
+
+(defmacro ^:private def-docs-dispatch-methods []
+  (let [dispatch-vals (keys ops)]
+    `(do
+       ~@(for [[resource op] dispatch-vals]
+           `(defmethod core/dispatch [:docs ~resource ~op]
+              [d# p# o#]
+              (invoke-docs-api d# p# o#))))))
+
+(def-docs-dispatch-methods)

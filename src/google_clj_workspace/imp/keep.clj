@@ -1,70 +1,38 @@
 (ns google-clj-workspace.imp.keep
   (:require
+   [google-clj-workspace.client :as client]
    [google-clj-workspace.core :as core]
-   [google-clj-workspace.client :as client]))
+   [google-clj-workspace.util :as util]))
 
-;;; Notes
-(defmethod core/dispatch [:keep :notes :create]
-  [_ params opts]
-  (client/invoke-endpoint
-   "POST"
-   "v1/notes"
-   params
-   opts
-   "https://keep.googleapis.com/"))
+(def ^:private base-url "https://keep.googleapis.com/")
 
-(defmethod core/dispatch [:keep :notes :get]
-  [_ params opts]
-  (client/invoke-endpoint
-   "GET"
-   "v1/{+name}"
-   params
-   opts
-   "https://keep.googleapis.com/"))
+(def ^:private ops
+  {[:notes :create] {:method "POST" :path "v1/notes"}
+   [:notes :get] {:method "GET" :path "v1/{+name}"}
+   [:notes :list] {:method "GET" :path "v1/notes"}
+   [:notes :delete] {:method "DELETE" :path "v1/{+name}"}
+   [:permissions :batch-create] {:method "POST" :path "v1/{+parent}/permissions:batchCreate"}
+   [:permissions :batch-delete] {:method "POST" :path "v1/{+parent}/permissions:batchDelete"}
+   [:media :download] {:method "GET" :path "v1/{+name}"}})
 
-(defmethod core/dispatch [:keep :notes :list]
-  [_ params opts]
-  (client/invoke-endpoint
-   "GET"
-   "v1/notes"
-   params
-   opts
-   "https://keep.googleapis.com/"))
+(defn- invoke-keep-api
+  [dispatch-val params opts]
+  (let [[_service resource op] dispatch-val
+        {:keys [method path]} (get ops [resource op])
+        [interpolated-path used-params] (util/interpolate-path path params)]
+    (client/invoke-endpoint
+     method
+     interpolated-path
+     (apply dissoc params used-params)
+     opts
+     base-url)))
 
-(defmethod core/dispatch [:keep :notes :delete]
-  [_ params opts]
-  (client/invoke-endpoint
-   "DELETE"
-   "v1/{+name}"
-   params
-   opts
-   "https://keep.googleapis.com/"))
+(defmacro ^:private def-keep-dispatch-methods []
+  (let [dispatch-vals (keys ops)]
+    `(do
+       ~@(for [[resource op] dispatch-vals]
+           `(defmethod core/dispatch [:keep ~resource ~op]
+              [d# p# o#]
+              (invoke-keep-api d# p# o#))))))
 
-;;; Permissions
-(defmethod core/dispatch [:keep :permissions :batch-create]
-  [_ params opts]
-  (client/invoke-endpoint
-   "POST"
-   "v1/{+parent}/permissions:batchCreate"
-   params
-   opts
-   "https://keep.googleapis.com/"))
-
-(defmethod core/dispatch [:keep :permissions :batch-delete]
-  [_ params opts]
-  (client/invoke-endpoint
-   "POST"
-   "v1/{+parent}/permissions:batchDelete"
-   params
-   opts
-   "https://keep.googleapis.com/"))
-
-;;; Media
-(defmethod core/dispatch [:keep :media :download]
-  [_ params opts]
-  (client/invoke-endpoint
-   "GET"
-   "v1/{+name}"
-   params
-   opts
-   "https://keep.googleapis.com/"))
+(def-keep-dispatch-methods)
