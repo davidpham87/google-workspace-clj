@@ -12,11 +12,14 @@ This library is "vibe coded" (read: I hacked it together in a fugue state). It d
 
 ## Usage
 
-First, require the namespace. We have `keep` and `forms`.
+First, require the namespace. We have `keep`, `forms`, `docs`, `sheets`, and `gemini`.
 
 ```clojure
 (require '[google-clj-workspace.keep :as keep]
-         '[google-clj-workspace.forms :as forms])
+         '[google-clj-workspace.forms :as forms]
+         '[google-clj-workspace.docs :as docs]
+         '[google-clj-workspace.sheets :as sheets]
+         '[google-clj-workspace.gemini :as gemini])
 ```
 
 ### Authentication
@@ -57,9 +60,50 @@ Automate the bureaucracy!
 (forms/responses {:formId "1FAIpQL..."} (merge opts {:op :list}))
 ```
 
+### Google Docs
+
+Modify documents without opening a browser tab.
+
+```clojure
+;; Create a new document
+(docs/documents {} (merge opts {:op :create :body {:title "Manifesto"}}))
+
+;; Get a document
+(docs/documents {:documentId "123..."} (merge opts {:op :get}))
+```
+
+### Google Sheets
+
+Crunch numbers, or just store string data inappropriately.
+
+```clojure
+;; Create a spreadsheet
+(sheets/spreadsheets {} (merge opts {:op :create :body {:properties {:title "Q4 Projections"}}}))
+
+;; Get values from a range
+(sheets/values {:spreadsheetId "123..." :range "A1:B10"} (merge opts {:op :get}))
+
+;; Append values (because databases are too hard)
+(sheets/values {:spreadsheetId "123..." :range "A1"}
+               (merge opts {:op :append
+                            :query-params {:valueInputOption "USER_ENTERED"}
+                            :body {:values [["Date" "Amount"] ["2023-01-01" "100"]]}}))
+```
+
+### Google Gemini
+
+Talk to the AI. Maybe it knows why this code works.
+
+```clojure
+;; Generate content
+(gemini/models {:model "models/gemini-pro"}
+               (merge opts {:op :generate-content
+                            :body {:contents [{:parts [{:text "Write a haiku about Clojure"}]}]}}))
+```
+
 ## How it works
 
-We run `bb update-api` to download discovery schemas to `schema/` (because checking in 1MB JSON files is a hobby of mine now), and generate static Clojure files.
+We run `bb update-api` to fetch discovery schemas dynamically (no, we don't save them to disk, we aren't barbarians), and generate static Clojure files.
 
 ## Testing
 
