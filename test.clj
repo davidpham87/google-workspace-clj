@@ -5,7 +5,9 @@
             [google-clj-workspace.docs :as docs]
             [google-clj-workspace.sheets :as sheets]
             [google-clj-workspace.gemini :as gemini]
+            [google-clj-workspace.jules :as jules]
             [google-clj-workspace.client :as client]
+            [google-clj-workspace.util :as util]
             [clojure.string :as str]
             [babashka.curl]))
 
@@ -80,6 +82,17 @@
            (google-clj-workspace.util/help-url {:service :gemini :resource :models :op :generateContent})))
     (is (= "https://developers.google.com/docs/api/reference/rest/v1/spreadsheet.values/get"
            (google-clj-workspace.util/help-url {:service :sheets :resource :values :op :get})))))
+
+(deftest test-jules-client
+  (testing "Jules services"
+    (with-redefs [client/make-request (fn [_ _ _ _ _] {:status 200, :body "{}"})]
+      (testing "sessions"
+        (is (= 200 (:status (jules/sessions {} {:op :create}))))
+        (is (= 200 (:status (jules/sessions {:session "sessions/123"} {:op :send-message :body {:message "Hello"}})))))
+      (testing "activities"
+        (is (= 200 (:status (jules/activities {:parent "sessions/123"} {:op :list})))))
+      (testing "sources"
+        (is (= 200 (:status (jules/sources {} {:op :list}))))))))
 
 (defn -main []
   (let [test-results (run-tests 'test)]
