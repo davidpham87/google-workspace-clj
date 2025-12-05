@@ -1,63 +1,108 @@
-(ns google-clj-workspace.forms
-  (:require
-   [google-clj-workspace.core :as core]
-   [google-clj-workspace.impl.forms]))
+(ns
+ google-clj-workspace.forms
+ (:require
+  [google-clj-workspace.client :as client]
+  [clojure.test :refer [deftest is testing]]))
 
-(defn forms
-  "Manages forms.
-  - op: :create, :get, :batch-update, :set-publish-settings
+(defn
+ forms
+ "Available operations: :batch-update, :create, :get, :set-publish-settings"
+ [params & [opts]]
+ (case
+  (:op opts)
+  :batch-update
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1/forms/{formId}:batchUpdate"
+   params
+   opts
+   "https://forms.googleapis.com/")
+  :set-publish-settings
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1/forms/{formId}:setPublishSettings"
+   params
+   opts
+   "https://forms.googleapis.com/")
+  :create
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1/forms"
+   params
+   opts
+   "https://forms.googleapis.com/")
+  :get
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1/forms/{formId}"
+   params
+   opts
+   "https://forms.googleapis.com/")
+  (throw (ex-info "Unknown op" {:op (:op opts)}))))
 
-  Examples:
-  ;; create a form
-  (forms {} {:op :create :body {:info {:title \"New Form\"}}})
+(defn
+ responses
+ "Available operations: :get, :list"
+ [params & [opts]]
+ (case
+  (:op opts)
+  :get
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1/forms/{formId}/responses/{responseId}"
+   params
+   opts
+   "https://forms.googleapis.com/")
+  :list
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1/forms/{formId}/responses"
+   params
+   opts
+   "https://forms.googleapis.com/")
+  (throw (ex-info "Unknown op" {:op (:op opts)}))))
 
-  ;; get a form
-  (forms {:formId \"123\"} {:op :get})
+(defn
+ watches
+ "Available operations: :create, :delete, :list, :renew"
+ [params & [opts]]
+ (case
+  (:op opts)
+  :list
+  (google-clj-workspace.client/invoke-endpoint
+   "GET"
+   "v1/forms/{formId}/watches"
+   params
+   opts
+   "https://forms.googleapis.com/")
+  :delete
+  (google-clj-workspace.client/invoke-endpoint
+   "DELETE"
+   "v1/forms/{formId}/watches/{watchId}"
+   params
+   opts
+   "https://forms.googleapis.com/")
+  :renew
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1/forms/{formId}/watches/{watchId}:renew"
+   params
+   opts
+   "https://forms.googleapis.com/")
+  :create
+  (google-clj-workspace.client/invoke-endpoint
+   "POST"
+   "v1/forms/{formId}/watches"
+   params
+   opts
+   "https://forms.googleapis.com/")
+  (throw (ex-info "Unknown op" {:op (:op opts)}))))
 
-  ;; update a form
-  (forms {:formId \"123\"}
-         {:op :batch-update
-          :body {:requests [{:updateFormInfo {:info {:title \"New Title\"}
-                                               :updateMask \"title\"}}]}})
+(deftest
+ test-example-forms-create
+ (testing
+  "Example: forms create mock"
+  (with-redefs
+   [client/make-request (fn [_ _ _ _ _] {:status 200, :body "{}"})]
+   (is (= 200 (:status (forms {} {:op :create})))))))
 
-  ;; set publish settings
-  (forms {:formId \"123\"}
-         {:op :set-publish-settings
-          :body {:settings {:isPublishing \"on\"}}})"
-  [params & [opts]]
-  (core/dispatch [:forms :forms (:op opts)] params opts))
-
-(defn responses
-  "Manages responses.
-  - op: :get, :list
-
-  Examples:
-  ;; get a response
-  (responses {:formId \"123\" :responseId \"456\"} {:op :get})
-
-  ;; list responses
-  (responses {:formId \"123\"} {:op :list})"
-  [params & [opts]]
-  (core/dispatch [:forms :responses (:op opts)] params opts))
-
-(defn watches
-  "Manages watches.
-  - op: :create, :list, :renew, :delete
-
-  Examples:
-  ;; create a watch
-  (watches {:formId \"123\"}
-           {:op :create
-            :body {:watch {:target {:topic {:topicName \"projects/p/topics/t\"}}
-                           :eventType \"RESPONSES\"}}})
-
-  ;; list watches
-  (watches {:formId \"123\"} {:op :list})
-
-  ;; renew a watch
-  (watches {:formId \"123\" :watchId \"456\"} {:op :renew})
-
-  ;; delete a watch
-  (watches {:formId \"123\" :watchId \"456\"} {:op :delete})"
-  [params & [opts]]
-  (core/dispatch [:forms :watches (:op opts)] params opts))

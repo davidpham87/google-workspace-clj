@@ -40,12 +40,15 @@
 
 (defn generate-resource-fn [resource-name methods base-url]
   (let [ops (group-by #(get-op-name (:id %)) methods)
+        op-keys (keys ops)
+        docstring (str "Available operations: " (str/join ", " (sort op-keys)))
         clauses (mapcat (fn [[op ms]]
                           ;; ms is a list of methods mapping to this op
                           ;; We just take the first one for now to avoid duplicates.
                           [op (generate-method-body (first ms) base-url)])
                         ops)]
     (list 'defn (symbol resource-name)
+          docstring
           ['params '& ['opts]]
           (concat (list 'case (list :op 'opts))
                   clauses
@@ -106,6 +109,9 @@
     :examples '()}
    {:name "gemini"
     :url "https://generativelanguage.googleapis.com/$discovery/rest?version=v1beta"
+    :examples '()}
+   {:name "jules"
+    :url "https://jules.googleapis.com/$discovery/rest"
     :examples '()}])
 
 (defn generate-all []
