@@ -8,7 +8,38 @@
 
 (def ops
   {[:documents :get] {:method "GET" :path "v1/documents/{documentId}"}
+   ;; [:map
+   ;;  {:closed false}
+   ;;  [:suggestedDocumentStyleChanges
+   ;;   {:optional true}
+   ;;   [:map-of :string :any]]
+   ;;  [:footnotes {:optional true} [:map-of :string :any]]
+   ;;  [:lists {:optional true} [:map-of :string :any]]
+   ;;  [:positionedObjects {:optional true} [:map-of :string :any]]
+   ;;  [:footers {:optional true} [:map-of :string :any]]
+   ;;  [:tabs {:optional true} [:vector [:ref "Tab"]]]
+   ;;  [:inlineObjects {:optional true} [:map-of :string :any]]
+   ;;  [:namedRanges {:optional true} [:map-of :string :any]]
+   ;;  [:revisionId {:optional true} :string]
+   ;;  [:namedStyles {:optional true} [:ref "NamedStyles"]]
+   ;;  [:suggestedNamedStylesChanges {:optional true} [:map-of :string :any]]
+   ;;  [:documentStyle {:optional true} [:ref "DocumentStyle"]]
+   ;;  [:title {:optional true} :string]
+   ;;  [:suggestionsViewMode
+   ;;   {:optional true}
+   ;;   [:enum
+   ;;    "DEFAULT_FOR_CURRENT_ACCESS"
+   ;;    "SUGGESTIONS_INLINE"
+   ;;    "PREVIEW_SUGGESTIONS_ACCEPTED"
+   ;;    "PREVIEW_WITHOUT_SUGGESTIONS"]]
+   ;;  [:headers {:optional true} [:map-of :string :any]]
+   ;;  [:documentId {:optional true} :string]
+   ;;  [:body {:optional true} [:ref "Body"]]]
    [:documents :create] {:method "POST" :path "v1/documents"}
+   ;; [:map
+   ;;  {:closed false}
+   ;;  [:requests {:optional true} [:vector [:ref "Request"]]]
+   ;;  [:writeControl {:optional true} [:ref "WriteControl"]]]
    [:documents :batch-update] {:method "POST" :path "v1/documents/{documentId}:batchUpdate"}})
 
 (defn invoke-docs-api

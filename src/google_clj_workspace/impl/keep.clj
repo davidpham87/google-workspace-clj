@@ -7,11 +7,28 @@
 (def base-url "https://keep.googleapis.com/")
 
 (def ops
+   ;; [:map
+   ;;  {:closed false}
+   ;;  [:permissions {:optional true} [:vector [:ref "Permission"]]]
+   ;;  [:trashTime {:optional true} :string]
+   ;;  [:name {:optional true} :string]
+   ;;  [:attachments {:optional true} [:vector [:ref "Attachment"]]]
+   ;;  [:createTime {:optional true} :string]
+   ;;  [:title {:optional true} :string]
+   ;;  [:updateTime {:optional true} :string]
+   ;;  [:trashed {:optional true} :boolean]
+   ;;  [:body {:optional true} [:ref "Section"]]]
   {[:notes :create] {:method "POST" :path "v1/notes"}
    [:notes :get] {:method "GET" :path "v1/{+name}"}
    [:notes :list] {:method "GET" :path "v1/notes"}
    [:notes :delete] {:method "DELETE" :path "v1/{+name}"}
+   ;; [:map
+   ;;  {:closed false}
+   ;;  [:requests
+   ;;   {:optional true}
+   ;;   [:vector [:ref "CreatePermissionRequest"]]]]
    [:permissions :batch-create] {:method "POST" :path "v1/{+parent}/permissions:batchCreate"}
+   ;; [:map {:closed false} [:names {:optional true} [:vector :string]]]
    [:permissions :batch-delete] {:method "POST" :path "v1/{+parent}/permissions:batchDelete"}
    [:media :download] {:method "GET" :path "v1/{+name}"}})
 
