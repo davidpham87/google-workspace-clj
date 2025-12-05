@@ -19,7 +19,8 @@ First, require the namespace. We have `keep`, `forms`, `docs`, `sheets`, and `ge
          '[google-clj-workspace.forms :as forms]
          '[google-clj-workspace.docs :as docs]
          '[google-clj-workspace.sheets :as sheets]
-         '[google-clj-workspace.gemini :as gemini])
+         '[google-clj-workspace.gemini :as gemini]
+         '[google-clj-workspace.jules :as jules])
 ```
 
 ### Authentication
@@ -99,6 +100,25 @@ Talk to the AI. Maybe it knows why this code works.
 (gemini/models {:model "models/gemini-pro"}
                (merge opts {:op :generate-content
                             :body {:contents [{:parts [{:text "Write a haiku about Clojure"}]}]}}))
+```
+
+### Jules
+
+Chat with an AI agent that might actually do what you ask (no guarantees).
+
+```clojure
+;; Create a session to start your therapy
+(jules/sessions {} (merge opts {:op :create}))
+
+;; Send a message to the void (or the agent)
+(jules/sessions {:session "sessions/123..."}
+                (merge opts {:op :send-message :body {:message "Write me a symphony"}}))
+
+;; Approve the plan because you trust the machine implicitly
+(jules/sessions {:session "sessions/123..."} (merge opts {:op :approve-plan}))
+
+;; Check activities to see if it actually did anything
+(jules/activities {:parent "sessions/123..."} (merge opts {:op :list}))
 ```
 
 ## How it works
