@@ -1,7 +1,8 @@
 (ns google-clj-workspace.discovery
   (:require [malli.core :as m]
             [cheshire.core :as json]
-            [babashka.curl :as curl]))
+            [babashka.curl :as curl]
+            [malli.util :as mu]))
 
 ;; -----------------------------------------------------------------------------
 ;; Malli Schema for Google Discovery Document
@@ -97,10 +98,13 @@
                                   (json-schema-node->malli items)
                                   :any)]
       (= type "object") (if (:properties node)
-                          (into [:map {:closed false}]
-                                (map (fn [[k v]]
-                                       [k {:optional true} (json-schema-node->malli v)])
-                                     (:properties node)))
+                          (let [required (set (map keyword (:required node)))
+                                props (into [:map]
+                                            (map (fn [[k v]]
+                                                   [k {:optional (not (contains? required k))}
+                                                    (json-schema-node->malli v)])
+                                                 (:properties node)))]
+                            (mu/closed-schema props))
                           ;; If object but no properties, maybe it's a map-of? Or just any map.
                           [:map-of :string :any])
       :else :any)))
@@ -114,9 +118,29 @@
              {}
              schemas))
 
-;; -----------------------------------------------------------------------------
-;; Parse Function
-;; -----------------------------------------------------------------------------
+(defn- json-schema-node->malli [node]
+  (let [type (:type node)
+        ref (:$ref node)
+        enum (:enum node)]
+    (cond
+      ref [:ref ref]
+      enum (into [:enum] enum)
+      (= type "string") :string
+      (= type "integer") :int
+      (= type "boolean") :boolean
+      (= type "number") :double
+      (= type "array") [:vector (if-let [items (:items node)]
+                                  (json-schema-node->malli items)
+                                  :any)]
+      (= type "object") (if (:properties node)
+                          (let [required (set (map keyword (:required node)))]
+                            (into [:map {:closed true}]
+                                  (map (fn [[k v]]
+                                         [k {:optional (not (contains? required k))}
+                                          (json-schema-node->malli v)])
+                                       (:properties node))))
+                          [:map-of :string :any])
+      :else :any)))
 
 (defn parse-discovery-schema
   "Parses a discovery document from a URL or file (as string).

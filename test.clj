@@ -8,6 +8,7 @@
             [google-clj-workspace.jules :as jules]
             [google-clj-workspace.client :as client]
             [google-clj-workspace.util :as util]
+            [google-clj-workspace.jules-test] ;; Import the new test namespace
             [clojure.string :as str]
             [babashka.curl]))
 
@@ -95,7 +96,7 @@
         (is (= 200 (:status (jules/sources {} {:op :list}))))))))
 
 (defn -main []
-  (let [test-results (run-tests 'test)]
+  (let [test-results (run-tests 'test 'google-clj-workspace.jules-test)]
     (when (pos? (+ (:fail test-results) (:error test-results)))
       (System/exit 1))))
 
