@@ -1,15 +1,16 @@
-{"Empty" [:map {:closed true}],
+{[:sessions :send-message] [:ref "SendMessageRequest"],
+ "Empty" [:map {:closed true}],
  "Media"
  [:map
   {:closed true}
-  [:data {:optional true} :string]
-  [:mimeType {:optional true} :string]],
+  [:mimeType {:optional true} :string]
+  [:data {:optional true} :string]],
  "GitPatch"
  [:map
   {:closed true}
   [:baseCommitId {:optional true} :string]
-  [:unidiffPatch {:optional true} :string]
-  [:suggestedCommitMessage {:optional true} :string]],
+  [:suggestedCommitMessage {:optional true} :string]
+  [:unidiffPatch {:optional true} :string]],
  "ListSessionsResponse"
  [:map
   {:closed true}
@@ -19,8 +20,8 @@
  [:map
   {:closed true}
   [:githubRepo {:optional true} [:ref "GitHubRepo"]]
-  [:name {:optional true} :string]
-  [:id {:optional true} :string]],
+  [:id {:optional true} :string]
+  [:name {:optional true} :string]],
  "UserMessaged"
  [:map {:closed true} [:userMessage {:optional true} :string]],
  "PlanGenerated"
@@ -33,9 +34,9 @@
  "BashOutput"
  [:map
   {:closed true}
+  [:output {:optional true} :string]
   [:command {:optional true} :string]
-  [:exitCode {:optional true} :int]
-  [:output {:optional true} :string]],
+  [:exitCode {:optional true} :int]],
  "PullRequest"
  [:map
   {:closed true}
@@ -60,7 +61,7 @@
   [:artifacts {:optional true} [:vector [:ref "Artifact"]]]
   [:sessionCompleted {:optional true} [:ref "SessionCompleted"]]],
  "GitHubRepoContext"
- [:map {:closed true} [:startingBranch {:optional false} :string]],
+ [:map {:closed true} [:startingBranch {:optional true} :string]],
  "SessionOutput"
  [:map
   {:closed true}
@@ -73,13 +74,14 @@
   [:bashOutput {:optional true} [:ref "BashOutput"]]],
  "PlanApproved"
  [:map {:closed true} [:planId {:optional true} :string]],
+ [:sessions :create] [:ref "Session"],
  "PlanStep"
  [:map
   {:closed true}
-  [:id {:optional true} :string]
-  [:description {:optional true} :string]
   [:index {:optional true} :int]
-  [:title {:optional true} :string]],
+  [:title {:optional true} :string]
+  [:id {:optional true} :string]
+  [:description {:optional true} :string]],
  "GitHubBranch"
  [:map {:closed true} [:displayName {:optional true} :string]],
  "AgentMessaged"
@@ -87,36 +89,37 @@
  "SourceContext"
  [:map
   {:closed true}
-  [:source {:optional false} :string]
-  [:githubRepoContext {:optional true} [:ref "GitHubRepoContext"]]],
+  [:githubRepoContext {:optional true} [:ref "GitHubRepoContext"]]
+  [:source {:optional true} :string]],
  "ListSourcesResponse"
  [:map
   {:closed true}
-  [:nextPageToken {:optional true} :string]
-  [:sources {:optional true} [:vector [:ref "Source"]]]],
+  [:sources {:optional true} [:vector [:ref "Source"]]]
+  [:nextPageToken {:optional true} :string]],
  "Plan"
  [:map
   {:closed true}
+  [:id {:optional true} :string]
   [:createTime {:optional true} :string]
-  [:steps {:optional true} [:vector [:ref "PlanStep"]]]
-  [:id {:optional true} :string]],
+  [:steps {:optional true} [:vector [:ref "PlanStep"]]]],
  "SendMessageResponse" [:map {:closed true}],
  "GitHubRepo"
  [:map
   {:closed true}
   [:owner {:optional true} :string]
-  [:branches {:optional true} [:vector [:ref "GitHubBranch"]]]
   [:isPrivate {:optional true} :boolean]
+  [:branches {:optional true} [:vector [:ref "GitHubBranch"]]]
   [:repo {:optional true} :string]
   [:defaultBranch {:optional true} [:ref "GitHubBranch"]]],
  "ListActivitiesResponse"
  [:map
   {:closed true}
-  [:nextPageToken {:optional true} :string]
-  [:activities {:optional true} [:vector [:ref "Activity"]]]],
+  [:activities {:optional true} [:vector [:ref "Activity"]]]
+  [:nextPageToken {:optional true} :string]],
  "SendMessageRequest"
- [:map {:closed true} [:prompt {:optional false} :string]],
+ [:map {:closed true} [:prompt {:optional true} :string]],
  "ApprovePlanResponse" [:map {:closed true}],
+ [:sessions :approve-plan] [:ref "ApprovePlanRequest"],
  "SessionCompleted" [:map {:closed true}],
  "SessionFailed"
  [:map {:closed true} [:reason {:optional true} :string]],
@@ -143,13 +146,13 @@
     "COMPLETED"]]
   [:title {:optional true} :string]
   [:updateTime {:optional true} :string]
-  [:prompt {:optional false} :string]
+  [:prompt {:optional true} :string]
   [:id {:optional true} :string]
   [:url {:optional true} :string]
   [:outputs {:optional true} [:vector [:ref "SessionOutput"]]]
-  [:sourceContext {:optional false} [:ref "SourceContext"]]],
+  [:sourceContext {:optional true} [:ref "SourceContext"]]],
  "ProgressUpdated"
  [:map
   {:closed true}
-  [:title {:optional true} :string]
-  [:description {:optional true} :string]]}
+  [:description {:optional true} :string]
+  [:title {:optional true} :string]]}

@@ -1,33 +1,33 @@
-{"RowQuestion"
- [:map {:closed true} [:title {:optional false} :string]],
+{"RowQuestion" [:map {:closed true} [:title {:optional true} :string]],
  "QuestionItem"
  [:map
   {:closed true}
-  [:question {:optional false} [:ref "Question"]]
+  [:question {:optional true} [:ref "Question"]]
   [:image {:optional true} [:ref "Image"]]],
  "FormResponse"
  [:map
   {:closed true}
+  [:answers {:optional true} [:map-of :string :any]]
   [:respondentEmail {:optional true} :string]
-  [:totalScore {:optional true} :double]
-  [:lastSubmittedTime {:optional true} :string]
+  [:responseId {:optional true} :string]
   [:formId {:optional true} :string]
   [:createTime {:optional true} :string]
-  [:answers {:optional true} [:map-of :string :any]]
-  [:responseId {:optional true} :string]],
+  [:totalScore {:optional true} :double]
+  [:lastSubmittedTime {:optional true} :string]],
  "Empty" [:map {:closed true}],
  "DateQuestion"
  [:map
   {:closed true}
-  [:includeTime {:optional true} :boolean]
-  [:includeYear {:optional true} :boolean]],
+  [:includeYear {:optional true} :boolean]
+  [:includeTime {:optional true} :boolean]],
  "MediaProperties"
  [:map
   {:closed true}
-  [:width {:optional true} :int]
   [:alignment
    {:optional true}
-   [:enum "ALIGNMENT_UNSPECIFIED" "LEFT" "RIGHT" "CENTER"]]],
+   [:enum "ALIGNMENT_UNSPECIFIED" "LEFT" "RIGHT" "CENTER"]]
+  [:width {:optional true} :int]],
+ [:forms :set-publish-settings] [:ref "SetPublishSettingsRequest"],
  "PublishSettings"
  [:map
   {:closed true}
@@ -35,34 +35,35 @@
  "Request"
  [:map
   {:closed true}
-  [:updateItem {:optional true} [:ref "UpdateItemRequest"]]
   [:deleteItem {:optional true} [:ref "DeleteItemRequest"]]
   [:createItem {:optional true} [:ref "CreateItemRequest"]]
-  [:moveItem {:optional true} [:ref "MoveItemRequest"]]
+  [:updateSettings {:optional true} [:ref "UpdateSettingsRequest"]]
   [:updateFormInfo {:optional true} [:ref "UpdateFormInfoRequest"]]
-  [:updateSettings {:optional true} [:ref "UpdateSettingsRequest"]]],
+  [:moveItem {:optional true} [:ref "MoveItemRequest"]]
+  [:updateItem {:optional true} [:ref "UpdateItemRequest"]]],
  "BatchUpdateFormResponse"
  [:map
   {:closed true}
-  [:replies {:optional true} [:vector [:ref "Response"]]]
   [:writeControl {:optional true} [:ref "WriteControl"]]
-  [:form {:optional true} [:ref "Form"]]],
+  [:form {:optional true} [:ref "Form"]]
+  [:replies {:optional true} [:vector [:ref "Response"]]]],
  "QuestionGroupItem"
  [:map
   {:closed true}
-  [:questions {:optional false} [:vector [:ref "Question"]]]
   [:grid {:optional true} [:ref "Grid"]]
-  [:image {:optional true} [:ref "Image"]]],
+  [:image {:optional true} [:ref "Image"]]
+  [:questions {:optional true} [:vector [:ref "Question"]]]],
  "TextQuestion"
  [:map {:closed true} [:paragraph {:optional true} :boolean]],
  "VideoItem"
  [:map
   {:closed true}
-  [:caption {:optional true} :string]
-  [:video {:optional false} [:ref "Video"]]],
+  [:video {:optional true} [:ref "Video"]]
+  [:caption {:optional true} :string]],
  "Option"
  [:map
   {:closed true}
+  [:value {:optional true} :string]
   [:goToAction
    {:optional true}
    [:enum
@@ -70,42 +71,42 @@
     "NEXT_SECTION"
     "RESTART_FORM"
     "SUBMIT_FORM"]]
-  [:value {:optional false} :string]
   [:isOther {:optional true} :boolean]
-  [:image {:optional true} [:ref "Image"]]
-  [:goToSectionId {:optional true} :string]],
+  [:goToSectionId {:optional true} :string]
+  [:image {:optional true} [:ref "Image"]]],
  "QuizSettings"
  [:map {:closed true} [:isQuiz {:optional true} :boolean]],
  "BatchUpdateFormRequest"
  [:map
   {:closed true}
-  [:requests {:optional false} [:vector [:ref "Request"]]]
-  [:includeFormInResponse {:optional true} :boolean]
-  [:writeControl {:optional true} [:ref "WriteControl"]]],
+  [:requests {:optional true} [:vector [:ref "Request"]]]
+  [:writeControl {:optional true} [:ref "WriteControl"]]
+  [:includeFormInResponse {:optional true} :boolean]],
  "Grading"
  [:map
   {:closed true}
-  [:correctAnswers {:optional false} [:ref "CorrectAnswers"]]
   [:generalFeedback {:optional true} [:ref "Feedback"]]
-  [:whenRight {:optional true} [:ref "Feedback"]]
-  [:pointValue {:optional false} :int]
-  [:whenWrong {:optional true} [:ref "Feedback"]]],
+  [:pointValue {:optional true} :int]
+  [:whenWrong {:optional true} [:ref "Feedback"]]
+  [:correctAnswers {:optional true} [:ref "CorrectAnswers"]]
+  [:whenRight {:optional true} [:ref "Feedback"]]],
  "UpdateFormInfoRequest"
  [:map
   {:closed true}
-  [:info {:optional true} [:ref "Info"]]
-  [:updateMask {:optional false} :string]],
+  [:updateMask {:optional true} :string]
+  [:info {:optional true} [:ref "Info"]]],
  "Video"
  [:map
   {:closed true}
-  [:youtubeUri {:optional false} :string]
+  [:youtubeUri {:optional true} :string]
   [:properties {:optional true} [:ref "MediaProperties"]]],
+ [:watches :create] [:ref "CreateWatchRequest"],
  "UpdateItemRequest"
  [:map
   {:closed true}
-  [:updateMask {:optional false} :string]
-  [:location {:optional false} [:ref "Location"]]
-  [:item {:optional false} [:ref "Item"]]],
+  [:location {:optional true} [:ref "Location"]]
+  [:updateMask {:optional true} :string]
+  [:item {:optional true} [:ref "Item"]]],
  "ListWatchesResponse"
  [:map
   {:closed true}
@@ -113,14 +114,14 @@
  "Grade"
  [:map
   {:closed true}
-  [:correct {:optional true} :boolean]
+  [:feedback {:optional true} [:ref "Feedback"]]
   [:score {:optional true} :double]
-  [:feedback {:optional true} [:ref "Feedback"]]],
+  [:correct {:optional true} :boolean]],
  "TextLink"
  [:map
   {:closed true}
-  [:uri {:optional false} :string]
-  [:displayText {:optional false} :string]],
+  [:uri {:optional true} :string]
+  [:displayText {:optional true} :string]],
  "TextItem" [:map {:closed true}],
  "Question"
  [:map
@@ -146,22 +147,28 @@
  "RatingQuestion"
  [:map
   {:closed true}
-  [:ratingScaleLevel {:optional false} :int]
   [:iconType
-   {:optional false}
-   [:enum "RATING_ICON_TYPE_UNSPECIFIED" "STAR" "HEART" "THUMB_UP"]]],
+   {:optional true}
+   [:enum "RATING_ICON_TYPE_UNSPECIFIED" "STAR" "HEART" "THUMB_UP"]]
+  [:ratingScaleLevel {:optional true} :int]],
  "Info"
  [:map
   {:closed true}
+  [:title {:optional true} :string]
   [:description {:optional true} :string]
-  [:title {:optional false} :string]
   [:documentTitle {:optional true} :string]],
  "Watch"
  [:map
   {:closed true}
-  [:id {:optional true} :string]
-  [:expireTime {:optional true} :string]
   [:createTime {:optional true} :string]
+  [:eventType
+   {:optional true}
+   [:enum "EVENT_TYPE_UNSPECIFIED" "SCHEMA" "RESPONSES"]]
+  [:expireTime {:optional true} :string]
+  [:state
+   {:optional true}
+   [:enum "STATE_UNSPECIFIED" "ACTIVE" "SUSPENDED"]]
+  [:target {:optional true} [:ref "WatchTarget"]]
   [:errorType
    {:optional true}
    [:enum
@@ -169,56 +176,51 @@
     "PROJECT_NOT_AUTHORIZED"
     "NO_USER_ACCESS"
     "OTHER_ERRORS"]]
-  [:target {:optional false} [:ref "WatchTarget"]]
-  [:eventType
-   {:optional false}
-   [:enum "EVENT_TYPE_UNSPECIFIED" "SCHEMA" "RESPONSES"]]
-  [:state
-   {:optional true}
-   [:enum "STATE_UNSPECIFIED" "ACTIVE" "SUSPENDED"]]],
+  [:id {:optional true} :string]],
  "Grid"
  [:map
   {:closed true}
-  [:shuffleQuestions {:optional true} :boolean]
-  [:columns {:optional false} [:ref "ChoiceQuestion"]]],
+  [:columns {:optional true} [:ref "ChoiceQuestion"]]
+  [:shuffleQuestions {:optional true} :boolean]],
  "RenewWatchRequest" [:map {:closed true}],
+ [:forms :create] [:ref "Form"],
  "ScaleQuestion"
  [:map
   {:closed true}
+  [:highLabel {:optional true} :string]
+  [:high {:optional true} :int]
   [:lowLabel {:optional true} :string]
-  [:low {:optional false} :int]
-  [:high {:optional false} :int]
-  [:highLabel {:optional true} :string]],
+  [:low {:optional true} :int]],
+ [:watches :renew] [:ref "RenewWatchRequest"],
  "CreateWatchRequest"
  [:map
   {:closed true}
-  [:watchId {:optional true} :string]
-  [:watch {:optional false} [:ref "Watch"]]],
+  [:watch {:optional true} [:ref "Watch"]]
+  [:watchId {:optional true} :string]],
  "Response"
  [:map
   {:closed true}
   [:createItem {:optional true} [:ref "CreateItemResponse"]]],
  "CorrectAnswer"
- [:map {:closed true} [:value {:optional false} :string]],
+ [:map {:closed true} [:value {:optional true} :string]],
  "ImageItem"
- [:map {:closed true} [:image {:optional false} [:ref "Image"]]],
+ [:map {:closed true} [:image {:optional true} [:ref "Image"]]],
  "PageBreakItem" [:map {:closed true}],
  "Form"
  [:map
   {:closed true}
-  [:responderUri {:optional true} :string]
-  [:info {:optional false} [:ref "Info"]]
   [:linkedSheetId {:optional true} :string]
   [:revisionId {:optional true} :string]
   [:publishSettings {:optional true} [:ref "PublishSettings"]]
-  [:items {:optional false} [:vector [:ref "Item"]]]
+  [:responderUri {:optional true} :string]
   [:formId {:optional true} :string]
-  [:settings {:optional true} [:ref "FormSettings"]]],
+  [:settings {:optional true} [:ref "FormSettings"]]
+  [:items {:optional true} [:vector [:ref "Item"]]]
+  [:info {:optional true} [:ref "Info"]]],
  "FileUploadQuestion"
  [:map
   {:closed true}
-  [:folderId {:optional false} :string]
-  [:maxFileSize {:optional true} :string]
+  [:folderId {:optional true} :string]
   [:types
    {:optional true}
    [:vector
@@ -233,48 +235,49 @@
      "IMAGE"
      "VIDEO"
      "AUDIO"]]]
+  [:maxFileSize {:optional true} :string]
   [:maxFiles {:optional true} :int]],
  "WriteControl"
  [:map
   {:closed true}
-  [:requiredRevisionId {:optional true} :string]
-  [:targetRevisionId {:optional true} :string]],
+  [:targetRevisionId {:optional true} :string]
+  [:requiredRevisionId {:optional true} :string]],
  "MoveItemRequest"
  [:map
   {:closed true}
-  [:originalLocation {:optional false} [:ref "Location"]]
-  [:newLocation {:optional false} [:ref "Location"]]],
+  [:originalLocation {:optional true} [:ref "Location"]]
+  [:newLocation {:optional true} [:ref "Location"]]],
  "SetPublishSettingsRequest"
  [:map
   {:closed true}
-  [:publishSettings {:optional false} [:ref "PublishSettings"]]
-  [:updateMask {:optional true} :string]],
+  [:updateMask {:optional true} :string]
+  [:publishSettings {:optional true} [:ref "PublishSettings"]]],
  "PublishState"
  [:map
   {:closed true}
-  [:isPublished {:optional false} :boolean]
-  [:isAcceptingResponses {:optional false} :boolean]],
+  [:isAcceptingResponses {:optional true} :boolean]
+  [:isPublished {:optional true} :boolean]],
  "FileUploadAnswer"
  [:map
   {:closed true}
-  [:mimeType {:optional true} :string]
   [:fileId {:optional true} :string]
-  [:fileName {:optional true} :string]],
+  [:fileName {:optional true} :string]
+  [:mimeType {:optional true} :string]],
  "VideoLink"
  [:map
   {:closed true}
   [:youtubeUri {:optional true} :string]
-  [:displayText {:optional false} :string]],
+  [:displayText {:optional true} :string]],
  "CreateItemRequest"
  [:map
   {:closed true}
-  [:location {:optional false} [:ref "Location"]]
-  [:item {:optional false} [:ref "Item"]]],
+  [:location {:optional true} [:ref "Location"]]
+  [:item {:optional true} [:ref "Item"]]],
  "UpdateSettingsRequest"
  [:map
   {:closed true}
-  [:updateMask {:optional false} :string]
-  [:settings {:optional false} [:ref "FormSettings"]]],
+  [:settings {:optional true} [:ref "FormSettings"]]
+  [:updateMask {:optional true} :string]],
  "FileUploadAnswers"
  [:map
   {:closed true}
@@ -282,13 +285,14 @@
  "ChoiceQuestion"
  [:map
   {:closed true}
-  [:options {:optional false} [:vector [:ref "Option"]]]
   [:type
-   {:optional false}
+   {:optional true}
    [:enum "CHOICE_TYPE_UNSPECIFIED" "RADIO" "CHECKBOX" "DROP_DOWN"]]
+  [:options {:optional true} [:vector [:ref "Option"]]]
   [:shuffle {:optional true} :boolean]],
  "CloudPubsubTopic"
- [:map {:closed true} [:topicName {:optional false} :string]],
+ [:map {:closed true} [:topicName {:optional true} :string]],
+ [:forms :batch-update] [:ref "BatchUpdateFormRequest"],
  "CreateItemResponse"
  [:map
   {:closed true}
@@ -310,37 +314,37 @@
  "FormSettings"
  [:map
   {:closed true}
+  [:quizSettings {:optional true} [:ref "QuizSettings"]]
   [:emailCollectionType
    {:optional true}
    [:enum
     "EMAIL_COLLECTION_TYPE_UNSPECIFIED"
     "DO_NOT_COLLECT"
     "VERIFIED"
-    "RESPONDER_INPUT"]]
-  [:quizSettings {:optional true} [:ref "QuizSettings"]]],
+    "RESPONDER_INPUT"]]],
  "SetPublishSettingsResponse"
  [:map
   {:closed true}
-  [:publishSettings {:optional true} [:ref "PublishSettings"]]
-  [:formId {:optional false} :string]],
+  [:formId {:optional true} :string]
+  [:publishSettings {:optional true} [:ref "PublishSettings"]]],
  "Image"
  [:map
   {:closed true}
-  [:sourceUri {:optional true} :string]
+  [:altText {:optional true} :string]
   [:contentUri {:optional true} :string]
   [:properties {:optional true} [:ref "MediaProperties"]]
-  [:altText {:optional true} :string]],
+  [:sourceUri {:optional true} :string]],
  "Feedback"
  [:map
   {:closed true}
-  [:text {:optional false} :string]
-  [:material {:optional true} [:vector [:ref "ExtraMaterial"]]]],
+  [:material {:optional true} [:vector [:ref "ExtraMaterial"]]]
+  [:text {:optional true} :string]],
  "WatchTarget"
  [:map
   {:closed true}
   [:topic {:optional true} [:ref "CloudPubsubTopic"]]],
  "DeleteItemRequest"
- [:map {:closed true} [:location {:optional false} [:ref "Location"]]],
+ [:map {:closed true} [:location {:optional true} [:ref "Location"]]],
  "Item"
  [:map
   {:closed true}
@@ -358,7 +362,7 @@
  "Answer"
  [:map
   {:closed true}
-  [:grade {:optional true} [:ref "Grade"]]
-  [:fileUploadAnswers {:optional true} [:ref "FileUploadAnswers"]]
+  [:textAnswers {:optional true} [:ref "TextAnswers"]]
   [:questionId {:optional true} :string]
-  [:textAnswers {:optional true} [:ref "TextAnswers"]]]}
+  [:fileUploadAnswers {:optional true} [:ref "FileUploadAnswers"]]
+  [:grade {:optional true} [:ref "Grade"]]]}

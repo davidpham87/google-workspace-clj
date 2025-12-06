@@ -1,0 +1,7 @@
+
+Testing test
+
+Testing google-clj-workspace.jules-test
+
+Ran 11 tests containing 29 assertions.
+0 failures, 0 errors.

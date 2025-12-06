@@ -1,8 +1,8 @@
 {"ListNotesResponse"
  [:map
   {:closed true}
-  [:notes {:optional true} [:vector [:ref "Note"]]]
-  [:nextPageToken {:optional true} :string]],
+  [:nextPageToken {:optional true} :string]
+  [:notes {:optional true} [:vector [:ref "Note"]]]],
  "BatchCreatePermissionsRequest"
  [:map
   {:closed true}
@@ -18,13 +18,13 @@
  "Permission"
  [:map
   {:closed true}
-  [:name {:optional true} :string]
-  [:role {:optional true} [:enum "ROLE_UNSPECIFIED" "OWNER" "WRITER"]]
-  [:user {:optional true} [:ref "User"]]
-  [:email {:optional true} :string]
-  [:deleted {:optional true} :boolean]
   [:family {:optional true} [:ref "Family"]]
-  [:group {:optional true} [:ref "Group"]]],
+  [:role {:optional true} [:enum "ROLE_UNSPECIFIED" "OWNER" "WRITER"]]
+  [:email {:optional true} :string]
+  [:name {:optional true} :string]
+  [:group {:optional true} [:ref "Group"]]
+  [:user {:optional true} [:ref "User"]]
+  [:deleted {:optional true} :boolean]],
  "Note"
  [:map
   {:closed true}
@@ -38,12 +38,14 @@
   [:trashed {:optional true} :boolean]
   [:body {:optional true} [:ref "Section"]]],
  "User" [:map {:closed true} [:email {:optional true} :string]],
+ [:notes :create] [:ref "Note"],
  "Family" [:map {:closed true}],
  "Section"
  [:map
   {:closed true}
-  [:text {:optional true} [:ref "TextContent"]]
-  [:list {:optional true} [:ref "ListContent"]]],
+  [:list {:optional true} [:ref "ListContent"]]
+  [:text {:optional true} [:ref "TextContent"]]],
+ [:permissions :batch-delete] [:ref "BatchDeletePermissionsRequest"],
  "ListContent"
  [:map
   {:closed true}
@@ -58,12 +60,13 @@
  [:map
   {:closed true}
   [:text {:optional true} [:ref "TextContent"]]
-  [:checked {:optional true} :boolean]
-  [:childListItems {:optional true} [:vector [:ref "ListItem"]]]],
+  [:childListItems {:optional true} [:vector [:ref "ListItem"]]]
+  [:checked {:optional true} :boolean]],
  "CreatePermissionRequest"
  [:map
   {:closed true}
-  [:permission {:optional false} [:ref "Permission"]]
-  [:parent {:optional false} :string]],
+  [:permission {:optional true} [:ref "Permission"]]
+  [:parent {:optional true} :string]],
+ [:permissions :batch-create] [:ref "BatchCreatePermissionsRequest"],
  "BatchDeletePermissionsRequest"
- [:map {:closed true} [:names {:optional false} [:vector :string]]]}
+ [:map {:closed true} [:names {:optional true} [:vector :string]]]}
