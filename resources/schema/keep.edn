@@ -63,7 +63,7 @@
  "CreatePermissionRequest"
  [:map
   {:closed true}
-  [:permission {:optional true} [:ref "Permission"]]
-  [:parent {:optional true} :string]],
+  [:permission {:optional false} [:ref "Permission"]]
+  [:parent {:optional false} :string]],
  "BatchDeletePermissionsRequest"
- [:map {:closed true} [:names {:optional true} [:vector :string]]]}
+ [:map {:closed true} [:names {:optional false} [:vector :string]]]}

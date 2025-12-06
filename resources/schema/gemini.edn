@@ -7,7 +7,7 @@
  [:map
   {:closed true}
   [:parameters {:optional true} :any]
-  [:instances {:optional true} [:vector :any]]],
+  [:instances {:optional false} [:vector :any]]],
  "InlinedResponse"
  [:map
   {:closed true}
@@ -35,7 +35,7 @@
   [:default {:optional true} :any]
   [:maximum {:optional true} :double]
   [:type
-   {:optional true}
+   {:optional false}
    [:enum
     "TYPE_UNSPECIFIED"
     "STRING"
@@ -79,7 +79,7 @@
  "GenerateContentBatch"
  [:map
   {:closed true}
-  [:displayName {:optional true} :string]
+  [:displayName {:optional false} :string]
   [:name {:optional true} :string]
   [:batchStats {:optional true} [:ref "BatchStats"]]
   [:endTime {:optional true} :string]
@@ -97,8 +97,8 @@
   [:output {:optional true} [:ref "GenerateContentBatchOutput"]]
   [:updateTime {:optional true} :string]
   [:priority {:optional true} :string]
-  [:inputConfig {:optional true} [:ref "InputConfig"]]
-  [:model {:optional true} :string]],
+  [:inputConfig {:optional false} [:ref "InputConfig"]]
+  [:model {:optional false} :string]],
  "EmbedTextResponse"
  [:map
   {:closed true}
@@ -141,17 +141,17 @@
   [:groundingAttributions
    {:optional true}
    [:vector [:ref "GroundingAttribution"]]]],
- "TextPrompt" [:map {:closed true} [:text {:optional true} :string]],
+ "TextPrompt" [:map {:closed true} [:text {:optional false} :string]],
  "CountMessageTokensRequest"
  [:map
   {:closed true}
-  [:prompt {:optional true} [:ref "MessagePrompt"]]],
+  [:prompt {:optional false} [:ref "MessagePrompt"]]],
  "ImportFileRequest"
  [:map
   {:closed true}
   [:chunkingConfig {:optional true} [:ref "ChunkingConfig"]]
   [:customMetadata {:optional true} [:vector [:ref "CustomMetadata"]]]
-  [:fileName {:optional true} :string]],
+  [:fileName {:optional false} :string]],
  "Dataset"
  [:map
   {:closed true}
@@ -175,8 +175,8 @@
  "SpeakerVoiceConfig"
  [:map
   {:closed true}
-  [:speaker {:optional true} :string]
-  [:voiceConfig {:optional true} [:ref "VoiceConfig"]]],
+  [:speaker {:optional false} :string]
+  [:voiceConfig {:optional false} [:ref "VoiceConfig"]]],
  "RetrievalConfig"
  [:map
   {:closed true}
@@ -186,15 +186,15 @@
  [:map
   {:closed true}
   [:parts {:optional true} [:vector [:ref "FunctionResponsePart"]]]
-  [:response {:optional true} [:map-of :string :any]]
-  [:name {:optional true} :string]
+  [:response {:optional false} [:map-of :string :any]]
+  [:name {:optional false} :string]
   [:scheduling
    {:optional true}
    [:enum "SCHEDULING_UNSPECIFIED" "SILENT" "WHEN_IDLE" "INTERRUPT"]]
   [:id {:optional true} :string]
   [:willContinue {:optional true} :boolean]],
  "CountTextTokensRequest"
- [:map {:closed true} [:prompt {:optional true} [:ref "TextPrompt"]]],
+ [:map {:closed true} [:prompt {:optional false} [:ref "TextPrompt"]]],
  "EmbedContentBatchOutput"
  [:map
   {:closed true}
@@ -216,8 +216,8 @@
  "MetadataFilter"
  [:map
   {:closed true}
-  [:key {:optional true} :string]
-  [:conditions {:optional true} [:vector [:ref "Condition"]]]],
+  [:key {:optional false} :string]
+  [:conditions {:optional false} [:vector [:ref "Condition"]]]],
  "SearchEntryPoint"
  [:map
   {:closed true}
@@ -231,8 +231,8 @@
  "Example"
  [:map
   {:closed true}
-  [:input {:optional true} [:ref "Message"]]
-  [:output {:optional true} [:ref "Message"]]],
+  [:input {:optional false} [:ref "Message"]]
+  [:output {:optional false} [:ref "Message"]]],
  "ListOperationsResponse"
  [:map
   {:closed true}
@@ -259,14 +259,14 @@
    {:optional true}
    [:enum "GRANTEE_TYPE_UNSPECIFIED" "USER" "GROUP" "EVERYONE"]]
   [:role
-   {:optional true}
+   {:optional false}
    [:enum "ROLE_UNSPECIFIED" "OWNER" "WRITER" "READER"]]],
  "GenerateTextRequest"
  [:map
   {:closed true}
   [:temperature {:optional true} :double]
   [:topP {:optional true} :double]
-  [:prompt {:optional true} [:ref "TextPrompt"]]
+  [:prompt {:optional false} [:ref "TextPrompt"]]
   [:maxOutputTokens {:optional true} :int]
   [:candidateCount {:optional true} :int]
   [:stopSequences {:optional true} [:vector :string]]
@@ -288,7 +288,7 @@
    [:ref "GoogleSearchRetrieval"]]
   [:googleSearch {:optional true} [:ref "GoogleSearch"]]],
  "TransferOwnershipRequest"
- [:map {:closed true} [:emailAddress {:optional true} :string]],
+ [:map {:closed true} [:emailAddress {:optional false} :string]],
  "GroundingPassage"
  [:map
   {:closed true}
@@ -303,12 +303,12 @@
  "BatchGenerateContentRequest"
  [:map
   {:closed true}
-  [:batch {:optional true} [:ref "GenerateContentBatch"]]],
+  [:batch {:optional false} [:ref "GenerateContentBatch"]]],
  "ComputerUse"
  [:map
   {:closed true}
   [:environment
-   {:optional true}
+   {:optional false}
    [:enum "ENVIRONMENT_UNSPECIFIED" "ENVIRONMENT_BROWSER"]]
   [:excludedPredefinedFunctions {:optional true} [:vector :string]]],
  "ContentEmbedding"
@@ -349,7 +349,7 @@
  "EmbedContentBatch"
  [:map
   {:closed true}
-  [:displayName {:optional true} :string]
+  [:displayName {:optional false} :string]
   [:name {:optional true} :string]
   [:batchStats {:optional true} [:ref "EmbedContentBatchStats"]]
   [:endTime {:optional true} :string]
@@ -367,12 +367,12 @@
   [:output {:optional true} [:ref "EmbedContentBatchOutput"]]
   [:updateTime {:optional true} :string]
   [:priority {:optional true} :string]
-  [:inputConfig {:optional true} [:ref "InputEmbedContentConfig"]]
-  [:model {:optional true} :string]],
+  [:inputConfig {:optional false} [:ref "InputEmbedContentConfig"]]
+  [:model {:optional false} :string]],
  "FunctionDeclaration"
  [:map
   {:closed true}
-  [:description {:optional true} :string]
+  [:description {:optional false} :string]
   [:parameters {:optional true} [:ref "Schema"]]
   [:responseJsonSchema {:optional true} :any]
   [:response {:optional true} [:ref "Schema"]]
@@ -380,7 +380,7 @@
    {:optional true}
    [:enum "UNSPECIFIED" "BLOCKING" "NON_BLOCKING"]]
   [:parametersJsonSchema {:optional true} :any]
-  [:name {:optional true} :string]],
+  [:name {:optional false} :string]],
  "ContentFilter"
  [:map
   {:closed true}
@@ -398,12 +398,12 @@
  "FileData"
  [:map
   {:closed true}
-  [:fileUri {:optional true} :string]
+  [:fileUri {:optional false} :string]
   [:mimeType {:optional true} :string]],
  "AsyncBatchEmbedContentRequest"
  [:map
   {:closed true}
-  [:batch {:optional true} [:ref "EmbedContentBatch"]]],
+  [:batch {:optional false} [:ref "EmbedContentBatch"]]],
  "File"
  [:map
   {:closed true}
@@ -447,7 +447,7 @@
  [:map
   {:closed true}
   [:examples {:optional true} [:vector [:ref "Example"]]]
-  [:messages {:optional true} [:vector [:ref "Message"]]]
+  [:messages {:optional false} [:vector [:ref "Message"]]]
   [:context {:optional true} :string]],
  "TuningSnapshot"
  [:map
@@ -486,7 +486,7 @@
  [:map
   {:closed true}
   [:speakerVoiceConfigs
-   {:optional true}
+   {:optional false}
    [:vector [:ref "SpeakerVoiceConfig"]]]],
  "DownloadFileResponse" [:map {:closed true}],
  "Operation"
@@ -574,7 +574,7 @@
  [:map
   {:closed true}
   [:startTime {:optional true} :string]
-  [:trainingData {:optional true} [:ref "Dataset"]]
+  [:trainingData {:optional false} [:ref "Dataset"]]
   [:hyperparameters {:optional true} [:ref "Hyperparameters"]]
   [:completeTime {:optional true} :string]
   [:snapshots {:optional true} [:vector [:ref "TuningSnapshot"]]]],
@@ -592,13 +592,13 @@
   [:usageMetadata {:optional true} [:ref "CachedContentUsageMetadata"]]
   [:expireTime {:optional true} :string]
   [:contents {:optional true} [:vector [:ref "Content"]]]
-  [:model {:optional true} :string]],
+  [:model {:optional false} :string]],
  "GenerateAnswerRequest"
  [:map
   {:closed true}
   [:safetySettings {:optional true} [:vector [:ref "SafetySetting"]]]
   [:answerStyle
-   {:optional true}
+   {:optional false}
    [:enum
     "ANSWER_STYLE_UNSPECIFIED"
     "ABSTRACTIVE"
@@ -608,23 +608,23 @@
   [:semanticRetriever
    {:optional true}
    [:ref "SemanticRetrieverConfig"]]
-  [:contents {:optional true} [:vector [:ref "Content"]]]
+  [:contents {:optional false} [:vector [:ref "Content"]]]
   [:temperature {:optional true} :double]],
  "Model"
  [:map
   {:closed true}
   [:description {:optional true} :string]
   [:displayName {:optional true} :string]
-  [:name {:optional true} :string]
+  [:name {:optional false} :string]
   [:maxTemperature {:optional true} :double]
   [:thinking {:optional true} :boolean]
   [:inputTokenLimit {:optional true} :int]
   [:topP {:optional true} :double]
   [:outputTokenLimit {:optional true} :int]
   [:supportedGenerationMethods {:optional true} [:vector :string]]
-  [:baseModelId {:optional true} :string]
+  [:baseModelId {:optional false} :string]
   [:topK {:optional true} :int]
-  [:version {:optional true} :string]
+  [:version {:optional false} :string]
   [:temperature {:optional true} :double]],
  "ListGeneratedFilesResponse"
  [:map
@@ -665,7 +665,7 @@
  [:map
   {:closed true}
   [:temperature {:optional true} :double]
-  [:prompt {:optional true} [:ref "MessagePrompt"]]
+  [:prompt {:optional false} [:ref "MessagePrompt"]]
   [:topP {:optional true} :double]
   [:topK {:optional true} :int]
   [:candidateCount {:optional true} :int]],
@@ -689,7 +689,7 @@
  [:map
   {:closed true}
   [:metadata {:optional true} [:map-of :string :any]]
-  [:request {:optional true} [:ref "EmbedContentRequest"]]],
+  [:request {:optional false} [:ref "EmbedContentRequest"]]],
  "GenerationConfig"
  [:map
   {:closed true}
@@ -743,7 +743,7 @@
  "Message"
  [:map
   {:closed true}
-  [:content {:optional true} :string]
+  [:content {:optional false} :string]
   [:citationMetadata {:optional true} [:ref "CitationMetadata"]]
   [:author {:optional true} :string]],
  "TextCompletion"
@@ -783,13 +783,13 @@
  "EmbedTextRequest"
  [:map
   {:closed true}
-  [:model {:optional true} :string]
+  [:model {:optional false} :string]
   [:text {:optional true} :string]],
  "ExecutableCode"
  [:map
   {:closed true}
-  [:language {:optional true} [:enum "LANGUAGE_UNSPECIFIED" "PYTHON"]]
-  [:code {:optional true} :string]],
+  [:language {:optional false} [:enum "LANGUAGE_UNSPECIFIED" "PYTHON"]]
+  [:code {:optional false} :string]],
  "Part"
  [:map
   {:closed true}
@@ -818,7 +818,7 @@
  [:map
   {:closed true}
   [:threshold
-   {:optional true}
+   {:optional false}
    [:enum
     "HARM_BLOCK_THRESHOLD_UNSPECIFIED"
     "BLOCK_LOW_AND_ABOVE"
@@ -827,7 +827,7 @@
     "BLOCK_NONE"
     "OFF"]]
   [:category
-   {:optional true}
+   {:optional false}
    [:enum
     "HARM_CATEGORY_UNSPECIFIED"
     "HARM_CATEGORY_DEROGATORY"
@@ -845,12 +845,12 @@
  [:map
   {:closed true}
   [:textInput {:optional true} :string]
-  [:output {:optional true} :string]],
+  [:output {:optional false} :string]],
  "InlinedEmbedContentRequests"
  [:map
   {:closed true}
   [:requests
-   {:optional true}
+   {:optional false}
    [:vector [:ref "InlinedEmbedContentRequest"]]]],
  "GenerateMessageResponse"
  [:map
@@ -863,7 +863,7 @@
   {:closed true}
   [:numericValue {:optional true} :double]
   [:stringValue {:optional true} :string]
-  [:key {:optional true} :string]
+  [:key {:optional false} :string]
   [:stringListValue {:optional true} [:ref "StringList"]]],
  "EmbedContentResponse"
  [:map
@@ -873,7 +873,7 @@
  [:map
   {:closed true}
   [:parameters {:optional true} :any]
-  [:instances {:optional true} [:vector :any]]],
+  [:instances {:optional false} [:vector :any]]],
  "ListPermissionsResponse"
  [:map
   {:closed true}
@@ -883,14 +883,14 @@
  [:map
   {:closed true}
   [:metadataFilters {:optional true} [:vector [:ref "MetadataFilter"]]]
-  [:query {:optional true} [:ref "Content"]]
+  [:query {:optional false} [:ref "Content"]]
   [:minimumRelevanceScore {:optional true} :double]
-  [:source {:optional true} :string]
+  [:source {:optional false} :string]
   [:maxChunksCount {:optional true} :int]],
  "InlinedRequests"
  [:map
   {:closed true}
-  [:requests {:optional true} [:vector [:ref "InlinedRequest"]]]],
+  [:requests {:optional false} [:vector [:ref "InlinedRequest"]]]],
  "GroundingPassages"
  [:map
   {:closed true}
@@ -908,9 +908,9 @@
   [:generationConfig {:optional true} [:ref "GenerationConfig"]]
   [:toolConfig {:optional true} [:ref "ToolConfig"]]
   [:tools {:optional true} [:vector [:ref "Tool"]]]
-  [:contents {:optional true} [:vector [:ref "Content"]]]
+  [:contents {:optional false} [:vector [:ref "Content"]]]
   [:safetySettings {:optional true} [:vector [:ref "SafetySetting"]]]
-  [:model {:optional true} :string]
+  [:model {:optional false} :string]
   [:cachedContent {:optional true} :string]],
  "TuningExamples"
  [:map
@@ -944,7 +944,7 @@
  [:map
   {:closed true}
   [:id {:optional true} :string]
-  [:name {:optional true} :string]
+  [:name {:optional false} :string]
   [:args {:optional true} [:map-of :string :any]]],
  "AttributionSourceId"
  [:map
@@ -958,7 +958,7 @@
   {:closed true}
   [:blocked {:optional true} :boolean]
   [:category
-   {:optional true}
+   {:optional false}
    [:enum
     "HARM_CATEGORY_UNSPECIFIED"
     "HARM_CATEGORY_DEROGATORY"
@@ -973,7 +973,7 @@
     "HARM_CATEGORY_DANGEROUS_CONTENT"
     "HARM_CATEGORY_CIVIC_INTEGRITY"]]
   [:probability
-   {:optional true}
+   {:optional false}
    [:enum
     "HARM_PROBABILITY_UNSPECIFIED"
     "NEGLIGIBLE"
@@ -998,7 +998,7 @@
   [:topP {:optional true} :double]
   [:baseModel {:optional true} :string]
   [:updateTime {:optional true} :string]
-  [:tuningTask {:optional true} [:ref "TuningTask"]]
+  [:tuningTask {:optional false} [:ref "TuningTask"]]
   [:readerProjectNumbers {:optional true} [:vector :string]]
   [:topK {:optional true} :int]
   [:tunedModelSource {:optional true} [:ref "TunedModelSource"]]
@@ -1018,7 +1018,7 @@
  [:map
   {:closed true}
   [:operation
-   {:optional true}
+   {:optional false}
    [:enum
     "OPERATOR_UNSPECIFIED"
     "LESS"
@@ -1046,7 +1046,7 @@
  [:map
   {:closed true}
   [:metadata {:optional true} [:map-of :string :any]]
-  [:request {:optional true} [:ref "GenerateContentRequest"]]],
+  [:request {:optional false} [:ref "GenerateContentRequest"]]],
  "EmbedContentRequest"
  [:map
   {:closed true}
@@ -1063,9 +1063,9 @@
     "FACT_VERIFICATION"
     "CODE_RETRIEVAL_QUERY"]]
   [:outputDimensionality {:optional true} :int]
-  [:model {:optional true} :string]
+  [:model {:optional false} :string]
   [:title {:optional true} :string]
-  [:content {:optional true} [:ref "Content"]]],
+  [:content {:optional false} [:ref "Content"]]],
  "InlinedEmbedContentResponse"
  [:map
   {:closed true}
@@ -1145,13 +1145,15 @@
  "BatchEmbedContentsRequest"
  [:map
   {:closed true}
-  [:requests {:optional true} [:vector [:ref "EmbedContentRequest"]]]],
+  [:requests
+   {:optional false}
+   [:vector [:ref "EmbedContentRequest"]]]],
  "CodeExecutionResult"
  [:map
   {:closed true}
   [:output {:optional true} :string]
   [:outcome
-   {:optional true}
+   {:optional false}
    [:enum
     "OUTCOME_UNSPECIFIED"
     "OUTCOME_OK"
@@ -1210,7 +1212,7 @@
  "FileSearch"
  [:map
   {:closed true}
-  [:fileSearchStoreNames {:optional true} [:vector :string]]
+  [:fileSearchStoreNames {:optional false} [:vector :string]]
   [:topK {:optional true} :int]
   [:metadataFilter {:optional true} :string]],
  "CitationMetadata"

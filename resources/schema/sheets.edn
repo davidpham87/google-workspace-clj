@@ -464,7 +464,7 @@
  "ChipRun"
  [:map
   {:closed true}
-  [:startIndex {:optional true} :int]
+  [:startIndex {:optional false} :int]
   [:chip {:optional true} [:ref "Chip"]]],
  "BigQueryTableSpec"
  [:map
@@ -611,7 +611,7 @@
   [:spreadsheetId {:optional true} :string]
   [:clearedRanges {:optional true} [:vector :string]]],
  "AddTableRequest"
- [:map {:closed true} [:table {:optional true} [:ref "Table"]]],
+ [:map {:closed true} [:table {:optional false} [:ref "Table"]]],
  "SpreadsheetProperties"
  [:map
   {:closed true}
@@ -1159,7 +1159,7 @@
     "DEFAULT"
     "LAST_NAME_COMMA_FIRST_NAME"
     "EMAIL"]]
-  [:email {:optional true} :string]],
+  [:email {:optional false} :string]],
  "DataSourceSheetDimensionRange"
  [:map
   {:closed true}
@@ -1211,8 +1211,8 @@
  "UpdateTableRequest"
  [:map
   {:closed true}
-  [:fields {:optional true} :string]
-  [:table {:optional true} [:ref "Table"]]],
+  [:fields {:optional false} :string]
+  [:table {:optional false} [:ref "Table"]]],
  "WaterfallChartSpec"
  [:map
   {:closed true}
@@ -1281,7 +1281,7 @@
  "RichLinkProperties"
  [:map
   {:closed true}
-  [:uri {:optional true} :string]
+  [:uri {:optional false} :string]
   [:mimeType {:optional true} :string]],
  "UpdateBandingRequest"
  [:map
