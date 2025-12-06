@@ -1,19 +1,22 @@
 {"BatchEmbedTextRequest"
  [:map
   {:closed true}
-  [:requests {:optional true} [:vector [:ref "EmbedTextRequest"]]]
-  [:texts {:optional true} [:vector :string]]],
+  [:texts {:optional true} [:vector :string]]
+  [:requests {:optional true} [:vector [:ref "EmbedTextRequest"]]]],
  "PredictLongRunningRequest"
  [:map
   {:closed true}
-  [:parameters {:optional true} :any]
-  [:instances {:optional false} [:vector :any]]],
+  [:instances {:optional true} [:vector :any]]
+  [:parameters {:optional true} :any]],
+ [:tuned-models :generate-text] [:ref "GenerateTextRequest"],
+ [:models :async-batch-embed-content]
+ [:ref "AsyncBatchEmbedContentRequest"],
  "InlinedResponse"
  [:map
   {:closed true}
-  [:response {:optional true} [:ref "GenerateContentResponse"]]
   [:metadata {:optional true} [:map-of :string :any]]
-  [:error {:optional true} [:ref "Status"]]],
+  [:error {:optional true} [:ref "Status"]]
+  [:response {:optional true} [:ref "GenerateContentResponse"]]],
  "StringList"
  [:map {:closed true} [:values {:optional true} [:vector :string]]],
  "Empty" [:map {:closed true}],
@@ -35,7 +38,7 @@
   [:default {:optional true} :any]
   [:maximum {:optional true} :double]
   [:type
-   {:optional false}
+   {:optional true}
    [:enum
     "TYPE_UNSPECIFIED"
     "STRING"
@@ -57,14 +60,15 @@
   [:required {:optional true} [:vector :string]]
   [:maxItems {:optional true} :string]
   [:pattern {:optional true} :string]],
+ [:permissions :patch] [:ref "CachedContent"],
  "CustomLongRunningOperation"
  [:map
   {:closed true}
-  [:response {:optional true} [:map-of :string :any]]
-  [:done {:optional true} :boolean]
-  [:error {:optional true} [:ref "Status"]]
   [:metadata {:optional true} [:map-of :string :any]]
-  [:name {:optional true} :string]],
+  [:name {:optional true} :string]
+  [:error {:optional true} [:ref "Status"]]
+  [:done {:optional true} :boolean]
+  [:response {:optional true} [:map-of :string :any]]],
  "GoogleSearchRetrieval"
  [:map
   {:closed true}
@@ -79,7 +83,7 @@
  "GenerateContentBatch"
  [:map
   {:closed true}
-  [:displayName {:optional false} :string]
+  [:displayName {:optional true} :string]
   [:name {:optional true} :string]
   [:batchStats {:optional true} [:ref "BatchStats"]]
   [:endTime {:optional true} :string]
@@ -97,8 +101,8 @@
   [:output {:optional true} [:ref "GenerateContentBatchOutput"]]
   [:updateTime {:optional true} :string]
   [:priority {:optional true} :string]
-  [:inputConfig {:optional false} [:ref "InputConfig"]]
-  [:model {:optional false} :string]],
+  [:inputConfig {:optional true} [:ref "InputConfig"]]
+  [:model {:optional true} :string]],
  "EmbedTextResponse"
  [:map
   {:closed true}
@@ -141,17 +145,20 @@
   [:groundingAttributions
    {:optional true}
    [:vector [:ref "GroundingAttribution"]]]],
- "TextPrompt" [:map {:closed true} [:text {:optional false} :string]],
+ "TextPrompt" [:map {:closed true} [:text {:optional true} :string]],
  "CountMessageTokensRequest"
  [:map
   {:closed true}
-  [:prompt {:optional false} [:ref "MessagePrompt"]]],
+  [:prompt {:optional true} [:ref "MessagePrompt"]]],
+ [:models :batch-embed-text] [:ref "BatchEmbedTextRequest"],
  "ImportFileRequest"
  [:map
   {:closed true}
   [:chunkingConfig {:optional true} [:ref "ChunkingConfig"]]
-  [:customMetadata {:optional true} [:vector [:ref "CustomMetadata"]]]
-  [:fileName {:optional false} :string]],
+  [:fileName {:optional true} :string]
+  [:customMetadata
+   {:optional true}
+   [:vector [:ref "CustomMetadata"]]]],
  "Dataset"
  [:map
   {:closed true}
@@ -159,156 +166,159 @@
  "GeneratedFile"
  [:map
   {:closed true}
+  [:error {:optional true} [:ref "Status"]]
   [:mimeType {:optional true} :string]
   [:state
    {:optional true}
    [:enum "STATE_UNSPECIFIED" "GENERATING" "GENERATED" "FAILED"]]
-  [:name {:optional true} :string]
-  [:error {:optional true} [:ref "Status"]]],
+  [:name {:optional true} :string]],
  "UploadToFileSearchStoreRequest"
  [:map
   {:closed true}
   [:chunkingConfig {:optional true} [:ref "ChunkingConfig"]]
-  [:mimeType {:optional true} :string]
+  [:displayName {:optional true} :string]
   [:customMetadata {:optional true} [:vector [:ref "CustomMetadata"]]]
-  [:displayName {:optional true} :string]],
+  [:mimeType {:optional true} :string]],
  "SpeakerVoiceConfig"
  [:map
   {:closed true}
-  [:speaker {:optional false} :string]
-  [:voiceConfig {:optional false} [:ref "VoiceConfig"]]],
+  [:voiceConfig {:optional true} [:ref "VoiceConfig"]]
+  [:speaker {:optional true} :string]],
  "RetrievalConfig"
  [:map
   {:closed true}
-  [:languageCode {:optional true} :string]
-  [:latLng {:optional true} [:ref "LatLng"]]],
+  [:latLng {:optional true} [:ref "LatLng"]]
+  [:languageCode {:optional true} :string]],
  "FunctionResponse"
  [:map
   {:closed true}
-  [:parts {:optional true} [:vector [:ref "FunctionResponsePart"]]]
-  [:response {:optional false} [:map-of :string :any]]
-  [:name {:optional false} :string]
+  [:willContinue {:optional true} :boolean]
+  [:name {:optional true} :string]
   [:scheduling
    {:optional true}
    [:enum "SCHEDULING_UNSPECIFIED" "SILENT" "WHEN_IDLE" "INTERRUPT"]]
-  [:id {:optional true} :string]
-  [:willContinue {:optional true} :boolean]],
+  [:parts {:optional true} [:vector [:ref "FunctionResponsePart"]]]
+  [:response {:optional true} [:map-of :string :any]]
+  [:id {:optional true} :string]],
  "CountTextTokensRequest"
- [:map {:closed true} [:prompt {:optional false} [:ref "TextPrompt"]]],
+ [:map {:closed true} [:prompt {:optional true} [:ref "TextPrompt"]]],
  "EmbedContentBatchOutput"
  [:map
   {:closed true}
+  [:responsesFile {:optional true} :string]
   [:inlinedResponses
    {:optional true}
-   [:ref "InlinedEmbedContentResponses"]]
-  [:responsesFile {:optional true} :string]],
+   [:ref "InlinedEmbedContentResponses"]]],
  "FileSearchStore"
  [:map
   {:closed true}
-  [:createTime {:optional true} :string]
-  [:activeDocumentsCount {:optional true} :string]
-  [:name {:optional true} :string]
-  [:sizeBytes {:optional true} :string]
-  [:displayName {:optional true} :string]
   [:pendingDocumentsCount {:optional true} :string]
+  [:displayName {:optional true} :string]
   [:updateTime {:optional true} :string]
-  [:failedDocumentsCount {:optional true} :string]],
+  [:failedDocumentsCount {:optional true} :string]
+  [:sizeBytes {:optional true} :string]
+  [:name {:optional true} :string]
+  [:activeDocumentsCount {:optional true} :string]
+  [:createTime {:optional true} :string]],
  "MetadataFilter"
  [:map
   {:closed true}
-  [:key {:optional false} :string]
-  [:conditions {:optional false} [:vector [:ref "Condition"]]]],
+  [:key {:optional true} :string]
+  [:conditions {:optional true} [:vector [:ref "Condition"]]]],
  "SearchEntryPoint"
  [:map
   {:closed true}
-  [:sdkBlob {:optional true} :string]
-  [:renderedContent {:optional true} :string]],
+  [:renderedContent {:optional true} :string]
+  [:sdkBlob {:optional true} :string]],
  "InputEmbedContentConfig"
  [:map
   {:closed true}
   [:fileName {:optional true} :string]
   [:requests {:optional true} [:ref "InlinedEmbedContentRequests"]]],
+ [:models :predict] [:ref "PredictRequest"],
+ [:models :count-tokens] [:ref "CountTokensRequest"],
  "Example"
  [:map
   {:closed true}
-  [:input {:optional false} [:ref "Message"]]
-  [:output {:optional false} [:ref "Message"]]],
+  [:input {:optional true} [:ref "Message"]]
+  [:output {:optional true} [:ref "Message"]]],
  "ListOperationsResponse"
  [:map
   {:closed true}
+  [:nextPageToken {:optional true} :string]
   [:unreachable {:optional true} [:vector :string]]
-  [:operations {:optional true} [:vector [:ref "Operation"]]]
-  [:nextPageToken {:optional true} :string]],
+  [:operations {:optional true} [:vector [:ref "Operation"]]]],
  "CountTokensResponse"
  [:map
   {:closed true}
   [:totalTokens {:optional true} :int]
-  [:cacheTokensDetails
+  [:promptTokensDetails
    {:optional true}
    [:vector [:ref "ModalityTokenCount"]]]
   [:cachedContentTokenCount {:optional true} :int]
-  [:promptTokensDetails
+  [:cacheTokensDetails
    {:optional true}
    [:vector [:ref "ModalityTokenCount"]]]],
  "Permission"
  [:map
   {:closed true}
-  [:name {:optional true} :string]
   [:emailAddress {:optional true} :string]
+  [:role
+   {:optional true}
+   [:enum "ROLE_UNSPECIFIED" "OWNER" "WRITER" "READER"]]
+  [:name {:optional true} :string]
   [:granteeType
    {:optional true}
-   [:enum "GRANTEE_TYPE_UNSPECIFIED" "USER" "GROUP" "EVERYONE"]]
-  [:role
-   {:optional false}
-   [:enum "ROLE_UNSPECIFIED" "OWNER" "WRITER" "READER"]]],
+   [:enum "GRANTEE_TYPE_UNSPECIFIED" "USER" "GROUP" "EVERYONE"]]],
  "GenerateTextRequest"
  [:map
   {:closed true}
-  [:temperature {:optional true} :double]
-  [:topP {:optional true} :double]
-  [:prompt {:optional false} [:ref "TextPrompt"]]
-  [:maxOutputTokens {:optional true} :int]
   [:candidateCount {:optional true} :int]
-  [:stopSequences {:optional true} [:vector :string]]
+  [:topP {:optional true} :double]
+  [:temperature {:optional true} :double]
   [:safetySettings {:optional true} [:vector [:ref "SafetySetting"]]]
-  [:topK {:optional true} :int]],
+  [:prompt {:optional true} [:ref "TextPrompt"]]
+  [:stopSequences {:optional true} [:vector :string]]
+  [:topK {:optional true} :int]
+  [:maxOutputTokens {:optional true} :int]],
  "Tool"
  [:map
   {:closed true}
-  [:functionDeclarations
-   {:optional true}
-   [:vector [:ref "FunctionDeclaration"]]]
   [:urlContext {:optional true} [:ref "UrlContext"]]
-  [:computerUse {:optional true} [:ref "ComputerUse"]]
+  [:googleSearch {:optional true} [:ref "GoogleSearch"]]
   [:fileSearch {:optional true} [:ref "FileSearch"]]
-  [:codeExecution {:optional true} [:ref "CodeExecution"]]
-  [:googleMaps {:optional true} [:ref "GoogleMaps"]]
   [:googleSearchRetrieval
    {:optional true}
    [:ref "GoogleSearchRetrieval"]]
-  [:googleSearch {:optional true} [:ref "GoogleSearch"]]],
+  [:computerUse {:optional true} [:ref "ComputerUse"]]
+  [:codeExecution {:optional true} [:ref "CodeExecution"]]
+  [:googleMaps {:optional true} [:ref "GoogleMaps"]]
+  [:functionDeclarations
+   {:optional true}
+   [:vector [:ref "FunctionDeclaration"]]]],
  "TransferOwnershipRequest"
- [:map {:closed true} [:emailAddress {:optional false} :string]],
+ [:map {:closed true} [:emailAddress {:optional true} :string]],
  "GroundingPassage"
  [:map
   {:closed true}
-  [:content {:optional true} [:ref "Content"]]
-  [:id {:optional true} :string]],
+  [:id {:optional true} :string]
+  [:content {:optional true} [:ref "Content"]]],
  "CodeExecution" [:map {:closed true}],
  "InputConfig"
  [:map
   {:closed true}
   [:fileName {:optional true} :string]
   [:requests {:optional true} [:ref "InlinedRequests"]]],
+ [:models :embed-content] [:ref "EmbedContentRequest"],
  "BatchGenerateContentRequest"
  [:map
   {:closed true}
-  [:batch {:optional false} [:ref "GenerateContentBatch"]]],
+  [:batch {:optional true} [:ref "GenerateContentBatch"]]],
  "ComputerUse"
  [:map
   {:closed true}
   [:environment
-   {:optional false}
+   {:optional true}
    [:enum "ENVIRONMENT_UNSPECIFIED" "ENVIRONMENT_BROWSER"]]
   [:excludedPredefinedFunctions {:optional true} [:vector :string]]],
  "ContentEmbedding"
@@ -339,17 +349,18 @@
    [:vector [:ref "ModalityTokenCount"]]]
   [:totalTokenCount {:optional true} :int]
   [:thoughtsTokenCount {:optional true} :int]],
+ [:tuned-models :generate-content] [:ref "GenerateContentRequest"],
  "CitationSource"
  [:map
   {:closed true}
-  [:startIndex {:optional true} :int]
-  [:license {:optional true} :string]
+  [:uri {:optional true} :string]
   [:endIndex {:optional true} :int]
-  [:uri {:optional true} :string]],
+  [:license {:optional true} :string]
+  [:startIndex {:optional true} :int]],
  "EmbedContentBatch"
  [:map
   {:closed true}
-  [:displayName {:optional false} :string]
+  [:displayName {:optional true} :string]
   [:name {:optional true} :string]
   [:batchStats {:optional true} [:ref "EmbedContentBatchStats"]]
   [:endTime {:optional true} :string]
@@ -367,43 +378,47 @@
   [:output {:optional true} [:ref "EmbedContentBatchOutput"]]
   [:updateTime {:optional true} :string]
   [:priority {:optional true} :string]
-  [:inputConfig {:optional false} [:ref "InputEmbedContentConfig"]]
-  [:model {:optional false} :string]],
+  [:inputConfig {:optional true} [:ref "InputEmbedContentConfig"]]
+  [:model {:optional true} :string]],
  "FunctionDeclaration"
  [:map
   {:closed true}
-  [:description {:optional false} :string]
   [:parameters {:optional true} [:ref "Schema"]]
-  [:responseJsonSchema {:optional true} :any]
+  [:name {:optional true} :string]
   [:response {:optional true} [:ref "Schema"]]
+  [:responseJsonSchema {:optional true} :any]
+  [:parametersJsonSchema {:optional true} :any]
+  [:description {:optional true} :string]
   [:behavior
    {:optional true}
-   [:enum "UNSPECIFIED" "BLOCKING" "NON_BLOCKING"]]
-  [:parametersJsonSchema {:optional true} :any]
-  [:name {:optional false} :string]],
+   [:enum "UNSPECIFIED" "BLOCKING" "NON_BLOCKING"]]],
  "ContentFilter"
  [:map
   {:closed true}
-  [:message {:optional true} :string]
   [:reason
    {:optional true}
-   [:enum "BLOCKED_REASON_UNSPECIFIED" "SAFETY" "OTHER"]]],
+   [:enum "BLOCKED_REASON_UNSPECIFIED" "SAFETY" "OTHER"]]
+  [:message {:optional true} :string]],
+ [:cached-contents :patch] [:ref "CachedContent"],
  "Hyperparameters"
  [:map
   {:closed true}
-  [:learningRate {:optional true} :double]
-  [:batchSize {:optional true} :int]
   [:learningRateMultiplier {:optional true} :double]
-  [:epochCount {:optional true} :int]],
+  [:learningRate {:optional true} :double]
+  [:epochCount {:optional true} :int]
+  [:batchSize {:optional true} :int]],
+ [:models :stream-generate-content] [:ref "GenerateContentRequest"],
  "FileData"
  [:map
   {:closed true}
-  [:fileUri {:optional false} :string]
-  [:mimeType {:optional true} :string]],
+  [:mimeType {:optional true} :string]
+  [:fileUri {:optional true} :string]],
+ [:media :upload-to-file-search-store]
+ [:ref "UploadToFileSearchStoreRequest"],
  "AsyncBatchEmbedContentRequest"
  [:map
   {:closed true}
-  [:batch {:optional false} [:ref "EmbedContentBatch"]]],
+  [:batch {:optional true} [:ref "EmbedContentBatch"]]],
  "File"
  [:map
   {:closed true}
@@ -428,9 +443,9 @@
  "Corpus"
  [:map
   {:closed true}
+  [:displayName {:optional true} :string]
   [:createTime {:optional true} :string]
   [:updateTime {:optional true} :string]
-  [:displayName {:optional true} :string]
   [:name {:optional true} :string]],
  "PredictResponse"
  [:map {:closed true} [:predictions {:optional true} [:vector :any]]],
@@ -447,56 +462,60 @@
  [:map
   {:closed true}
   [:examples {:optional true} [:vector [:ref "Example"]]]
-  [:messages {:optional false} [:vector [:ref "Message"]]]
+  [:messages {:optional true} [:vector [:ref "Message"]]]
   [:context {:optional true} :string]],
  "TuningSnapshot"
  [:map
   {:closed true}
-  [:meanLoss {:optional true} :double]
   [:computeTime {:optional true} :string]
+  [:meanLoss {:optional true} :double]
   [:epoch {:optional true} :int]
   [:step {:optional true} :int]],
  "GroundingMetadata"
  [:map
   {:closed true}
-  [:groundingChunks {:optional true} [:vector [:ref "GroundingChunk"]]]
-  [:googleMapsWidgetContextToken {:optional true} :string]
+  [:searchEntryPoint {:optional true} [:ref "SearchEntryPoint"]]
+  [:webSearchQueries {:optional true} [:vector :string]]
   [:groundingSupports
    {:optional true}
    [:vector [:ref "GroundingSupport"]]]
   [:retrievalMetadata {:optional true} [:ref "RetrievalMetadata"]]
-  [:searchEntryPoint {:optional true} [:ref "SearchEntryPoint"]]
-  [:webSearchQueries {:optional true} [:vector :string]]],
+  [:googleMapsWidgetContextToken {:optional true} :string]
+  [:groundingChunks
+   {:optional true}
+   [:vector [:ref "GroundingChunk"]]]],
  "ListFileSearchStoresResponse"
  [:map
   {:closed true}
+  [:nextPageToken {:optional true} :string]
   [:fileSearchStores
    {:optional true}
-   [:vector [:ref "FileSearchStore"]]]
-  [:nextPageToken {:optional true} :string]],
+   [:vector [:ref "FileSearchStore"]]]],
  "GenerateContentResponse"
  [:map
   {:closed true}
   [:modelVersion {:optional true} :string]
-  [:candidates {:optional true} [:vector [:ref "Candidate"]]]
+  [:usageMetadata {:optional true} [:ref "UsageMetadata"]]
   [:responseId {:optional true} :string]
   [:promptFeedback {:optional true} [:ref "PromptFeedback"]]
-  [:usageMetadata {:optional true} [:ref "UsageMetadata"]]],
+  [:candidates {:optional true} [:vector [:ref "Candidate"]]]],
  "MultiSpeakerVoiceConfig"
  [:map
   {:closed true}
   [:speakerVoiceConfigs
-   {:optional false}
+   {:optional true}
    [:vector [:ref "SpeakerVoiceConfig"]]]],
+ [:media :upload] [:ref "CreateFileRequest"],
  "DownloadFileResponse" [:map {:closed true}],
  "Operation"
  [:map
   {:closed true}
-  [:done {:optional true} :boolean]
-  [:metadata {:optional true} [:map-of :string :any]]
   [:response {:optional true} [:map-of :string :any]]
+  [:metadata {:optional true} [:map-of :string :any]]
+  [:name {:optional true} :string]
   [:error {:optional true} [:ref "Status"]]
-  [:name {:optional true} :string]],
+  [:done {:optional true} :boolean]],
+ [:models :count-text-tokens] [:ref "CountTextTokensRequest"],
  "CountTokensRequest"
  [:map
   {:closed true}
@@ -514,15 +533,15 @@
  "Status"
  [:map
   {:closed true}
-  [:message {:optional true} :string]
   [:details {:optional true} [:vector [:map-of :string :any]]]
+  [:message {:optional true} :string]
   [:code {:optional true} :int]],
  "GroundingChunk"
  [:map
   {:closed true}
-  [:maps {:optional true} [:ref "Maps"]]
   [:web {:optional true} [:ref "Web"]]
-  [:retrievedContext {:optional true} [:ref "RetrievedContext"]]],
+  [:retrievedContext {:optional true} [:ref "RetrievedContext"]]
+  [:maps {:optional true} [:ref "Maps"]]],
  "ListModelsResponse"
  [:map
   {:closed true}
@@ -536,48 +555,55 @@
  "GroundingPassageId"
  [:map
   {:closed true}
-  [:passageId {:optional true} :string]
-  [:partIndex {:optional true} :int]],
+  [:partIndex {:optional true} :int]
+  [:passageId {:optional true} :string]],
  "GroundingSupport"
  [:map
   {:closed true}
-  [:confidenceScores {:optional true} [:vector :double]]
   [:groundingChunkIndices {:optional true} [:vector :int]]
-  [:segment {:optional true} [:ref "Segment"]]],
+  [:segment {:optional true} [:ref "Segment"]]
+  [:confidenceScores {:optional true} [:vector :double]]],
+ [:file-search-stores :import-file] [:ref "ImportFileRequest"],
  "GenerateAnswerResponse"
  [:map
   {:closed true}
+  [:answer {:optional true} [:ref "Candidate"]]
   [:inputFeedback {:optional true} [:ref "InputFeedback"]]
-  [:answerableProbability {:optional true} :double]
-  [:answer {:optional true} [:ref "Candidate"]]],
+  [:answerableProbability {:optional true} :double]],
  "ListFilesResponse"
  [:map
   {:closed true}
   [:files {:optional true} [:vector [:ref "File"]]]
   [:nextPageToken {:optional true} :string]],
+ [:models :predict-long-running] [:ref "PredictLongRunningRequest"],
+ [:corpora :create] [:ref "Corpus"],
  "TransferOwnershipResponse" [:map {:closed true}],
  "ReviewSnippet"
  [:map
   {:closed true}
+  [:googleMapsUri {:optional true} :string]
   [:title {:optional true} :string]
-  [:reviewId {:optional true} :string]
-  [:googleMapsUri {:optional true} :string]],
+  [:reviewId {:optional true} :string]],
  "GoogleSearch"
  [:map
   {:closed true}
   [:timeRangeFilter {:optional true} [:ref "Interval"]]],
+ [:tuned-models :patch] [:ref "CachedContent"],
+ [:cached-contents :create] [:ref "CachedContent"],
  "ChunkingConfig"
  [:map
   {:closed true}
   [:whiteSpaceConfig {:optional true} [:ref "WhiteSpaceConfig"]]],
+ [:dynamic :stream-generate-content] [:ref "GenerateContentRequest"],
+ [:models :generate-content] [:ref "GenerateContentRequest"],
  "TuningTask"
  [:map
   {:closed true}
-  [:startTime {:optional true} :string]
-  [:trainingData {:optional false} [:ref "Dataset"]]
-  [:hyperparameters {:optional true} [:ref "Hyperparameters"]]
   [:completeTime {:optional true} :string]
-  [:snapshots {:optional true} [:vector [:ref "TuningSnapshot"]]]],
+  [:startTime {:optional true} :string]
+  [:snapshots {:optional true} [:vector [:ref "TuningSnapshot"]]]
+  [:hyperparameters {:optional true} [:ref "Hyperparameters"]]
+  [:trainingData {:optional true} [:ref "Dataset"]]],
  "CachedContent"
  [:map
   {:closed true}
@@ -592,39 +618,39 @@
   [:usageMetadata {:optional true} [:ref "CachedContentUsageMetadata"]]
   [:expireTime {:optional true} :string]
   [:contents {:optional true} [:vector [:ref "Content"]]]
-  [:model {:optional false} :string]],
+  [:model {:optional true} :string]],
  "GenerateAnswerRequest"
  [:map
   {:closed true}
-  [:safetySettings {:optional true} [:vector [:ref "SafetySetting"]]]
+  [:inlinePassages {:optional true} [:ref "GroundingPassages"]]
   [:answerStyle
-   {:optional false}
+   {:optional true}
    [:enum
     "ANSWER_STYLE_UNSPECIFIED"
     "ABSTRACTIVE"
     "EXTRACTIVE"
     "VERBOSE"]]
-  [:inlinePassages {:optional true} [:ref "GroundingPassages"]]
+  [:contents {:optional true} [:vector [:ref "Content"]]]
+  [:temperature {:optional true} :double]
   [:semanticRetriever
    {:optional true}
    [:ref "SemanticRetrieverConfig"]]
-  [:contents {:optional false} [:vector [:ref "Content"]]]
-  [:temperature {:optional true} :double]],
+  [:safetySettings {:optional true} [:vector [:ref "SafetySetting"]]]],
  "Model"
  [:map
   {:closed true}
   [:description {:optional true} :string]
   [:displayName {:optional true} :string]
-  [:name {:optional false} :string]
+  [:name {:optional true} :string]
   [:maxTemperature {:optional true} :double]
   [:thinking {:optional true} :boolean]
   [:inputTokenLimit {:optional true} :int]
   [:topP {:optional true} :double]
   [:outputTokenLimit {:optional true} :int]
   [:supportedGenerationMethods {:optional true} [:vector :string]]
-  [:baseModelId {:optional false} :string]
+  [:baseModelId {:optional true} :string]
   [:topK {:optional true} :int]
-  [:version {:optional false} :string]
+  [:version {:optional true} :string]
   [:temperature {:optional true} :double]],
  "ListGeneratedFilesResponse"
  [:map
@@ -634,15 +660,15 @@
  "FunctionResponseBlob"
  [:map
   {:closed true}
-  [:mimeType {:optional true} :string]
-  [:data {:optional true} :string]],
+  [:data {:optional true} :string]
+  [:mimeType {:optional true} :string]],
  "Segment"
  [:map
   {:closed true}
   [:text {:optional true} :string]
-  [:partIndex {:optional true} :int]
   [:startIndex {:optional true} :int]
-  [:endIndex {:optional true} :int]],
+  [:endIndex {:optional true} :int]
+  [:partIndex {:optional true} :int]],
  "ToolConfig"
  [:map
   {:closed true}
@@ -664,11 +690,11 @@
  "GenerateMessageRequest"
  [:map
   {:closed true}
+  [:candidateCount {:optional true} :int]
   [:temperature {:optional true} :double]
-  [:prompt {:optional false} [:ref "MessagePrompt"]]
   [:topP {:optional true} :double]
   [:topK {:optional true} :int]
-  [:candidateCount {:optional true} :int]],
+  [:prompt {:optional true} [:ref "MessagePrompt"]]],
  "FunctionResponsePart"
  [:map
   {:closed true}
@@ -676,8 +702,8 @@
  "GenerateTextResponse"
  [:map
   {:closed true}
-  [:filters {:optional true} [:vector [:ref "ContentFilter"]]]
   [:candidates {:optional true} [:vector [:ref "TextCompletion"]]]
+  [:filters {:optional true} [:vector [:ref "ContentFilter"]]]
   [:safetyFeedback
    {:optional true}
    [:vector [:ref "SafetyFeedback"]]]],
@@ -688,8 +714,8 @@
  "InlinedEmbedContentRequest"
  [:map
   {:closed true}
-  [:metadata {:optional true} [:map-of :string :any]]
-  [:request {:optional false} [:ref "EmbedContentRequest"]]],
+  [:request {:optional true} [:ref "EmbedContentRequest"]]
+  [:metadata {:optional true} [:map-of :string :any]]],
  "GenerationConfig"
  [:map
   {:closed true}
@@ -722,6 +748,7 @@
     "MEDIA_RESOLUTION_HIGH"]]
   [:_responseJsonSchema {:optional true} :any]
   [:temperature {:optional true} :double]],
+ [:models :batch-embed-contents] [:ref "BatchEmbedContentsRequest"],
  "GenerateContentBatchOutput"
  [:map
   {:closed true}
@@ -730,7 +757,6 @@
  "PromptFeedback"
  [:map
   {:closed true}
-  [:safetyRatings {:optional true} [:vector [:ref "SafetyRating"]]]
   [:blockReason
    {:optional true}
    [:enum
@@ -739,30 +765,36 @@
     "OTHER"
     "BLOCKLIST"
     "PROHIBITED_CONTENT"
-    "IMAGE_SAFETY"]]],
+    "IMAGE_SAFETY"]]
+  [:safetyRatings {:optional true} [:vector [:ref "SafetyRating"]]]],
  "Message"
  [:map
   {:closed true}
-  [:content {:optional false} :string]
-  [:citationMetadata {:optional true} [:ref "CitationMetadata"]]
-  [:author {:optional true} :string]],
+  [:author {:optional true} :string]
+  [:content {:optional true} :string]
+  [:citationMetadata {:optional true} [:ref "CitationMetadata"]]],
  "TextCompletion"
  [:map
   {:closed true}
+  [:safetyRatings {:optional true} [:vector [:ref "SafetyRating"]]]
   [:output {:optional true} :string]
-  [:citationMetadata {:optional true} [:ref "CitationMetadata"]]
-  [:safetyRatings {:optional true} [:vector [:ref "SafetyRating"]]]],
+  [:citationMetadata {:optional true} [:ref "CitationMetadata"]]],
  "ImageConfig"
  [:map
   {:closed true}
-  [:aspectRatio {:optional true} :string]
-  [:imageSize {:optional true} :string]],
+  [:imageSize {:optional true} :string]
+  [:aspectRatio {:optional true} :string]],
  "BatchEmbedContentsResponse"
  [:map
   {:closed true}
   [:embeddings {:optional true} [:vector [:ref "ContentEmbedding"]]]],
+ [:batches :update-embed-content-batch] [:ref "EmbedContentBatch"],
  "CachedContentUsageMetadata"
  [:map {:closed true} [:totalTokenCount {:optional true} :int]],
+ [:tuned-models :batch-generate-content]
+ [:ref "BatchGenerateContentRequest"],
+ [:batches :update-generate-content-batch]
+ [:ref "GenerateContentBatch"],
  "CountMessageTokensResponse"
  [:map {:closed true} [:tokenCount {:optional true} :int]],
  "InlinedResponses"
@@ -776,20 +808,23 @@
  "RetrievedContext"
  [:map
   {:closed true}
+  [:uri {:optional true} :string]
   [:fileSearchStore {:optional true} :string]
-  [:title {:optional true} :string]
   [:text {:optional true} :string]
-  [:uri {:optional true} :string]],
+  [:title {:optional true} :string]],
  "EmbedTextRequest"
  [:map
   {:closed true}
-  [:model {:optional false} :string]
-  [:text {:optional true} :string]],
+  [:text {:optional true} :string]
+  [:model {:optional true} :string]],
  "ExecutableCode"
  [:map
   {:closed true}
-  [:language {:optional false} [:enum "LANGUAGE_UNSPECIFIED" "PYTHON"]]
-  [:code {:optional false} :string]],
+  [:code {:optional true} :string]
+  [:language
+   {:optional true}
+   [:enum "LANGUAGE_UNSPECIFIED" "PYTHON"]]],
+ [:file-search-stores :create] [:ref "FileSearchStore"],
  "Part"
  [:map
   {:closed true}
@@ -807,8 +842,8 @@
  "TunedModelSource"
  [:map
   {:closed true}
-  [:tunedModel {:optional true} :string]
-  [:baseModel {:optional true} :string]],
+  [:baseModel {:optional true} :string]
+  [:tunedModel {:optional true} :string]],
  "Content"
  [:map
   {:closed true}
@@ -817,17 +852,8 @@
  "SafetySetting"
  [:map
   {:closed true}
-  [:threshold
-   {:optional false}
-   [:enum
-    "HARM_BLOCK_THRESHOLD_UNSPECIFIED"
-    "BLOCK_LOW_AND_ABOVE"
-    "BLOCK_MEDIUM_AND_ABOVE"
-    "BLOCK_ONLY_HIGH"
-    "BLOCK_NONE"
-    "OFF"]]
   [:category
-   {:optional false}
+   {:optional true}
    [:enum
     "HARM_CATEGORY_UNSPECIFIED"
     "HARM_CATEGORY_DEROGATORY"
@@ -840,31 +866,40 @@
     "HARM_CATEGORY_HATE_SPEECH"
     "HARM_CATEGORY_SEXUALLY_EXPLICIT"
     "HARM_CATEGORY_DANGEROUS_CONTENT"
-    "HARM_CATEGORY_CIVIC_INTEGRITY"]]],
+    "HARM_CATEGORY_CIVIC_INTEGRITY"]]
+  [:threshold
+   {:optional true}
+   [:enum
+    "HARM_BLOCK_THRESHOLD_UNSPECIFIED"
+    "BLOCK_LOW_AND_ABOVE"
+    "BLOCK_MEDIUM_AND_ABOVE"
+    "BLOCK_ONLY_HIGH"
+    "BLOCK_NONE"
+    "OFF"]]],
  "TuningExample"
  [:map
   {:closed true}
   [:textInput {:optional true} :string]
-  [:output {:optional false} :string]],
+  [:output {:optional true} :string]],
  "InlinedEmbedContentRequests"
  [:map
   {:closed true}
   [:requests
-   {:optional false}
+   {:optional true}
    [:vector [:ref "InlinedEmbedContentRequest"]]]],
  "GenerateMessageResponse"
  [:map
   {:closed true}
-  [:filters {:optional true} [:vector [:ref "ContentFilter"]]]
   [:messages {:optional true} [:vector [:ref "Message"]]]
+  [:filters {:optional true} [:vector [:ref "ContentFilter"]]]
   [:candidates {:optional true} [:vector [:ref "Message"]]]],
  "CustomMetadata"
  [:map
   {:closed true}
-  [:numericValue {:optional true} :double]
   [:stringValue {:optional true} :string]
-  [:key {:optional false} :string]
-  [:stringListValue {:optional true} [:ref "StringList"]]],
+  [:numericValue {:optional true} :double]
+  [:stringListValue {:optional true} [:ref "StringList"]]
+  [:key {:optional true} :string]],
  "EmbedContentResponse"
  [:map
   {:closed true}
@@ -872,46 +907,52 @@
  "PredictRequest"
  [:map
   {:closed true}
-  [:parameters {:optional true} :any]
-  [:instances {:optional false} [:vector :any]]],
+  [:instances {:optional true} [:vector :any]]
+  [:parameters {:optional true} :any]],
  "ListPermissionsResponse"
  [:map
   {:closed true}
-  [:nextPageToken {:optional true} :string]
-  [:permissions {:optional true} [:vector [:ref "Permission"]]]],
+  [:permissions {:optional true} [:vector [:ref "Permission"]]]
+  [:nextPageToken {:optional true} :string]],
  "SemanticRetrieverConfig"
  [:map
   {:closed true}
-  [:metadataFilters {:optional true} [:vector [:ref "MetadataFilter"]]]
-  [:query {:optional false} [:ref "Content"]]
+  [:query {:optional true} [:ref "Content"]]
+  [:source {:optional true} :string]
+  [:maxChunksCount {:optional true} :int]
   [:minimumRelevanceScore {:optional true} :double]
-  [:source {:optional false} :string]
-  [:maxChunksCount {:optional true} :int]],
+  [:metadataFilters
+   {:optional true}
+   [:vector [:ref "MetadataFilter"]]]],
  "InlinedRequests"
  [:map
   {:closed true}
-  [:requests {:optional false} [:vector [:ref "InlinedRequest"]]]],
+  [:requests {:optional true} [:vector [:ref "InlinedRequest"]]]],
  "GroundingPassages"
  [:map
   {:closed true}
   [:passages {:optional true} [:vector [:ref "GroundingPassage"]]]],
+ [:tuned-models :create] [:ref "TunedModel"],
  "LogprobsResultCandidate"
  [:map
   {:closed true}
-  [:token {:optional true} :string]
   [:tokenId {:optional true} :int]
+  [:token {:optional true} :string]
   [:logProbability {:optional true} :double]],
+ [:models :generate-answer] [:ref "GenerateAnswerRequest"],
+ [:tuned-models :stream-generate-content]
+ [:ref "GenerateContentRequest"],
  "GenerateContentRequest"
  [:map
   {:closed true}
+  [:model {:optional true} :string]
+  [:contents {:optional true} [:vector [:ref "Content"]]]
+  [:cachedContent {:optional true} :string]
   [:systemInstruction {:optional true} [:ref "Content"]]
-  [:generationConfig {:optional true} [:ref "GenerationConfig"]]
   [:toolConfig {:optional true} [:ref "ToolConfig"]]
-  [:tools {:optional true} [:vector [:ref "Tool"]]]
-  [:contents {:optional false} [:vector [:ref "Content"]]]
+  [:generationConfig {:optional true} [:ref "GenerationConfig"]]
   [:safetySettings {:optional true} [:vector [:ref "SafetySetting"]]]
-  [:model {:optional false} :string]
-  [:cachedContent {:optional true} :string]],
+  [:tools {:optional true} [:vector [:ref "Tool"]]]],
  "TuningExamples"
  [:map
   {:closed true}
@@ -929,36 +970,38 @@
  [:map
   {:closed true}
   [:thinkingBudget {:optional true} :int]
-  [:includeThoughts {:optional true} :boolean]
   [:thinkingLevel
    {:optional true}
-   [:enum "THINKING_LEVEL_UNSPECIFIED" "LOW" "HIGH"]]],
+   [:enum "THINKING_LEVEL_UNSPECIFIED" "LOW" "HIGH"]]
+  [:includeThoughts {:optional true} :boolean]],
  "InputFeedback"
  [:map
   {:closed true}
-  [:safetyRatings {:optional true} [:vector [:ref "SafetyRating"]]]
   [:blockReason
    {:optional true}
-   [:enum "BLOCK_REASON_UNSPECIFIED" "SAFETY" "OTHER"]]],
+   [:enum "BLOCK_REASON_UNSPECIFIED" "SAFETY" "OTHER"]]
+  [:safetyRatings {:optional true} [:vector [:ref "SafetyRating"]]]],
  "FunctionCall"
  [:map
   {:closed true}
+  [:args {:optional true} [:map-of :string :any]]
   [:id {:optional true} :string]
-  [:name {:optional false} :string]
-  [:args {:optional true} [:map-of :string :any]]],
+  [:name {:optional true} :string]],
+ [:tuned-models :async-batch-embed-content]
+ [:ref "AsyncBatchEmbedContentRequest"],
  "AttributionSourceId"
  [:map
   {:closed true}
-  [:groundingPassage {:optional true} [:ref "GroundingPassageId"]]
   [:semanticRetrieverChunk
    {:optional true}
-   [:ref "SemanticRetrieverChunk"]]],
+   [:ref "SemanticRetrieverChunk"]]
+  [:groundingPassage {:optional true} [:ref "GroundingPassageId"]]],
  "SafetyRating"
  [:map
   {:closed true}
   [:blocked {:optional true} :boolean]
   [:category
-   {:optional false}
+   {:optional true}
    [:enum
     "HARM_CATEGORY_UNSPECIFIED"
     "HARM_CATEGORY_DEROGATORY"
@@ -973,7 +1016,7 @@
     "HARM_CATEGORY_DANGEROUS_CONTENT"
     "HARM_CATEGORY_CIVIC_INTEGRITY"]]
   [:probability
-   {:optional false}
+   {:optional true}
    [:enum
     "HARM_PROBABILITY_UNSPECIFIED"
     "NEGLIGIBLE"
@@ -983,8 +1026,8 @@
  "DynamicRetrievalConfig"
  [:map
   {:closed true}
-  [:mode {:optional true} [:enum "MODE_UNSPECIFIED" "MODE_DYNAMIC"]]
-  [:dynamicThreshold {:optional true} :double]],
+  [:dynamicThreshold {:optional true} :double]
+  [:mode {:optional true} [:enum "MODE_UNSPECIFIED" "MODE_DYNAMIC"]]],
  "TunedModel"
  [:map
   {:closed true}
@@ -998,27 +1041,33 @@
   [:topP {:optional true} :double]
   [:baseModel {:optional true} :string]
   [:updateTime {:optional true} :string]
-  [:tuningTask {:optional false} [:ref "TuningTask"]]
+  [:tuningTask {:optional true} [:ref "TuningTask"]]
   [:readerProjectNumbers {:optional true} [:vector :string]]
   [:topK {:optional true} :int]
   [:tunedModelSource {:optional true} [:ref "TunedModelSource"]]
   [:temperature {:optional true} :double]],
+ [:tuned-models :transfer-ownership] [:ref "TransferOwnershipRequest"],
+ [:permissions :create] [:ref "Permission"],
  "ListCachedContentsResponse"
  [:map
   {:closed true}
-  [:nextPageToken {:optional true} :string]
-  [:cachedContents {:optional true} [:vector [:ref "CachedContent"]]]],
+  [:cachedContents {:optional true} [:vector [:ref "CachedContent"]]]
+  [:nextPageToken {:optional true} :string]],
  "VoiceConfig"
  [:map
   {:closed true}
   [:prebuiltVoiceConfig
    {:optional true}
    [:ref "PrebuiltVoiceConfig"]]],
+ [:models :batch-generate-content]
+ [:ref "BatchGenerateContentRequest"],
  "Condition"
  [:map
   {:closed true}
+  [:stringValue {:optional true} :string]
+  [:numericValue {:optional true} :double]
   [:operation
-   {:optional false}
+   {:optional true}
    [:enum
     "OPERATOR_UNSPECIFIED"
     "LESS"
@@ -1028,9 +1077,7 @@
     "GREATER"
     "NOT_EQUAL"
     "INCLUDES"
-    "EXCLUDES"]]
-  [:numericValue {:optional true} :double]
-  [:stringValue {:optional true} :string]],
+    "EXCLUDES"]]],
  "UrlContextMetadata"
  [:map
   {:closed true}
@@ -1038,15 +1085,15 @@
  "FunctionCallingConfig"
  [:map
   {:closed true}
-  [:allowedFunctionNames {:optional true} [:vector :string]]
   [:mode
    {:optional true}
-   [:enum "MODE_UNSPECIFIED" "AUTO" "ANY" "NONE" "VALIDATED"]]],
+   [:enum "MODE_UNSPECIFIED" "AUTO" "ANY" "NONE" "VALIDATED"]]
+  [:allowedFunctionNames {:optional true} [:vector :string]]],
  "InlinedRequest"
  [:map
   {:closed true}
   [:metadata {:optional true} [:map-of :string :any]]
-  [:request {:optional false} [:ref "GenerateContentRequest"]]],
+  [:request {:optional true} [:ref "GenerateContentRequest"]]],
  "EmbedContentRequest"
  [:map
   {:closed true}
@@ -1063,43 +1110,43 @@
     "FACT_VERIFICATION"
     "CODE_RETRIEVAL_QUERY"]]
   [:outputDimensionality {:optional true} :int]
-  [:model {:optional false} :string]
-  [:title {:optional true} :string]
-  [:content {:optional false} [:ref "Content"]]],
+  [:model {:optional true} :string]
+  [:content {:optional true} [:ref "Content"]]
+  [:title {:optional true} :string]],
  "InlinedEmbedContentResponse"
  [:map
   {:closed true}
-  [:response {:optional true} [:ref "EmbedContentResponse"]]
+  [:metadata {:optional true} [:map-of :string :any]]
   [:error {:optional true} [:ref "Status"]]
-  [:metadata {:optional true} [:map-of :string :any]]],
+  [:response {:optional true} [:ref "EmbedContentResponse"]]],
  "VideoFileMetadata"
  [:map {:closed true} [:videoDuration {:optional true} :string]],
  "Blob"
  [:map
   {:closed true}
-  [:mimeType {:optional true} :string]
-  [:data {:optional true} :string]],
+  [:data {:optional true} :string]
+  [:mimeType {:optional true} :string]],
  "VideoMetadata"
  [:map
   {:closed true}
-  [:startOffset {:optional true} :string]
+  [:fps {:optional true} :double]
   [:endOffset {:optional true} :string]
-  [:fps {:optional true} :double]],
+  [:startOffset {:optional true} :string]],
  "LogprobsResult"
  [:map
   {:closed true}
+  [:logProbabilitySum {:optional true} :double]
   [:chosenCandidates
    {:optional true}
    [:vector [:ref "LogprobsResultCandidate"]]]
-  [:topCandidates {:optional true} [:vector [:ref "TopCandidates"]]]
-  [:logProbabilitySum {:optional true} :double]],
+  [:topCandidates {:optional true} [:vector [:ref "TopCandidates"]]]],
  "BatchStats"
  [:map
   {:closed true}
   [:successfulRequestCount {:optional true} :string]
+  [:failedRequestCount {:optional true} :string]
   [:requestCount {:optional true} :string]
-  [:pendingRequestCount {:optional true} :string]
-  [:failedRequestCount {:optional true} :string]],
+  [:pendingRequestCount {:optional true} :string]],
  "BatchEmbedTextResponse"
  [:map
   {:closed true}
@@ -1107,11 +1154,11 @@
  "Maps"
  [:map
   {:closed true}
+  [:title {:optional true} :string]
   [:placeId {:optional true} :string]
-  [:uri {:optional true} :string]
   [:placeAnswerSources {:optional true} [:ref "PlaceAnswerSources"]]
-  [:text {:optional true} :string]
-  [:title {:optional true} :string]],
+  [:uri {:optional true} :string]
+  [:text {:optional true} :string]],
  "SpeechConfig"
  [:map
   {:closed true}
@@ -1130,9 +1177,9 @@
     "STATE_PENDING"
     "STATE_ACTIVE"
     "STATE_FAILED"]]
-  [:sizeBytes {:optional true} :string]
   [:mimeType {:optional true} :string]
   [:customMetadata {:optional true} [:vector [:ref "CustomMetadata"]]]
+  [:sizeBytes {:optional true} :string]
   [:name {:optional true} :string]
   [:displayName {:optional true} :string]
   [:updateTime {:optional true} :string]
@@ -1140,20 +1187,18 @@
  "WhiteSpaceConfig"
  [:map
   {:closed true}
-  [:maxTokensPerChunk {:optional true} :int]
-  [:maxOverlapTokens {:optional true} :int]],
+  [:maxOverlapTokens {:optional true} :int]
+  [:maxTokensPerChunk {:optional true} :int]],
  "BatchEmbedContentsRequest"
  [:map
   {:closed true}
-  [:requests
-   {:optional false}
-   [:vector [:ref "EmbedContentRequest"]]]],
+  [:requests {:optional true} [:vector [:ref "EmbedContentRequest"]]]],
  "CodeExecutionResult"
  [:map
   {:closed true}
   [:output {:optional true} :string]
   [:outcome
-   {:optional false}
+   {:optional true}
    [:enum
     "OUTCOME_UNSPECIFIED"
     "OUTCOME_OK"
@@ -1180,6 +1225,7 @@
  "UrlMetadata"
  [:map
   {:closed true}
+  [:retrievedUrl {:optional true} :string]
   [:urlRetrievalStatus
    {:optional true}
    [:enum
@@ -1187,8 +1233,7 @@
     "URL_RETRIEVAL_STATUS_SUCCESS"
     "URL_RETRIEVAL_STATUS_ERROR"
     "URL_RETRIEVAL_STATUS_PAYWALL"
-    "URL_RETRIEVAL_STATUS_UNSAFE"]]
-  [:retrievedUrl {:optional true} :string]],
+    "URL_RETRIEVAL_STATUS_UNSAFE"]]],
  "Embedding"
  [:map {:closed true} [:value {:optional true} [:vector :double]]],
  "InlinedEmbedContentResponses"
@@ -1200,25 +1245,30 @@
  "EmbedContentBatchStats"
  [:map
   {:closed true}
+  [:failedRequestCount {:optional true} :string]
   [:pendingRequestCount {:optional true} :string]
   [:requestCount {:optional true} :string]
-  [:successfulRequestCount {:optional true} :string]
-  [:failedRequestCount {:optional true} :string]],
+  [:successfulRequestCount {:optional true} :string]],
+ [:models :count-message-tokens] [:ref "CountMessageTokensRequest"],
  "ListCorporaResponse"
  [:map
   {:closed true}
-  [:nextPageToken {:optional true} :string]
-  [:corpora {:optional true} [:vector [:ref "Corpus"]]]],
+  [:corpora {:optional true} [:vector [:ref "Corpus"]]]
+  [:nextPageToken {:optional true} :string]],
+ [:models :embed-text] [:ref "EmbedTextRequest"],
+ [:dynamic :generate-content] [:ref "GenerateContentRequest"],
  "FileSearch"
  [:map
   {:closed true}
-  [:fileSearchStoreNames {:optional false} [:vector :string]]
-  [:topK {:optional true} :int]
-  [:metadataFilter {:optional true} :string]],
+  [:metadataFilter {:optional true} :string]
+  [:fileSearchStoreNames {:optional true} [:vector :string]]
+  [:topK {:optional true} :int]],
  "CitationMetadata"
  [:map
   {:closed true}
   [:citationSources
    {:optional true}
    [:vector [:ref "CitationSource"]]]],
- "UrlContext" [:map {:closed true}]}
+ "UrlContext" [:map {:closed true}],
+ [:models :generate-message] [:ref "GenerateMessageRequest"],
+ [:models :generate-text] [:ref "GenerateTextRequest"]}

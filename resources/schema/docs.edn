@@ -1,17 +1,17 @@
 {"SectionBreak"
  [:map
   {:closed true}
+  [:suggestedDeletionIds {:optional true} [:vector :string]]
   [:suggestedInsertionIds {:optional true} [:vector :string]]
-  [:sectionStyle {:optional true} [:ref "SectionStyle"]]
-  [:suggestedDeletionIds {:optional true} [:vector :string]]],
+  [:sectionStyle {:optional true} [:ref "SectionStyle"]]],
  "TabsCriteria"
  [:map {:closed true} [:tabIds {:optional true} [:vector :string]]],
  "DeleteNamedRangeRequest"
  [:map
   {:closed true}
+  [:tabsCriteria {:optional true} [:ref "TabsCriteria"]]
   [:namedRangeId {:optional true} :string]
-  [:name {:optional true} :string]
-  [:tabsCriteria {:optional true} [:ref "TabsCriteria"]]],
+  [:name {:optional true} :string]],
  "TableCellStyle"
  [:map
   {:closed true}
@@ -47,8 +47,8 @@
  [:map
   {:closed true}
   [:tableHeader {:optional true} :boolean]
-  [:minRowHeight {:optional true} [:ref "Dimension"]]
-  [:preventOverflow {:optional true} :boolean]],
+  [:preventOverflow {:optional true} :boolean]
+  [:minRowHeight {:optional true} [:ref "Dimension"]]],
  "MergeTableCellsRequest"
  [:map
   {:closed true}
@@ -66,11 +66,11 @@
  "InsertTextRequest"
  [:map
   {:closed true}
+  [:text {:optional true} :string]
   [:endOfSegmentLocation
    {:optional true}
    [:ref "EndOfSegmentLocation"]]
-  [:location {:optional true} [:ref "Location"]]
-  [:text {:optional true} :string]],
+  [:location {:optional true} [:ref "Location"]]],
  "EmbeddedDrawingProperties" [:map {:closed true}],
  "Request"
  [:map
@@ -147,35 +147,35 @@
  "Link"
  [:map
   {:closed true}
-  [:bookmark {:optional true} [:ref "BookmarkLink"]]
-  [:tabId {:optional true} :string]
+  [:url {:optional true} :string]
   [:heading {:optional true} [:ref "HeadingLink"]]
+  [:bookmark {:optional true} [:ref "BookmarkLink"]]
   [:headingId {:optional true} :string]
   [:bookmarkId {:optional true} :string]
-  [:url {:optional true} :string]],
+  [:tabId {:optional true} :string]],
  "BatchUpdateDocumentResponse"
  [:map
   {:closed true}
-  [:documentId {:optional true} :string]
+  [:replies {:optional true} [:vector [:ref "Response"]]]
   [:writeControl {:optional true} [:ref "WriteControl"]]
-  [:replies {:optional true} [:vector [:ref "Response"]]]],
+  [:documentId {:optional true} :string]],
  "Equation"
  [:map
   {:closed true}
-  [:suggestedInsertionIds {:optional true} [:vector :string]]
-  [:suggestedDeletionIds {:optional true} [:vector :string]]],
+  [:suggestedDeletionIds {:optional true} [:vector :string]]
+  [:suggestedInsertionIds {:optional true} [:vector :string]]],
  "ImagePropertiesSuggestionState"
  [:map
   {:closed true}
   [:brightnessSuggested {:optional true} :boolean]
-  [:sourceUriSuggested {:optional true} :boolean]
-  [:angleSuggested {:optional true} :boolean]
   [:cropPropertiesSuggestionState
    {:optional true}
    [:ref "CropPropertiesSuggestionState"]]
-  [:transparencySuggested {:optional true} :boolean]
+  [:contrastSuggested {:optional true} :boolean]
+  [:sourceUriSuggested {:optional true} :boolean]
+  [:angleSuggested {:optional true} :boolean]
   [:contentUriSuggested {:optional true} :boolean]
-  [:contrastSuggested {:optional true} :boolean]],
+  [:transparencySuggested {:optional true} :boolean]],
  "EmbeddedObject"
  [:map
   {:closed true}
@@ -228,10 +228,10 @@
  "SuggestedListProperties"
  [:map
   {:closed true}
+  [:listProperties {:optional true} [:ref "ListProperties"]]
   [:listPropertiesSuggestionState
    {:optional true}
-   [:ref "ListPropertiesSuggestionState"]]
-  [:listProperties {:optional true} [:ref "ListProperties"]]],
+   [:ref "ListPropertiesSuggestionState"]]],
  "TableCellStyleSuggestionState"
  [:map
   {:closed true}
@@ -250,25 +250,25 @@
  "InsertPageBreakRequest"
  [:map
   {:closed true}
-  [:location {:optional true} [:ref "Location"]]
   [:endOfSegmentLocation
    {:optional true}
-   [:ref "EndOfSegmentLocation"]]],
+   [:ref "EndOfSegmentLocation"]]
+  [:location {:optional true} [:ref "Location"]]],
  "TableOfContents"
  [:map
   {:closed true}
-  [:suggestedInsertionIds {:optional true} [:vector :string]]
   [:content {:optional true} [:vector [:ref "StructuralElement"]]]
-  [:suggestedDeletionIds {:optional true} [:vector :string]]],
+  [:suggestedDeletionIds {:optional true} [:vector :string]]
+  [:suggestedInsertionIds {:optional true} [:vector :string]]],
  "DeleteContentRangeRequest"
  [:map {:closed true} [:range {:optional true} [:ref "Range"]]],
  "ReplaceNamedRangeContentRequest"
  [:map
   {:closed true}
   [:tabsCriteria {:optional true} [:ref "TabsCriteria"]]
+  [:text {:optional true} :string]
   [:namedRangeName {:optional true} :string]
-  [:namedRangeId {:optional true} :string]
-  [:text {:optional true} :string]],
+  [:namedRangeId {:optional true} :string]],
  "Header"
  [:map
   {:closed true}
@@ -278,11 +278,12 @@
  [:map
   {:closed true}
   [:content {:optional true} [:vector [:ref "StructuralElement"]]]],
+ [:documents :create] [:ref "Document"],
  "NamedRange"
  [:map
   {:closed true}
-  [:name {:optional true} :string]
   [:namedRangeId {:optional true} :string]
+  [:name {:optional true} :string]
   [:ranges {:optional true} [:vector [:ref "Range"]]]],
  "ReplaceAllTextResponse"
  [:map {:closed true} [:occurrencesChanged {:optional true} :int]],
@@ -354,6 +355,8 @@
  "PositionedObjectPositioning"
  [:map
   {:closed true}
+  [:topOffset {:optional true} [:ref "Dimension"]]
+  [:leftOffset {:optional true} [:ref "Dimension"]]
   [:layout
    {:optional true}
    [:enum
@@ -363,22 +366,21 @@
     "BREAK_RIGHT"
     "BREAK_LEFT_RIGHT"
     "IN_FRONT_OF_TEXT"
-    "BEHIND_TEXT"]]
-  [:leftOffset {:optional true} [:ref "Dimension"]]
-  [:topOffset {:optional true} [:ref "Dimension"]]],
+    "BEHIND_TEXT"]]],
  "ColumnBreak"
  [:map
   {:closed true}
   [:textStyle {:optional true} [:ref "TextStyle"]]
-  [:suggestedInsertionIds {:optional true} [:vector :string]]
+  [:suggestedDeletionIds {:optional true} [:vector :string]]
   [:suggestedTextStyleChanges {:optional true} [:map-of :string :any]]
-  [:suggestedDeletionIds {:optional true} [:vector :string]]],
+  [:suggestedInsertionIds {:optional true} [:vector :string]]],
+ [:documents :batch-update] [:ref "BatchUpdateDocumentRequest"],
  "TableCellLocation"
  [:map
   {:closed true}
-  [:columnIndex {:optional true} :int]
+  [:tableStartLocation {:optional true} [:ref "Location"]]
   [:rowIndex {:optional true} :int]
-  [:tableStartLocation {:optional true} [:ref "Location"]]],
+  [:columnIndex {:optional true} :int]],
  "DeleteHeaderRequest"
  [:map
   {:closed true}
@@ -387,8 +389,8 @@
  "Dimension"
  [:map
   {:closed true}
-  [:magnitude {:optional true} :double]
-  [:unit {:optional true} [:enum "UNIT_UNSPECIFIED" "PT"]]],
+  [:unit {:optional true} [:enum "UNIT_UNSPECIFIED" "PT"]]
+  [:magnitude {:optional true} :double]],
  "SectionStyle"
  [:map
   {:closed true}
@@ -428,9 +430,9 @@
  "Location"
  [:map
   {:closed true}
-  [:segmentId {:optional true} :string]
+  [:index {:optional true} :int]
   [:tabId {:optional true} :string]
-  [:index {:optional true} :int]],
+  [:segmentId {:optional true} :string]],
  "ParagraphStyle"
  [:map
   {:closed true}
@@ -483,45 +485,45 @@
  "CropPropertiesSuggestionState"
  [:map
   {:closed true}
-  [:offsetBottomSuggested {:optional true} :boolean]
   [:offsetRightSuggested {:optional true} :boolean]
-  [:offsetLeftSuggested {:optional true} :boolean]
+  [:offsetBottomSuggested {:optional true} :boolean]
+  [:offsetTopSuggested {:optional true} :boolean]
   [:angleSuggested {:optional true} :boolean]
-  [:offsetTopSuggested {:optional true} :boolean]],
+  [:offsetLeftSuggested {:optional true} :boolean]],
  "InsertTableRequest"
  [:map
   {:closed true}
+  [:columns {:optional true} :int]
   [:endOfSegmentLocation
    {:optional true}
    [:ref "EndOfSegmentLocation"]]
   [:location {:optional true} [:ref "Location"]]
-  [:columns {:optional true} :int]
   [:rows {:optional true} :int]],
  "InsertSectionBreakRequest"
  [:map
   {:closed true}
-  [:endOfSegmentLocation
-   {:optional true}
-   [:ref "EndOfSegmentLocation"]]
   [:location {:optional true} [:ref "Location"]]
   [:sectionType
    {:optional true}
-   [:enum "SECTION_TYPE_UNSPECIFIED" "CONTINUOUS" "NEXT_PAGE"]]],
+   [:enum "SECTION_TYPE_UNSPECIFIED" "CONTINUOUS" "NEXT_PAGE"]]
+  [:endOfSegmentLocation
+   {:optional true}
+   [:ref "EndOfSegmentLocation"]]],
  "SuggestedInlineObjectProperties"
  [:map
   {:closed true}
-  [:inlineObjectProperties
-   {:optional true}
-   [:ref "InlineObjectProperties"]]
   [:inlineObjectPropertiesSuggestionState
    {:optional true}
-   [:ref "InlineObjectPropertiesSuggestionState"]]],
+   [:ref "InlineObjectPropertiesSuggestionState"]]
+  [:inlineObjectProperties
+   {:optional true}
+   [:ref "InlineObjectProperties"]]],
  "Tab"
  [:map
   {:closed true}
   [:documentTab {:optional true} [:ref "DocumentTab"]]
-  [:tabProperties {:optional true} [:ref "TabProperties"]]
-  [:childTabs {:optional true} [:vector [:ref "Tab"]]]],
+  [:childTabs {:optional true} [:vector [:ref "Tab"]]]
+  [:tabProperties {:optional true} [:ref "TabProperties"]]],
  "ParagraphBorder"
  [:map
   {:closed true}
@@ -539,14 +541,14 @@
  "SizeSuggestionState"
  [:map
   {:closed true}
-  [:heightSuggested {:optional true} :boolean]
-  [:widthSuggested {:optional true} :boolean]],
+  [:widthSuggested {:optional true} :boolean]
+  [:heightSuggested {:optional true} :boolean]],
  "SubstringMatchCriteria"
  [:map
   {:closed true}
-  [:searchByRegex {:optional true} :boolean]
+  [:matchCase {:optional true} :boolean]
   [:text {:optional true} :string]
-  [:matchCase {:optional true} :boolean]],
+  [:searchByRegex {:optional true} :boolean]],
  "SuggestedTableCellStyle"
  [:map
   {:closed true}
@@ -557,19 +559,19 @@
  "Person"
  [:map
   {:closed true}
-  [:personProperties {:optional true} [:ref "PersonProperties"]]
   [:personId {:optional true} :string]
   [:textStyle {:optional true} [:ref "TextStyle"]]
   [:suggestedTextStyleChanges {:optional true} [:map-of :string :any]]
-  [:suggestedDeletionIds {:optional true} [:vector :string]]
-  [:suggestedInsertionIds {:optional true} [:vector :string]]],
+  [:personProperties {:optional true} [:ref "PersonProperties"]]
+  [:suggestedInsertionIds {:optional true} [:vector :string]]
+  [:suggestedDeletionIds {:optional true} [:vector :string]]],
  "EmbeddedObjectBorderSuggestionState"
  [:map
   {:closed true}
-  [:widthSuggested {:optional true} :boolean]
-  [:colorSuggested {:optional true} :boolean]
   [:dashStyleSuggested {:optional true} :boolean]
-  [:propertyStateSuggested {:optional true} :boolean]],
+  [:widthSuggested {:optional true} :boolean]
+  [:propertyStateSuggested {:optional true} :boolean]
+  [:colorSuggested {:optional true} :boolean]],
  "BookmarkLink"
  [:map
   {:closed true}
@@ -584,19 +586,19 @@
  "CropProperties"
  [:map
   {:closed true}
-  [:offsetRight {:optional true} :double]
+  [:offsetBottom {:optional true} :double]
   [:offsetLeft {:optional true} :double]
   [:offsetTop {:optional true} :double]
   [:angle {:optional true} :double]
-  [:offsetBottom {:optional true} :double]],
+  [:offsetRight {:optional true} :double]],
  "StructuralElement"
  [:map
   {:closed true}
+  [:sectionBreak {:optional true} [:ref "SectionBreak"]]
   [:paragraph {:optional true} [:ref "Paragraph"]]
+  [:endIndex {:optional true} :int]
   [:tableOfContents {:optional true} [:ref "TableOfContents"]]
   [:startIndex {:optional true} :int]
-  [:endIndex {:optional true} :int]
-  [:sectionBreak {:optional true} [:ref "SectionBreak"]]
   [:table {:optional true} [:ref "Table"]]],
  "TabStop"
  [:map
@@ -615,36 +617,36 @@
  "BulletSuggestionState"
  [:map
   {:closed true}
+  [:listIdSuggested {:optional true} :boolean]
   [:textStyleSuggestionState
    {:optional true}
    [:ref "TextStyleSuggestionState"]]
-  [:nestingLevelSuggested {:optional true} :boolean]
-  [:listIdSuggested {:optional true} :boolean]],
+  [:nestingLevelSuggested {:optional true} :boolean]],
  "InsertInlineImageResponse"
  [:map {:closed true} [:objectId {:optional true} :string]],
  "Response"
  [:map
   {:closed true}
-  [:createFooter {:optional true} [:ref "CreateFooterResponse"]]
   [:createFootnote {:optional true} [:ref "CreateFootnoteResponse"]]
+  [:insertInlineSheetsChart
+   {:optional true}
+   [:ref "InsertInlineSheetsChartResponse"]]
+  [:createHeader {:optional true} [:ref "CreateHeaderResponse"]]
   [:insertInlineImage
    {:optional true}
    [:ref "InsertInlineImageResponse"]]
-  [:createHeader {:optional true} [:ref "CreateHeaderResponse"]]
   [:replaceAllText {:optional true} [:ref "ReplaceAllTextResponse"]]
+  [:createFooter {:optional true} [:ref "CreateFooterResponse"]]
   [:createNamedRange
    {:optional true}
-   [:ref "CreateNamedRangeResponse"]]
-  [:insertInlineSheetsChart
-   {:optional true}
-   [:ref "InsertInlineSheetsChartResponse"]]],
+   [:ref "CreateNamedRangeResponse"]]],
  "Range"
  [:map
   {:closed true}
-  [:tabId {:optional true} :string]
-  [:startIndex {:optional true} :int]
+  [:endIndex {:optional true} :int]
   [:segmentId {:optional true} :string]
-  [:endIndex {:optional true} :int]],
+  [:tabId {:optional true} :string]
+  [:startIndex {:optional true} :int]],
  "InlineObjectProperties"
  [:map
   {:closed true}
@@ -678,16 +680,16 @@
  "InsertTableColumnRequest"
  [:map
   {:closed true}
-  [:insertRight {:optional true} :boolean]
-  [:tableCellLocation {:optional true} [:ref "TableCellLocation"]]],
+  [:tableCellLocation {:optional true} [:ref "TableCellLocation"]]
+  [:insertRight {:optional true} :boolean]],
  "ReplaceImageRequest"
  [:map
   {:closed true}
-  [:tabId {:optional true} :string]
+  [:uri {:optional true} :string]
   [:imageReplaceMethod
    {:optional true}
    [:enum "IMAGE_REPLACE_METHOD_UNSPECIFIED" "CENTER_CROP"]]
-  [:uri {:optional true} :string]
+  [:tabId {:optional true} :string]
   [:imageObjectId {:optional true} :string]],
  "PinTableHeaderRowsRequest"
  [:map
@@ -697,19 +699,19 @@
  "PageBreak"
  [:map
   {:closed true}
-  [:suggestedInsertionIds {:optional true} [:vector :string]]
+  [:suggestedDeletionIds {:optional true} [:vector :string]]
   [:suggestedTextStyleChanges {:optional true} [:map-of :string :any]]
   [:textStyle {:optional true} [:ref "TextStyle"]]
-  [:suggestedDeletionIds {:optional true} [:vector :string]]],
+  [:suggestedInsertionIds {:optional true} [:vector :string]]],
  "UpdateTableColumnPropertiesRequest"
  [:map
   {:closed true}
+  [:tableStartLocation {:optional true} [:ref "Location"]]
   [:columnIndices {:optional true} [:vector :int]]
-  [:fields {:optional true} :string]
   [:tableColumnProperties
    {:optional true}
    [:ref "TableColumnProperties"]]
-  [:tableStartLocation {:optional true} [:ref "Location"]]],
+  [:fields {:optional true} :string]],
  "PersonProperties"
  [:map
   {:closed true}
@@ -718,12 +720,12 @@
  "TabProperties"
  [:map
   {:closed true}
-  [:nestingLevel {:optional true} :int]
   [:iconEmoji {:optional true} :string]
-  [:parentTabId {:optional true} :string]
-  [:tabId {:optional true} :string]
+  [:title {:optional true} :string]
   [:index {:optional true} :int]
-  [:title {:optional true} :string]],
+  [:nestingLevel {:optional true} :int]
+  [:tabId {:optional true} :string]
+  [:parentTabId {:optional true} :string]],
  "SuggestedBullet"
  [:map
   {:closed true}
@@ -738,8 +740,8 @@
  "NamedRanges"
  [:map
   {:closed true}
-  [:name {:optional true} :string]
-  [:namedRanges {:optional true} [:vector [:ref "NamedRange"]]]],
+  [:namedRanges {:optional true} [:vector [:ref "NamedRange"]]]
+  [:name {:optional true} :string]],
  "TableRowStyleSuggestionState"
  [:map
   {:closed true}
@@ -754,8 +756,8 @@
  "NamedStyle"
  [:map
   {:closed true}
-  [:paragraphStyle {:optional true} [:ref "ParagraphStyle"]]
   [:textStyle {:optional true} [:ref "TextStyle"]]
+  [:paragraphStyle {:optional true} [:ref "ParagraphStyle"]]
   [:namedStyleType
    {:optional true}
    [:enum
@@ -773,25 +775,25 @@
  [:map
   {:closed true}
   [:suggestedTextStyleChanges {:optional true} [:map-of :string :any]]
-  [:suggestedInsertionIds {:optional true} [:vector :string]]
-  [:suggestedDeletionIds {:optional true} [:vector :string]]
+  [:inlineObjectId {:optional true} :string]
   [:textStyle {:optional true} [:ref "TextStyle"]]
-  [:inlineObjectId {:optional true} :string]],
+  [:suggestedInsertionIds {:optional true} [:vector :string]]
+  [:suggestedDeletionIds {:optional true} [:vector :string]]],
  "InsertInlineImageRequest"
  [:map
   {:closed true}
-  [:uri {:optional true} :string]
   [:location {:optional true} [:ref "Location"]]
   [:objectSize {:optional true} [:ref "Size"]]
   [:endOfSegmentLocation
    {:optional true}
-   [:ref "EndOfSegmentLocation"]]],
+   [:ref "EndOfSegmentLocation"]]
+  [:uri {:optional true} :string]],
  "RichLinkProperties"
  [:map
   {:closed true}
-  [:mimeType {:optional true} :string]
+  [:uri {:optional true} :string]
   [:title {:optional true} :string]
-  [:uri {:optional true} :string]],
+  [:mimeType {:optional true} :string]],
  "InsertTableRowRequest"
  [:map
   {:closed true}
@@ -800,36 +802,36 @@
  "UpdateTextStyleRequest"
  [:map
   {:closed true}
-  [:textStyle {:optional true} [:ref "TextStyle"]]
   [:range {:optional true} [:ref "Range"]]
+  [:textStyle {:optional true} [:ref "TextStyle"]]
   [:fields {:optional true} :string]],
  "CreateFootnoteResponse"
  [:map {:closed true} [:footnoteId {:optional true} :string]],
  "NestingLevelSuggestionState"
  [:map
   {:closed true}
-  [:bulletAlignmentSuggested {:optional true} :boolean]
   [:indentStartSuggested {:optional true} :boolean]
+  [:indentFirstLineSuggested {:optional true} :boolean]
   [:textStyleSuggestionState
    {:optional true}
    [:ref "TextStyleSuggestionState"]]
-  [:glyphFormatSuggested {:optional true} :boolean]
-  [:startNumberSuggested {:optional true} :boolean]
-  [:glyphTypeSuggested {:optional true} :boolean]
   [:glyphSymbolSuggested {:optional true} :boolean]
-  [:indentFirstLineSuggested {:optional true} :boolean]],
+  [:startNumberSuggested {:optional true} :boolean]
+  [:glyphFormatSuggested {:optional true} :boolean]
+  [:glyphTypeSuggested {:optional true} :boolean]
+  [:bulletAlignmentSuggested {:optional true} :boolean]],
  "InlineObject"
  [:map
   {:closed true}
+  [:suggestedInsertionId {:optional true} :string]
+  [:suggestedDeletionIds {:optional true} [:vector :string]]
   [:suggestedInlineObjectPropertiesChanges
    {:optional true}
    [:map-of :string :any]]
-  [:suggestedInsertionId {:optional true} :string]
-  [:suggestedDeletionIds {:optional true} [:vector :string]]
+  [:objectId {:optional true} :string]
   [:inlineObjectProperties
    {:optional true}
-   [:ref "InlineObjectProperties"]]
-  [:objectId {:optional true} :string]],
+   [:ref "InlineObjectProperties"]]],
  "ShadingSuggestionState"
  [:map
   {:closed true}
@@ -839,11 +841,11 @@
  "InsertPersonRequest"
  [:map
   {:closed true}
-  [:location {:optional true} [:ref "Location"]]
-  [:personProperties {:optional true} [:ref "PersonProperties"]]
   [:endOfSegmentLocation
    {:optional true}
-   [:ref "EndOfSegmentLocation"]]],
+   [:ref "EndOfSegmentLocation"]]
+  [:personProperties {:optional true} [:ref "PersonProperties"]]
+  [:location {:optional true} [:ref "Location"]]],
  "ListProperties"
  [:map
   {:closed true}
@@ -851,14 +853,12 @@
  "FootnoteReference"
  [:map
   {:closed true}
-  [:textStyle {:optional true} [:ref "TextStyle"]]
-  [:suggestedInsertionIds {:optional true} [:vector :string]]
-  [:suggestedDeletionIds {:optional true} [:vector :string]]
-  [:footnoteId {:optional true} :string]
   [:footnoteNumber {:optional true} :string]
-  [:suggestedTextStyleChanges
-   {:optional true}
-   [:map-of :string :any]]],
+  [:suggestedTextStyleChanges {:optional true} [:map-of :string :any]]
+  [:suggestedInsertionIds {:optional true} [:vector :string]]
+  [:footnoteId {:optional true} :string]
+  [:suggestedDeletionIds {:optional true} [:vector :string]]
+  [:textStyle {:optional true} [:ref "TextStyle"]]],
  "CreateHeaderResponse"
  [:map {:closed true} [:headerId {:optional true} :string]],
  "SuggestedPositionedObjectProperties"
@@ -874,27 +874,27 @@
  [:map
   {:closed true}
   [:range {:optional true} [:ref "Range"]]
-  [:fields {:optional true} :string]
-  [:sectionStyle {:optional true} [:ref "SectionStyle"]]],
+  [:sectionStyle {:optional true} [:ref "SectionStyle"]]
+  [:fields {:optional true} :string]],
  "SuggestedNamedStyles"
  [:map
   {:closed true}
+  [:namedStyles {:optional true} [:ref "NamedStyles"]]
   [:namedStylesSuggestionState
    {:optional true}
-   [:ref "NamedStylesSuggestionState"]]
-  [:namedStyles {:optional true} [:ref "NamedStyles"]]],
+   [:ref "NamedStylesSuggestionState"]]],
  "WriteControl"
  [:map
   {:closed true}
-  [:requiredRevisionId {:optional true} :string]
-  [:targetRevisionId {:optional true} :string]],
+  [:targetRevisionId {:optional true} :string]
+  [:requiredRevisionId {:optional true} :string]],
  "UpdateTableRowStyleRequest"
  [:map
   {:closed true}
-  [:tableStartLocation {:optional true} [:ref "Location"]]
+  [:fields {:optional true} :string]
   [:rowIndices {:optional true} [:vector :int]]
   [:tableRowStyle {:optional true} [:ref "TableRowStyle"]]
-  [:fields {:optional true} :string]],
+  [:tableStartLocation {:optional true} [:ref "Location"]]],
  "EmbeddedObjectSuggestionState"
  [:map
   {:closed true}
@@ -920,9 +920,6 @@
  "NamedStyleSuggestionState"
  [:map
   {:closed true}
-  [:textStyleSuggestionState
-   {:optional true}
-   [:ref "TextStyleSuggestionState"]]
   [:namedStyleType
    {:optional true}
    [:enum
@@ -936,6 +933,9 @@
     "HEADING_4"
     "HEADING_5"
     "HEADING_6"]]
+  [:textStyleSuggestionState
+   {:optional true}
+   [:ref "TextStyleSuggestionState"]]
   [:paragraphStyleSuggestionState
    {:optional true}
    [:ref "ParagraphStyleSuggestionState"]]],
@@ -981,10 +981,10 @@
  "SuggestedParagraphStyle"
  [:map
   {:closed true}
+  [:paragraphStyle {:optional true} [:ref "ParagraphStyle"]]
   [:paragraphStyleSuggestionState
    {:optional true}
-   [:ref "ParagraphStyleSuggestionState"]]
-  [:paragraphStyle {:optional true} [:ref "ParagraphStyle"]]],
+   [:ref "ParagraphStyleSuggestionState"]]],
  "CreateFooterResponse"
  [:map {:closed true} [:footerId {:optional true} :string]],
  "EmbeddedDrawingPropertiesSuggestionState" [:map {:closed true}],
@@ -1003,26 +1003,26 @@
  [:map
   {:closed true}
   [:tableStartLocation {:optional true} [:ref "Location"]]
+  [:tableRange {:optional true} [:ref "TableRange"]]
   [:fields {:optional true} :string]
-  [:tableCellStyle {:optional true} [:ref "TableCellStyle"]]
-  [:tableRange {:optional true} [:ref "TableRange"]]],
+  [:tableCellStyle {:optional true} [:ref "TableCellStyle"]]],
  "TableRow"
  [:map
   {:closed true}
-  [:startIndex {:optional true} :int]
+  [:endIndex {:optional true} :int]
+  [:tableRowStyle {:optional true} [:ref "TableRowStyle"]]
   [:suggestedTableRowStyleChanges
    {:optional true}
    [:map-of :string :any]]
+  [:tableCells {:optional true} [:vector [:ref "TableCell"]]]
   [:suggestedDeletionIds {:optional true} [:vector :string]]
-  [:tableRowStyle {:optional true} [:ref "TableRowStyle"]]
-  [:suggestedInsertionIds {:optional true} [:vector :string]]
-  [:endIndex {:optional true} :int]
-  [:tableCells {:optional true} [:vector [:ref "TableCell"]]]],
+  [:startIndex {:optional true} :int]
+  [:suggestedInsertionIds {:optional true} [:vector :string]]],
  "Footnote"
  [:map
   {:closed true}
-  [:footnoteId {:optional true} :string]
-  [:content {:optional true} [:vector [:ref "StructuralElement"]]]],
+  [:content {:optional true} [:vector [:ref "StructuralElement"]]]
+  [:footnoteId {:optional true} :string]],
  "DocumentTab"
  [:map
   {:closed true}
@@ -1045,35 +1045,35 @@
  "TextRun"
  [:map
   {:closed true}
-  [:suggestedDeletionIds {:optional true} [:vector :string]]
   [:textStyle {:optional true} [:ref "TextStyle"]]
-  [:content {:optional true} :string]
+  [:suggestedInsertionIds {:optional true} [:vector :string]]
   [:suggestedTextStyleChanges {:optional true} [:map-of :string :any]]
-  [:suggestedInsertionIds {:optional true} [:vector :string]]],
+  [:suggestedDeletionIds {:optional true} [:vector :string]]
+  [:content {:optional true} :string]],
  "List"
  [:map
   {:closed true}
-  [:suggestedListPropertiesChanges
-   {:optional true}
-   [:map-of :string :any]]
   [:suggestedDeletionIds {:optional true} [:vector :string]]
   [:suggestedInsertionId {:optional true} :string]
-  [:listProperties {:optional true} [:ref "ListProperties"]]],
+  [:listProperties {:optional true} [:ref "ListProperties"]]
+  [:suggestedListPropertiesChanges
+   {:optional true}
+   [:map-of :string :any]]],
  "UpdateDocumentStyleRequest"
  [:map
   {:closed true}
-  [:tabId {:optional true} :string]
+  [:documentStyle {:optional true} [:ref "DocumentStyle"]]
   [:fields {:optional true} :string]
-  [:documentStyle {:optional true} [:ref "DocumentStyle"]]],
+  [:tabId {:optional true} :string]],
  "EmbeddedObjectBorder"
  [:map
   {:closed true}
+  [:propertyState {:optional true} [:enum "RENDERED" "NOT_RENDERED"]]
   [:width {:optional true} [:ref "Dimension"]]
   [:color {:optional true} [:ref "OptionalColor"]]
   [:dashStyle
    {:optional true}
-   [:enum "DASH_STYLE_UNSPECIFIED" "SOLID" "DOT" "DASH"]]
-  [:propertyState {:optional true} [:enum "RENDERED" "NOT_RENDERED"]]],
+   [:enum "DASH_STYLE_UNSPECIFIED" "SOLID" "DOT" "DASH"]]],
  "SuggestedTextStyle"
  [:map
   {:closed true}
@@ -1101,33 +1101,33 @@
  "TableCellBorder"
  [:map
   {:closed true}
-  [:color {:optional true} [:ref "OptionalColor"]]
+  [:width {:optional true} [:ref "Dimension"]]
   [:dashStyle
    {:optional true}
    [:enum "DASH_STYLE_UNSPECIFIED" "SOLID" "DOT" "DASH"]]
-  [:width {:optional true} [:ref "Dimension"]]],
+  [:color {:optional true} [:ref "OptionalColor"]]],
  "TableCell"
  [:map
   {:closed true}
   [:content {:optional true} [:vector [:ref "StructuralElement"]]]
+  [:suggestedInsertionIds {:optional true} [:vector :string]]
   [:suggestedDeletionIds {:optional true} [:vector :string]]
+  [:startIndex {:optional true} :int]
   [:suggestedTableCellStyleChanges
    {:optional true}
    [:map-of :string :any]]
-  [:suggestedInsertionIds {:optional true} [:vector :string]]
-  [:tableCellStyle {:optional true} [:ref "TableCellStyle"]]
-  [:startIndex {:optional true} :int]
-  [:endIndex {:optional true} :int]],
+  [:endIndex {:optional true} :int]
+  [:tableCellStyle {:optional true} [:ref "TableCellStyle"]]],
  "InsertDateRequest"
  [:map
   {:closed true}
-  [:endOfSegmentLocation
-   {:optional true}
-   [:ref "EndOfSegmentLocation"]]
   [:location {:optional true} [:ref "Location"]]
   [:dateElementProperties
    {:optional true}
-   [:ref "DateElementProperties"]]],
+   [:ref "DateElementProperties"]]
+  [:endOfSegmentLocation
+   {:optional true}
+   [:ref "EndOfSegmentLocation"]]],
  "TextStyleSuggestionState"
  [:map
   {:closed true}
@@ -1145,21 +1145,21 @@
  "RgbColor"
  [:map
   {:closed true}
-  [:red {:optional true} :double]
+  [:green {:optional true} :double]
   [:blue {:optional true} :double]
-  [:green {:optional true} :double]],
+  [:red {:optional true} :double]],
  "Paragraph"
  [:map
   {:closed true}
-  [:bullet {:optional true} [:ref "Bullet"]]
+  [:paragraphStyle {:optional true} [:ref "ParagraphStyle"]]
   [:elements {:optional true} [:vector [:ref "ParagraphElement"]]]
-  [:positionedObjectIds {:optional true} [:vector :string]]
-  [:suggestedPositionedObjectIds
+  [:suggestedParagraphStyleChanges
    {:optional true}
    [:map-of :string :any]]
   [:suggestedBulletChanges {:optional true} [:map-of :string :any]]
-  [:paragraphStyle {:optional true} [:ref "ParagraphStyle"]]
-  [:suggestedParagraphStyleChanges
+  [:positionedObjectIds {:optional true} [:vector :string]]
+  [:bullet {:optional true} [:ref "Bullet"]]
+  [:suggestedPositionedObjectIds
    {:optional true}
    [:map-of :string :any]]],
  "DeleteTableRowRequest"
@@ -1208,10 +1208,8 @@
  "PositionedObjectProperties"
  [:map
   {:closed true}
-  [:embeddedObject {:optional true} [:ref "EmbeddedObject"]]
-  [:positioning
-   {:optional true}
-   [:ref "PositionedObjectPositioning"]]],
+  [:positioning {:optional true} [:ref "PositionedObjectPositioning"]]
+  [:embeddedObject {:optional true} [:ref "EmbeddedObject"]]],
  "OptionalColor"
  [:map {:closed true} [:color {:optional true} [:ref "Color"]]],
  "WeightedFontFamily"
@@ -1223,11 +1221,11 @@
  [:map
   {:closed true}
   [:suggestedDeletionIds {:optional true} [:vector :string]]
-  [:tableStyle {:optional true} [:ref "TableStyle"]]
-  [:tableRows {:optional true} [:vector [:ref "TableRow"]]]
-  [:columns {:optional true} :int]
   [:rows {:optional true} :int]
-  [:suggestedInsertionIds {:optional true} [:vector :string]]],
+  [:tableRows {:optional true} [:vector [:ref "TableRow"]]]
+  [:suggestedInsertionIds {:optional true} [:vector :string]]
+  [:columns {:optional true} :int]
+  [:tableStyle {:optional true} [:ref "TableStyle"]]],
  "Background"
  [:map
   {:closed true}
@@ -1260,19 +1258,19 @@
  "PositionedObjectPositioningSuggestionState"
  [:map
   {:closed true}
-  [:layoutSuggested {:optional true} :boolean]
   [:topOffsetSuggested {:optional true} :boolean]
+  [:layoutSuggested {:optional true} :boolean]
   [:leftOffsetSuggested {:optional true} :boolean]],
  "ImageProperties"
  [:map
   {:closed true}
-  [:transparency {:optional true} :double]
   [:sourceUri {:optional true} :string]
-  [:brightness {:optional true} :double]
-  [:angle {:optional true} :double]
+  [:contentUri {:optional true} :string]
   [:contrast {:optional true} :double]
-  [:cropProperties {:optional true} [:ref "CropProperties"]]
-  [:contentUri {:optional true} :string]],
+  [:angle {:optional true} :double]
+  [:transparency {:optional true} :double]
+  [:brightness {:optional true} :double]
+  [:cropProperties {:optional true} [:ref "CropProperties"]]],
  "TableRange"
  [:map
   {:closed true}
@@ -1304,8 +1302,8 @@
  "HeadingLink"
  [:map
   {:closed true}
-  [:id {:optional true} :string]
-  [:tabId {:optional true} :string]],
+  [:tabId {:optional true} :string]
+  [:id {:optional true} :string]],
  "SectionColumnProperties"
  [:map
   {:closed true}
@@ -1314,15 +1312,14 @@
  "NestingLevel"
  [:map
   {:closed true}
-  [:glyphFormat {:optional true} :string]
   [:textStyle {:optional true} [:ref "TextStyle"]]
+  [:glyphFormat {:optional true} :string]
   [:glyphSymbol {:optional true} :string]
   [:startNumber {:optional true} :int]
-  [:indentStart {:optional true} [:ref "Dimension"]]
-  [:indentFirstLine {:optional true} [:ref "Dimension"]]
   [:bulletAlignment
    {:optional true}
    [:enum "BULLET_ALIGNMENT_UNSPECIFIED" "START" "CENTER" "END"]]
+  [:indentFirstLine {:optional true} [:ref "Dimension"]]
   [:glyphType
    {:optional true}
    [:enum
@@ -1333,16 +1330,25 @@
     "UPPER_ALPHA"
     "ALPHA"
     "UPPER_ROMAN"
-    "ROMAN"]]],
+    "ROMAN"]]
+  [:indentStart {:optional true} [:ref "Dimension"]]],
  "ReplaceAllTextRequest"
  [:map
   {:closed true}
-  [:containsText {:optional true} [:ref "SubstringMatchCriteria"]]
   [:tabsCriteria {:optional true} [:ref "TabsCriteria"]]
+  [:containsText {:optional true} [:ref "SubstringMatchCriteria"]]
   [:replaceText {:optional true} :string]],
  "DateElementProperties"
  [:map
   {:closed true}
+  [:timeFormat
+   {:optional true}
+   [:enum
+    "TIME_FORMAT_UNSPECIFIED"
+    "TIME_FORMAT_DISABLED"
+    "TIME_FORMAT_HOUR_MINUTE"
+    "TIME_FORMAT_HOUR_MINUTE_TIMEZONE"]]
+  [:timestamp {:optional true} :string]
   [:locale {:optional true} :string]
   [:dateFormat
    {:optional true}
@@ -1353,56 +1359,48 @@
     "DATE_FORMAT_MONTH_DAY_FULL"
     "DATE_FORMAT_MONTH_DAY_YEAR_ABBREVIATED"
     "DATE_FORMAT_ISO8601"]]
-  [:timestamp {:optional true} :string]
-  [:timeFormat
-   {:optional true}
-   [:enum
-    "TIME_FORMAT_UNSPECIFIED"
-    "TIME_FORMAT_DISABLED"
-    "TIME_FORMAT_HOUR_MINUTE"
-    "TIME_FORMAT_HOUR_MINUTE_TIMEZONE"]]
-  [:displayText {:optional true} :string]
-  [:timeZoneId {:optional true} :string]],
+  [:timeZoneId {:optional true} :string]
+  [:displayText {:optional true} :string]],
  "AutoText"
  [:map
   {:closed true}
-  [:suggestedDeletionIds {:optional true} [:vector :string]]
-  [:suggestedTextStyleChanges {:optional true} [:map-of :string :any]]
-  [:suggestedInsertionIds {:optional true} [:vector :string]]
   [:type
    {:optional true}
    [:enum "TYPE_UNSPECIFIED" "PAGE_NUMBER" "PAGE_COUNT"]]
-  [:textStyle {:optional true} [:ref "TextStyle"]]],
- "DeleteFooterRequest"
- [:map
-  {:closed true}
-  [:footerId {:optional true} :string]
-  [:tabId {:optional true} :string]],
- "RichLink"
- [:map
-  {:closed true}
-  [:richLinkProperties {:optional true} [:ref "RichLinkProperties"]]
   [:suggestedInsertionIds {:optional true} [:vector :string]]
-  [:richLinkId {:optional true} :string]
-  [:suggestedDeletionIds {:optional true} [:vector :string]]
   [:textStyle {:optional true} [:ref "TextStyle"]]
+  [:suggestedDeletionIds {:optional true} [:vector :string]]
   [:suggestedTextStyleChanges
    {:optional true}
    [:map-of :string :any]]],
+ "DeleteFooterRequest"
+ [:map
+  {:closed true}
+  [:tabId {:optional true} :string]
+  [:footerId {:optional true} :string]],
+ "RichLink"
+ [:map
+  {:closed true}
+  [:richLinkId {:optional true} :string]
+  [:suggestedInsertionIds {:optional true} [:vector :string]]
+  [:textStyle {:optional true} [:ref "TextStyle"]]
+  [:suggestedDeletionIds {:optional true} [:vector :string]]
+  [:suggestedTextStyleChanges {:optional true} [:map-of :string :any]]
+  [:richLinkProperties {:optional true} [:ref "RichLinkProperties"]]],
  "DeleteParagraphBulletsRequest"
  [:map {:closed true} [:range {:optional true} [:ref "Range"]]],
  "PositionedObject"
  [:map
   {:closed true}
+  [:objectId {:optional true} :string]
+  [:suggestedPositionedObjectPropertiesChanges
+   {:optional true}
+   [:map-of :string :any]]
+  [:suggestedDeletionIds {:optional true} [:vector :string]]
   [:suggestedInsertionId {:optional true} :string]
   [:positionedObjectProperties
    {:optional true}
-   [:ref "PositionedObjectProperties"]]
-  [:objectId {:optional true} :string]
-  [:suggestedDeletionIds {:optional true} [:vector :string]]
-  [:suggestedPositionedObjectPropertiesChanges
-   {:optional true}
-   [:map-of :string :any]]],
+   [:ref "PositionedObjectProperties"]]],
  "SuggestedDocumentStyle"
  [:map
   {:closed true}
@@ -1413,13 +1411,13 @@
  "HorizontalRule"
  [:map
   {:closed true}
-  [:textStyle {:optional true} [:ref "TextStyle"]]
   [:suggestedTextStyleChanges {:optional true} [:map-of :string :any]]
   [:suggestedInsertionIds {:optional true} [:vector :string]]
+  [:textStyle {:optional true} [:ref "TextStyle"]]
   [:suggestedDeletionIds {:optional true} [:vector :string]]],
  "UpdateParagraphStyleRequest"
  [:map
   {:closed true}
-  [:range {:optional true} [:ref "Range"]]
+  [:paragraphStyle {:optional true} [:ref "ParagraphStyle"]]
   [:fields {:optional true} :string]
-  [:paragraphStyle {:optional true} [:ref "ParagraphStyle"]]]}
+  [:range {:optional true} [:ref "Range"]]]}

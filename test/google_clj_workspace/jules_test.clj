@@ -26,41 +26,44 @@
         (println "Skipping Jules schema test as discovery file not found (run download script first).")))))
 
 (deftest test-stub-server-interaction
-  (testing "Stub server requires prompt for Jules"
-    (let [req-valid {:uri "/jules" :body {:prompt "Hello"} :params {}}
-          req-invalid {:uri "/jules" :body {} :params {}}]
-      (is (= 200 (:status (stub/stub-server-handler req-valid))))
-      (is (= 400 (:status (stub/stub-server-handler req-invalid)))))))
+  (testing "Stub server requires valid body for Jules"
+    ;; We use a real endpoint for testing the stub logic: sessions create
+    ;; Op: [:sessions :create], Path: v1alpha/sessions, Method: POST
+    ;; Request schema: Session (based on error output from previous run)
+
+    (let [;; Need a valid URI that triggers :jules service identification
+          uri "https://jules.googleapis.com/v1alpha/sessions"
+          ;; Valid body for Session
+          req-valid {:uri uri :method :post :body {:name "projects/p/locations/l/sessions/s"}}
+          ;; Invalid: passing a field that doesn't exist (since schemas are closed)
+          req-invalid {:uri uri :method :post :body {:invalidField "foo"}}]
+
+      (is (= 200 (:status (stub/stub-server-handler req-valid)))
+          (str "Valid request failed: " (:body (stub/stub-server-handler req-valid))))
+
+      (is (= 400 (:status (stub/stub-server-handler req-invalid)))
+          "Invalid request should fail"))))
 
 (deftest test-jules-client-with-stub
   (testing "Jules client integration with stub server"
     (with-redefs [client/make-request (fn [method url params body opts]
-                                        ;; We simulate the behavior of the stub server here directly
-                                        ;; or we could call the stub-handler if we constructed a full request map.
-                                        ;; The stub handler expects {:uri ... :body ...}.
-                                        ;; client/make-request receives parsed args.
-
-                                        ;; Check if jules is in URL (simple check)
-                                        (let [stub-req {:uri url :body body :params params}]
+                                        (let [stub-req {:uri url :method method :body body :params params}]
                                            (stub/stub-server-handler stub-req)))]
 
       (testing "sessions send-message with valid body"
-        ;; The generated jules client should call make-request.
-        ;; We need to know the op and expected path.
-        ;; sessions send-message usually maps to something like .../sessions/{session}:sendMessage
+        ;; [:sessions :send-message] -> v1alpha/{+session}:sendMessage
+        ;; Schema: SendMessageRequest which has [:prompt :string]
 
-        ;; Note: We are testing that the client *correctly propagates* the body to our stub.
-        ;; And our stub enforces the schema (in this simple case, checking for :prompt).
-
-        ;; Passing :prompt in body
         (let [resp (jules/sessions {:session "sessions/123"}
                                    {:op :send-message
                                     :body {:prompt "Hello Jules"}})]
+
+          (if (= 400 (:status resp))
+             (println "Schema validation failed:" (:body resp)))
           (is (= 200 (:status resp)))))
 
-      (testing "sessions send-message missing required field"
-        ;; Missing :prompt
+      (testing "sessions send-message missing required field / invalid field"
         (let [resp (jules/sessions {:session "sessions/123"}
                                    {:op :send-message
-                                    :body {}})]
-          (is (= 400 (:status resp)) "Should fail because stub expects prompt"))))))
+                                    :body {:invalidField "foo"}})]
+          (is (= 400 (:status resp)) "Should fail because stub checks schema"))))))

@@ -34,21 +34,21 @@
  "BatchUpdateValuesByDataFilterResponse"
  [:map
   {:closed true}
-  [:spreadsheetId {:optional true} :string]
+  [:totalUpdatedSheets {:optional true} :int]
   [:responses
    {:optional true}
    [:vector [:ref "UpdateValuesByDataFilterResponse"]]]
-  [:totalUpdatedCells {:optional true} :int]
+  [:spreadsheetId {:optional true} :string]
   [:totalUpdatedColumns {:optional true} :int]
-  [:totalUpdatedRows {:optional true} :int]
-  [:totalUpdatedSheets {:optional true} :int]],
+  [:totalUpdatedCells {:optional true} :int]
+  [:totalUpdatedRows {:optional true} :int]],
  "DeleteNamedRangeRequest"
  [:map {:closed true} [:namedRangeId {:optional true} :string]],
  "SpreadsheetTheme"
  [:map
   {:closed true}
-  [:themeColors {:optional true} [:vector [:ref "ThemeColorPair"]]]
-  [:primaryFontFamily {:optional true} :string]],
+  [:primaryFontFamily {:optional true} :string]
+  [:themeColors {:optional true} [:vector [:ref "ThemeColorPair"]]]],
  "ChartSpec"
  [:map
   {:closed true}
@@ -96,15 +96,15 @@
  "EmbeddedChart"
  [:map
   {:closed true}
-  [:chartId {:optional true} :int]
   [:spec {:optional true} [:ref "ChartSpec"]]
   [:border {:optional true} [:ref "EmbeddedObjectBorder"]]
-  [:position {:optional true} [:ref "EmbeddedObjectPosition"]]],
+  [:position {:optional true} [:ref "EmbeddedObjectPosition"]]
+  [:chartId {:optional true} :int]],
  "HistogramRule"
  [:map
   {:closed true}
-  [:end {:optional true} :double]
   [:start {:optional true} :double]
+  [:end {:optional true} :double]
   [:interval {:optional true} :double]],
  "BasicChartSpec"
  [:map
@@ -156,16 +156,18 @@
  "DataSourceChartProperties"
  [:map
   {:closed true}
-  [:dataExecutionStatus {:optional true} [:ref "DataExecutionStatus"]]
-  [:dataSourceId {:optional true} :string]],
+  [:dataSourceId {:optional true} :string]
+  [:dataExecutionStatus
+   {:optional true}
+   [:ref "DataExecutionStatus"]]],
  "SourceAndDestination"
  [:map
   {:closed true}
-  [:source {:optional true} [:ref "GridRange"]]
-  [:fillLength {:optional true} :int]
   [:dimension
    {:optional true}
-   [:enum "DIMENSION_UNSPECIFIED" "ROWS" "COLUMNS"]]],
+   [:enum "DIMENSION_UNSPECIFIED" "ROWS" "COLUMNS"]]
+  [:fillLength {:optional true} :int]
+  [:source {:optional true} [:ref "GridRange"]]],
  "TextFormat"
  [:map
   {:closed true}
@@ -181,8 +183,8 @@
  "DataFilter"
  [:map
   {:closed true}
-  [:gridRange {:optional true} [:ref "GridRange"]]
   [:a1Range {:optional true} :string]
+  [:gridRange {:optional true} [:ref "GridRange"]]
   [:developerMetadataLookup
    {:optional true}
    [:ref "DeveloperMetadataLookup"]]],
@@ -195,13 +197,13 @@
  "GridData"
  [:map
   {:closed true}
-  [:rowMetadata
+  [:rowData {:optional true} [:vector [:ref "RowData"]]]
+  [:columnMetadata
    {:optional true}
    [:vector [:ref "DimensionProperties"]]]
   [:startRow {:optional true} :int]
-  [:rowData {:optional true} [:vector [:ref "RowData"]]]
   [:startColumn {:optional true} :int]
-  [:columnMetadata
+  [:rowMetadata
    {:optional true}
    [:vector [:ref "DimensionProperties"]]]],
  "AddSlicerRequest"
@@ -209,6 +211,7 @@
  "LineStyle"
  [:map
   {:closed true}
+  [:width {:optional true} :int]
   [:type
    {:optional true}
    [:enum
@@ -220,32 +223,30 @@
     "MEDIUM_DASHED"
     "MEDIUM_DASHED_DOTTED"
     "LONG_DASHED"
-    "LONG_DASHED_DOTTED"]]
-  [:width {:optional true} :int]],
+    "LONG_DASHED_DOTTED"]]],
  "BatchUpdateValuesRequest"
  [:map
   {:closed true}
-  [:data {:optional true} [:vector [:ref "ValueRange"]]]
-  [:responseValueRenderOption
-   {:optional true}
-   [:enum "FORMATTED_VALUE" "UNFORMATTED_VALUE" "FORMULA"]]
   [:includeValuesInResponse {:optional true} :boolean]
+  [:data {:optional true} [:vector [:ref "ValueRange"]]]
   [:responseDateTimeRenderOption
    {:optional true}
    [:enum "SERIAL_NUMBER" "FORMATTED_STRING"]]
+  [:responseValueRenderOption
+   {:optional true}
+   [:enum "FORMATTED_VALUE" "UNFORMATTED_VALUE" "FORMULA"]]
   [:valueInputOption
    {:optional true}
    [:enum "INPUT_VALUE_OPTION_UNSPECIFIED" "RAW" "USER_ENTERED"]]],
  "Editors"
  [:map
   {:closed true}
+  [:domainUsersCanEdit {:optional true} :boolean]
   [:users {:optional true} [:vector :string]]
-  [:groups {:optional true} [:vector :string]]
-  [:domainUsersCanEdit {:optional true} :boolean]],
+  [:groups {:optional true} [:vector :string]]],
  "NumberFormat"
  [:map
   {:closed true}
-  [:pattern {:optional true} :string]
   [:type
    {:optional true}
    [:enum
@@ -257,7 +258,8 @@
     "DATE"
     "TIME"
     "DATE_TIME"
-    "SCIENTIFIC"]]],
+    "SCIENTIFIC"]]
+  [:pattern {:optional true} :string]],
  "AddSheetResponse"
  [:map
   {:closed true}
@@ -380,22 +382,24 @@
   [:updateConditionalFormatRule
    {:optional true}
    [:ref "UpdateConditionalFormatRuleRequest"]]],
+ [:spreadsheets :get-by-data-filter]
+ [:ref "GetSpreadsheetByDataFilterRequest"],
  "MatchedDeveloperMetadata"
  [:map
   {:closed true}
-  [:developerMetadata {:optional true} [:ref "DeveloperMetadata"]]
-  [:dataFilters {:optional true} [:vector [:ref "DataFilter"]]]],
+  [:dataFilters {:optional true} [:vector [:ref "DataFilter"]]]
+  [:developerMetadata {:optional true} [:ref "DeveloperMetadata"]]],
  "Link" [:map {:closed true} [:uri {:optional true} :string]],
  "GridProperties"
  [:map
   {:closed true}
-  [:hideGridlines {:optional true} :boolean]
   [:frozenRowCount {:optional true} :int]
   [:columnGroupControlAfter {:optional true} :boolean]
   [:rowCount {:optional true} :int]
+  [:frozenColumnCount {:optional true} :int]
+  [:hideGridlines {:optional true} :boolean]
   [:rowGroupControlAfter {:optional true} :boolean]
-  [:columnCount {:optional true} :int]
-  [:frozenColumnCount {:optional true} :int]],
+  [:columnCount {:optional true} :int]],
  "DateTimeRule"
  [:map
   {:closed true}
@@ -421,23 +425,24 @@
  "UpdateEmbeddedObjectPositionRequest"
  [:map
   {:closed true}
-  [:fields {:optional true} :string]
   [:newPosition {:optional true} [:ref "EmbeddedObjectPosition"]]
+  [:fields {:optional true} :string]
   [:objectId {:optional true} :int]],
+ [:values :update] [:ref "ValueRange"],
  "AddSlicerResponse"
  [:map {:closed true} [:slicer {:optional true} [:ref "Slicer"]]],
  "UpdateConditionalFormatRuleRequest"
  [:map
   {:closed true}
-  [:sheetId {:optional true} :int]
   [:rule {:optional true} [:ref "ConditionalFormatRule"]]
+  [:newIndex {:optional true} :int]
   [:index {:optional true} :int]
-  [:newIndex {:optional true} :int]],
+  [:sheetId {:optional true} :int]],
  "UpdateDataSourceRequest"
  [:map
   {:closed true}
-  [:fields {:optional true} :string]
-  [:dataSource {:optional true} [:ref "DataSource"]]],
+  [:dataSource {:optional true} [:ref "DataSource"]]
+  [:fields {:optional true} :string]],
  "ClearValuesResponse"
  [:map
   {:closed true}
@@ -446,32 +451,32 @@
  "TimeOfDay"
  [:map
   {:closed true}
-  [:nanos {:optional true} :int]
-  [:hours {:optional true} :int]
   [:minutes {:optional true} :int]
-  [:seconds {:optional true} :int]],
+  [:hours {:optional true} :int]
+  [:seconds {:optional true} :int]
+  [:nanos {:optional true} :int]],
  "DimensionRange"
  [:map
   {:closed true}
+  [:startIndex {:optional true} :int]
   [:dimension
    {:optional true}
    [:enum "DIMENSION_UNSPECIFIED" "ROWS" "COLUMNS"]]
-  [:startIndex {:optional true} :int]
-  [:endIndex {:optional true} :int]
-  [:sheetId {:optional true} :int]],
+  [:sheetId {:optional true} :int]
+  [:endIndex {:optional true} :int]],
  "RandomizeRangeRequest"
  [:map {:closed true} [:range {:optional true} [:ref "GridRange"]]],
  "ChipRun"
  [:map
   {:closed true}
-  [:startIndex {:optional false} :int]
+  [:startIndex {:optional true} :int]
   [:chip {:optional true} [:ref "Chip"]]],
  "BigQueryTableSpec"
  [:map
   {:closed true}
-  [:tableId {:optional true} :string]
   [:datasetId {:optional true} :string]
-  [:tableProjectId {:optional true} :string]],
+  [:tableProjectId {:optional true} :string]
+  [:tableId {:optional true} :string]],
  "DataSourceRefreshDailySchedule"
  [:map
   {:closed true}
@@ -485,17 +490,12 @@
  "UpdateNamedRangeRequest"
  [:map
   {:closed true}
-  [:namedRange {:optional true} [:ref "NamedRange"]]
-  [:fields {:optional true} :string]],
+  [:fields {:optional true} :string]
+  [:namedRange {:optional true} [:ref "NamedRange"]]],
+ [:spreadsheets :batch-update] [:ref "BatchUpdateSpreadsheetRequest"],
  "RefreshCancellationStatus"
  [:map
   {:closed true}
-  [:state
-   {:optional true}
-   [:enum
-    "REFRESH_CANCELLATION_STATE_UNSPECIFIED"
-    "CANCEL_SUCCEEDED"
-    "CANCEL_FAILED"]]
   [:errorCode
    {:optional true}
    [:enum
@@ -504,7 +504,13 @@
     "CANCEL_PERMISSION_DENIED"
     "QUERY_EXECUTION_COMPLETED"
     "CONCURRENT_CANCELLATION"
-    "CANCEL_OTHER_ERROR"]]],
+    "CANCEL_OTHER_ERROR"]]
+  [:state
+   {:optional true}
+   [:enum
+    "REFRESH_CANCELLATION_STATE_UNSPECIFIED"
+    "CANCEL_SUCCEEDED"
+    "CANCEL_FAILED"]]],
  "PivotGroupValueMetadata"
  [:map
   {:closed true}
@@ -513,10 +519,10 @@
  "TableRowsProperties"
  [:map
   {:closed true}
-  [:firstBandColorStyle {:optional true} [:ref "ColorStyle"]]
   [:secondBandColorStyle {:optional true} [:ref "ColorStyle"]]
   [:headerColorStyle {:optional true} [:ref "ColorStyle"]]
-  [:footerColorStyle {:optional true} [:ref "ColorStyle"]]],
+  [:footerColorStyle {:optional true} [:ref "ColorStyle"]]
+  [:firstBandColorStyle {:optional true} [:ref "ColorStyle"]]],
  "Borders"
  [:map
   {:closed true}
@@ -527,43 +533,43 @@
  "ConditionalFormatRule"
  [:map
   {:closed true}
-  [:booleanRule {:optional true} [:ref "BooleanRule"]]
   [:gradientRule {:optional true} [:ref "GradientRule"]]
+  [:booleanRule {:optional true} [:ref "BooleanRule"]]
   [:ranges {:optional true} [:vector [:ref "GridRange"]]]],
  "DuplicateSheetRequest"
  [:map
   {:closed true}
-  [:newSheetName {:optional true} :string]
   [:newSheetId {:optional true} :int]
   [:sourceSheetId {:optional true} :int]
-  [:insertSheetIndex {:optional true} :int]],
+  [:insertSheetIndex {:optional true} :int]
+  [:newSheetName {:optional true} :string]],
  "DeleteEmbeddedObjectRequest"
  [:map {:closed true} [:objectId {:optional true} :int]],
  "CancelDataSourceRefreshStatus"
  [:map
   {:closed true}
-  [:reference {:optional true} [:ref "DataSourceObjectReference"]]
   [:refreshCancellationStatus
    {:optional true}
-   [:ref "RefreshCancellationStatus"]]],
+   [:ref "RefreshCancellationStatus"]]
+  [:reference {:optional true} [:ref "DataSourceObjectReference"]]],
  "WaterfallChartSeries"
  [:map
   {:closed true}
-  [:customSubtotals
-   {:optional true}
-   [:vector [:ref "WaterfallChartCustomSubtotal"]]]
   [:positiveColumnsStyle
    {:optional true}
    [:ref "WaterfallChartColumnStyle"]]
+  [:hideTrailingSubtotal {:optional true} :boolean]
+  [:data {:optional true} [:ref "ChartData"]]
+  [:dataLabel {:optional true} [:ref "DataLabel"]]
   [:subtotalColumnsStyle
    {:optional true}
    [:ref "WaterfallChartColumnStyle"]]
-  [:dataLabel {:optional true} [:ref "DataLabel"]]
-  [:hideTrailingSubtotal {:optional true} :boolean]
-  [:data {:optional true} [:ref "ChartData"]]
   [:negativeColumnsStyle
    {:optional true}
-   [:ref "WaterfallChartColumnStyle"]]],
+   [:ref "WaterfallChartColumnStyle"]]
+  [:customSubtotals
+   {:optional true}
+   [:vector [:ref "WaterfallChartCustomSubtotal"]]]],
  "ColorStyle"
  [:map
   {:closed true}
@@ -590,9 +596,9 @@
  "BatchUpdateSpreadsheetResponse"
  [:map
   {:closed true}
-  [:spreadsheetId {:optional true} :string]
   [:replies {:optional true} [:vector [:ref "Response"]]]
-  [:updatedSpreadsheet {:optional true} [:ref "Spreadsheet"]]],
+  [:updatedSpreadsheet {:optional true} [:ref "Spreadsheet"]]
+  [:spreadsheetId {:optional true} :string]],
  "DataSourceObjectReferences"
  [:map
   {:closed true}
@@ -602,25 +608,26 @@
  "NamedRange"
  [:map
   {:closed true}
-  [:range {:optional true} [:ref "GridRange"]]
   [:name {:optional true} :string]
-  [:namedRangeId {:optional true} :string]],
+  [:namedRangeId {:optional true} :string]
+  [:range {:optional true} [:ref "GridRange"]]],
  "BatchClearValuesByDataFilterResponse"
  [:map
   {:closed true}
   [:spreadsheetId {:optional true} :string]
   [:clearedRanges {:optional true} [:vector :string]]],
  "AddTableRequest"
- [:map {:closed true} [:table {:optional false} [:ref "Table"]]],
+ [:map {:closed true} [:table {:optional true} [:ref "Table"]]],
  "SpreadsheetProperties"
  [:map
   {:closed true}
   [:defaultFormat {:optional true} [:ref "CellFormat"]]
+  [:title {:optional true} :string]
+  [:locale {:optional true} :string]
+  [:spreadsheetTheme {:optional true} [:ref "SpreadsheetTheme"]]
   [:iterativeCalculationSettings
    {:optional true}
    [:ref "IterativeCalculationSettings"]]
-  [:spreadsheetTheme {:optional true} [:ref "SpreadsheetTheme"]]
-  [:importFunctionsExternalUrlAccessAllowed {:optional true} :boolean]
   [:autoRecalc
    {:optional true}
    [:enum
@@ -629,25 +636,26 @@
     "MINUTE"
     "HOUR"]]
   [:timeZone {:optional true} :string]
-  [:locale {:optional true} :string]
-  [:title {:optional true} :string]],
+  [:importFunctionsExternalUrlAccessAllowed
+   {:optional true}
+   :boolean]],
  "AppendCellsRequest"
  [:map
   {:closed true}
-  [:sheetId {:optional true} :int]
   [:rows {:optional true} [:vector [:ref "RowData"]]]
-  [:fields {:optional true} :string]
-  [:tableId {:optional true} :string]],
+  [:sheetId {:optional true} :int]
+  [:tableId {:optional true} :string]
+  [:fields {:optional true} :string]],
  "SortSpec"
  [:map
   {:closed true}
-  [:foregroundColorStyle {:optional true} [:ref "ColorStyle"]]
-  [:foregroundColor {:optional true} [:ref "Color"]]
-  [:dimensionIndex {:optional true} :int]
   [:backgroundColor {:optional true} [:ref "Color"]]
   [:sortOrder
    {:optional true}
    [:enum "SORT_ORDER_UNSPECIFIED" "ASCENDING" "DESCENDING"]]
+  [:foregroundColorStyle {:optional true} [:ref "ColorStyle"]]
+  [:foregroundColor {:optional true} [:ref "Color"]]
+  [:dimensionIndex {:optional true} :int]
   [:backgroundColorStyle {:optional true} [:ref "ColorStyle"]]
   [:dataSourceColumnReference
    {:optional true}
@@ -656,9 +664,9 @@
  [:map
   {:closed true}
   [:index {:optional true} :int]
+  [:colorStyle {:optional true} [:ref "ColorStyle"]]
   [:pointStyle {:optional true} [:ref "PointStyle"]]
-  [:color {:optional true} [:ref "Color"]]
-  [:colorStyle {:optional true} [:ref "ColorStyle"]]],
+  [:color {:optional true} [:ref "Color"]]],
  "UpdateEmbeddedObjectPositionResponse"
  [:map
   {:closed true}
@@ -727,16 +735,12 @@
  "PivotGroupRule"
  [:map
   {:closed true}
-  [:histogramRule {:optional true} [:ref "HistogramRule"]]
+  [:dateTimeRule {:optional true} [:ref "DateTimeRule"]]
   [:manualRule {:optional true} [:ref "ManualRule"]]
-  [:dateTimeRule {:optional true} [:ref "DateTimeRule"]]],
+  [:histogramRule {:optional true} [:ref "HistogramRule"]]],
  "DataLabel"
  [:map
   {:closed true}
-  [:customLabelData {:optional true} [:ref "ChartData"]]
-  [:type
-   {:optional true}
-   [:enum "DATA_LABEL_TYPE_UNSPECIFIED" "NONE" "DATA" "CUSTOM"]]
   [:placement
    {:optional true}
    [:enum
@@ -749,7 +753,11 @@
     "INSIDE_END"
     "INSIDE_BASE"
     "OUTSIDE_END"]]
-  [:textFormat {:optional true} [:ref "TextFormat"]]],
+  [:customLabelData {:optional true} [:ref "ChartData"]]
+  [:textFormat {:optional true} [:ref "TextFormat"]]
+  [:type
+   {:optional true}
+   [:enum "DATA_LABEL_TYPE_UNSPECIFIED" "NONE" "DATA" "CUSTOM"]]],
  "MoveDimensionRequest"
  [:map
   {:closed true}
@@ -758,17 +766,16 @@
  "EmbeddedObjectPosition"
  [:map
   {:closed true}
-  [:overlayPosition {:optional true} [:ref "OverlayPosition"]]
   [:sheetId {:optional true} :int]
-  [:newSheet {:optional true} :boolean]],
+  [:newSheet {:optional true} :boolean]
+  [:overlayPosition {:optional true} [:ref "OverlayPosition"]]],
  "BasicChartAxis"
  [:map
   {:closed true}
+  [:titleTextPosition {:optional true} [:ref "TextPosition"]]
   [:viewWindowOptions
    {:optional true}
    [:ref "ChartAxisViewWindowOptions"]]
-  [:titleTextPosition {:optional true} [:ref "TextPosition"]]
-  [:format {:optional true} [:ref "TextFormat"]]
   [:position
    {:optional true}
    [:enum
@@ -776,25 +783,26 @@
     "BOTTOM_AXIS"
     "LEFT_AXIS"
     "RIGHT_AXIS"]]
-  [:title {:optional true} :string]],
+  [:title {:optional true} :string]
+  [:format {:optional true} [:ref "TextFormat"]]],
  "ExtendedValue"
  [:map
   {:closed true}
-  [:formulaValue {:optional true} :string]
+  [:numberValue {:optional true} :double]
   [:boolValue {:optional true} :boolean]
   [:stringValue {:optional true} :string]
-  [:errorValue {:optional true} [:ref "ErrorValue"]]
-  [:numberValue {:optional true} :double]],
+  [:formulaValue {:optional true} :string]
+  [:errorValue {:optional true} [:ref "ErrorValue"]]],
  "UpdateFilterViewRequest"
  [:map
   {:closed true}
-  [:filter {:optional true} [:ref "FilterView"]]
-  [:fields {:optional true} :string]],
+  [:fields {:optional true} :string]
+  [:filter {:optional true} [:ref "FilterView"]]],
  "PivotGroupLimit"
  [:map
   {:closed true}
-  [:countLimit {:optional true} :int]
-  [:applyOrder {:optional true} :int]],
+  [:applyOrder {:optional true} :int]
+  [:countLimit {:optional true} :int]],
  "AddFilterViewRequest"
  [:map {:closed true} [:filter {:optional true} [:ref "FilterView"]]],
  "AddNamedRangeRequest"
@@ -808,6 +816,9 @@
  "ChartData"
  [:map
   {:closed true}
+  [:columnReference
+   {:optional true}
+   [:ref "DataSourceColumnReference"]]
   [:aggregateType
    {:optional true}
    [:enum
@@ -819,9 +830,6 @@
     "MIN"
     "SUM"]]
   [:groupRule {:optional true} [:ref "ChartGroupRule"]]
-  [:columnReference
-   {:optional true}
-   [:ref "DataSourceColumnReference"]]
   [:sourceRange {:optional true} [:ref "ChartSourceRange"]]],
  "OrgChartSpec"
  [:map
@@ -831,11 +839,11 @@
    {:optional true}
    [:enum "ORG_CHART_LABEL_SIZE_UNSPECIFIED" "SMALL" "MEDIUM" "LARGE"]]
   [:nodeColorStyle {:optional true} [:ref "ColorStyle"]]
-  [:labels {:optional true} [:ref "ChartData"]]
-  [:selectedNodeColorStyle {:optional true} [:ref "ColorStyle"]]
   [:parentLabels {:optional true} [:ref "ChartData"]]
-  [:nodeColor {:optional true} [:ref "Color"]]
-  [:selectedNodeColor {:optional true} [:ref "Color"]]],
+  [:labels {:optional true} [:ref "ChartData"]]
+  [:selectedNodeColor {:optional true} [:ref "Color"]]
+  [:selectedNodeColorStyle {:optional true} [:ref "ColorStyle"]]
+  [:nodeColor {:optional true} [:ref "Color"]]],
  "IterativeCalculationSettings"
  [:map
   {:closed true}
@@ -844,8 +852,8 @@
  "PivotGroupSortValueBucket"
  [:map
   {:closed true}
-  [:valuesIndex {:optional true} :int]
-  [:buckets {:optional true} [:vector [:ref "ExtendedValue"]]]],
+  [:buckets {:optional true} [:vector [:ref "ExtendedValue"]]]
+  [:valuesIndex {:optional true} :int]],
  "DeleteDuplicatesRequest"
  [:map
   {:closed true}
@@ -892,31 +900,31 @@
  [:map
   {:closed true}
   [:fields {:optional true} :string]
-  [:spec {:optional true} [:ref "SlicerSpec"]]
-  [:slicerId {:optional true} :int]],
+  [:slicerId {:optional true} :int]
+  [:spec {:optional true} [:ref "SlicerSpec"]]],
  "UpdateSheetPropertiesRequest"
  [:map
   {:closed true}
-  [:properties {:optional true} [:ref "SheetProperties"]]
-  [:fields {:optional true} :string]],
+  [:fields {:optional true} :string]
+  [:properties {:optional true} [:ref "SheetProperties"]]],
  "BandingProperties"
  [:map
   {:closed true}
-  [:headerColor {:optional true} [:ref "Color"]]
-  [:firstBandColorStyle {:optional true} [:ref "ColorStyle"]]
   [:firstBandColor {:optional true} [:ref "Color"]]
-  [:footerColor {:optional true} [:ref "Color"]]
   [:secondBandColor {:optional true} [:ref "Color"]]
+  [:firstBandColorStyle {:optional true} [:ref "ColorStyle"]]
+  [:footerColor {:optional true} [:ref "Color"]]
   [:secondBandColorStyle {:optional true} [:ref "ColorStyle"]]
-  [:headerColorStyle {:optional true} [:ref "ColorStyle"]]
-  [:footerColorStyle {:optional true} [:ref "ColorStyle"]]],
+  [:footerColorStyle {:optional true} [:ref "ColorStyle"]]
+  [:headerColor {:optional true} [:ref "Color"]]
+  [:headerColorStyle {:optional true} [:ref "ColorStyle"]]],
  "GridRange"
  [:map
   {:closed true}
   [:startColumnIndex {:optional true} :int]
+  [:endColumnIndex {:optional true} :int]
   [:startRowIndex {:optional true} :int]
   [:endRowIndex {:optional true} :int]
-  [:endColumnIndex {:optional true} :int]
   [:sheetId {:optional true} :int]],
  "TextRotation"
  [:map
@@ -930,64 +938,64 @@
  "Padding"
  [:map
   {:closed true}
-  [:top {:optional true} :int]
-  [:bottom {:optional true} :int]
+  [:right {:optional true} :int]
   [:left {:optional true} :int]
-  [:right {:optional true} :int]],
+  [:top {:optional true} :int]
+  [:bottom {:optional true} :int]],
  "UpdateChartSpecRequest"
  [:map
   {:closed true}
-  [:spec {:optional true} [:ref "ChartSpec"]]
-  [:chartId {:optional true} :int]],
+  [:chartId {:optional true} :int]
+  [:spec {:optional true} [:ref "ChartSpec"]]],
  "DeleteProtectedRangeRequest"
  [:map {:closed true} [:protectedRangeId {:optional true} :int]],
  "KeyValueFormat"
  [:map
   {:closed true}
-  [:position {:optional true} [:ref "TextPosition"]]
-  [:textFormat {:optional true} [:ref "TextFormat"]]],
+  [:textFormat {:optional true} [:ref "TextFormat"]]
+  [:position {:optional true} [:ref "TextPosition"]]],
  "ValueRange"
  [:map
   {:closed true}
-  [:values {:optional true} [:vector [:vector :any]]]
+  [:range {:optional true} :string]
   [:majorDimension
    {:optional true}
    [:enum "DIMENSION_UNSPECIFIED" "ROWS" "COLUMNS"]]
-  [:range {:optional true} :string]],
+  [:values {:optional true} [:vector [:vector :any]]]],
  "DimensionProperties"
  [:map
   {:closed true}
-  [:hiddenByUser {:optional true} :boolean]
-  [:developerMetadata
-   {:optional true}
-   [:vector [:ref "DeveloperMetadata"]]]
+  [:pixelSize {:optional true} :int]
   [:dataSourceColumnReference
    {:optional true}
    [:ref "DataSourceColumnReference"]]
+  [:developerMetadata
+   {:optional true}
+   [:vector [:ref "DeveloperMetadata"]]]
   [:hiddenByFilter {:optional true} :boolean]
-  [:pixelSize {:optional true} :int]],
+  [:hiddenByUser {:optional true} :boolean]],
  "DeleteConditionalFormatRuleRequest"
  [:map
   {:closed true}
-  [:sheetId {:optional true} :int]
-  [:index {:optional true} :int]],
+  [:index {:optional true} :int]
+  [:sheetId {:optional true} :int]],
  "DataSourceRefreshSchedule"
  [:map
   {:closed true}
-  [:refreshScope
-   {:optional true}
-   [:enum "DATA_SOURCE_REFRESH_SCOPE_UNSPECIFIED" "ALL_DATA_SOURCES"]]
-  [:monthlySchedule
-   {:optional true}
-   [:ref "DataSourceRefreshMonthlySchedule"]]
-  [:nextRun {:optional true} [:ref "Interval"]]
-  [:enabled {:optional true} :boolean]
   [:dailySchedule
    {:optional true}
    [:ref "DataSourceRefreshDailySchedule"]]
   [:weeklySchedule
    {:optional true}
-   [:ref "DataSourceRefreshWeeklySchedule"]]],
+   [:ref "DataSourceRefreshWeeklySchedule"]]
+  [:monthlySchedule
+   {:optional true}
+   [:ref "DataSourceRefreshMonthlySchedule"]]
+  [:refreshScope
+   {:optional true}
+   [:enum "DATA_SOURCE_REFRESH_SCOPE_UNSPECIFIED" "ALL_DATA_SOURCES"]]
+  [:enabled {:optional true} :boolean]
+  [:nextRun {:optional true} [:ref "Interval"]]],
  "Interval"
  [:map
   {:closed true}
@@ -998,21 +1006,22 @@
   {:closed true}
   [:reversed {:optional true} :boolean]
   [:data {:optional true} [:ref "ChartData"]]],
+ [:values :batch-clear] [:ref "BatchClearValuesRequest"],
  "BatchUpdateValuesResponse"
  [:map
   {:closed true}
-  [:totalUpdatedRows {:optional true} :int]
   [:responses {:optional true} [:vector [:ref "UpdateValuesResponse"]]]
-  [:spreadsheetId {:optional true} :string]
+  [:totalUpdatedColumns {:optional true} :int]
   [:totalUpdatedCells {:optional true} :int]
+  [:totalUpdatedRows {:optional true} :int]
   [:totalUpdatedSheets {:optional true} :int]
-  [:totalUpdatedColumns {:optional true} :int]],
+  [:spreadsheetId {:optional true} :string]],
  "DimensionGroup"
  [:map
   {:closed true}
-  [:depth {:optional true} :int]
   [:collapsed {:optional true} :boolean]
-  [:range {:optional true} [:ref "DimensionRange"]]],
+  [:range {:optional true} [:ref "DimensionRange"]]
+  [:depth {:optional true} :int]],
  "BatchClearValuesByDataFilterRequest"
  [:map
   {:closed true}
@@ -1020,23 +1029,23 @@
  "BigQueryDataSourceSpec"
  [:map
   {:closed true}
-  [:projectId {:optional true} :string]
   [:tableSpec {:optional true} [:ref "BigQueryTableSpec"]]
+  [:projectId {:optional true} :string]
   [:querySpec {:optional true} [:ref "BigQueryQuerySpec"]]],
  "AutoFillRequest"
  [:map
   {:closed true}
   [:useAlternateSeries {:optional true} :boolean]
-  [:range {:optional true} [:ref "GridRange"]]
   [:sourceAndDestination
    {:optional true}
-   [:ref "SourceAndDestination"]]],
+   [:ref "SourceAndDestination"]]
+  [:range {:optional true} [:ref "GridRange"]]],
  "LookerDataSourceSpec"
  [:map
   {:closed true}
   [:explore {:optional true} :string]
-  [:model {:optional true} :string]
-  [:instanceUri {:optional true} :string]],
+  [:instanceUri {:optional true} :string]
+  [:model {:optional true} :string]],
  "TrimWhitespaceResponse"
  [:map {:closed true} [:cellsChangedCount {:optional true} :int]],
  "InsertDimensionRequest"
@@ -1061,12 +1070,12 @@
  "UpdateValuesByDataFilterResponse"
  [:map
   {:closed true}
-  [:updatedCells {:optional true} :int]
   [:updatedColumns {:optional true} :int]
-  [:dataFilter {:optional true} [:ref "DataFilter"]]
-  [:updatedData {:optional true} [:ref "ValueRange"]]
+  [:updatedCells {:optional true} :int]
   [:updatedRange {:optional true} :string]
-  [:updatedRows {:optional true} :int]],
+  [:dataFilter {:optional true} [:ref "DataFilter"]]
+  [:updatedRows {:optional true} :int]
+  [:updatedData {:optional true} [:ref "ValueRange"]]],
  "Response"
  [:map
   {:closed true}
@@ -1144,10 +1153,10 @@
  "DeleteRangeRequest"
  [:map
   {:closed true}
+  [:range {:optional true} [:ref "GridRange"]]
   [:shiftDimension
    {:optional true}
-   [:enum "DIMENSION_UNSPECIFIED" "ROWS" "COLUMNS"]]
-  [:range {:optional true} [:ref "GridRange"]]],
+   [:enum "DIMENSION_UNSPECIFIED" "ROWS" "COLUMNS"]]],
  "ClearValuesRequest" [:map {:closed true}],
  "PersonProperties"
  [:map
@@ -1159,7 +1168,8 @@
     "DEFAULT"
     "LAST_NAME_COMMA_FIRST_NAME"
     "EMAIL"]]
-  [:email {:optional false} :string]],
+  [:email {:optional true} :string]],
+ [:sheets :copy-to] [:ref "CopySheetToAnotherSpreadsheetRequest"],
  "DataSourceSheetDimensionRange"
  [:map
   {:closed true}
@@ -1205,33 +1215,31 @@
  "WaterfallChartColumnStyle"
  [:map
   {:closed true}
-  [:colorStyle {:optional true} [:ref "ColorStyle"]]
   [:color {:optional true} [:ref "Color"]]
-  [:label {:optional true} :string]],
+  [:label {:optional true} :string]
+  [:colorStyle {:optional true} [:ref "ColorStyle"]]],
  "UpdateTableRequest"
  [:map
   {:closed true}
-  [:fields {:optional false} :string]
-  [:table {:optional false} [:ref "Table"]]],
+  [:table {:optional true} [:ref "Table"]]
+  [:fields {:optional true} :string]],
  "WaterfallChartSpec"
  [:map
   {:closed true}
-  [:firstValueIsTotal {:optional true} :boolean]
-  [:connectorLineStyle {:optional true} [:ref "LineStyle"]]
-  [:series {:optional true} [:vector [:ref "WaterfallChartSeries"]]]
   [:hideConnectorLines {:optional true} :boolean]
   [:totalDataLabel {:optional true} [:ref "DataLabel"]]
-  [:domain {:optional true} [:ref "WaterfallChartDomain"]]
+  [:connectorLineStyle {:optional true} [:ref "LineStyle"]]
+  [:series {:optional true} [:vector [:ref "WaterfallChartSeries"]]]
   [:stackedType
    {:optional true}
-   [:enum
-    "WATERFALL_STACKED_TYPE_UNSPECIFIED"
-    "STACKED"
-    "SEQUENTIAL"]]],
+   [:enum "WATERFALL_STACKED_TYPE_UNSPECIFIED" "STACKED" "SEQUENTIAL"]]
+  [:firstValueIsTotal {:optional true} :boolean]
+  [:domain {:optional true} [:ref "WaterfallChartDomain"]]],
  "TextToColumnsRequest"
  [:map
   {:closed true}
   [:source {:optional true} [:ref "GridRange"]]
+  [:delimiter {:optional true} :string]
   [:delimiterType
    {:optional true}
    [:enum
@@ -1241,8 +1249,9 @@
     "PERIOD"
     "SPACE"
     "CUSTOM"
-    "AUTODETECT"]]
-  [:delimiter {:optional true} :string]],
+    "AUTODETECT"]]],
+ [:values :batch-clear-by-data-filter]
+ [:ref "BatchClearValuesByDataFilterRequest"],
  "CancelDataSourceRefreshResponse"
  [:map
   {:closed true}
@@ -1254,16 +1263,16 @@
  "DeveloperMetadata"
  [:map
   {:closed true}
+  [:metadataKey {:optional true} :string]
   [:metadataValue {:optional true} :string]
+  [:metadataId {:optional true} :int]
+  [:location {:optional true} [:ref "DeveloperMetadataLocation"]]
   [:visibility
    {:optional true}
    [:enum
     "DEVELOPER_METADATA_VISIBILITY_UNSPECIFIED"
     "DOCUMENT"
-    "PROJECT"]]
-  [:metadataKey {:optional true} :string]
-  [:metadataId {:optional true} :int]
-  [:location {:optional true} [:ref "DeveloperMetadataLocation"]]],
+    "PROJECT"]]],
  "SlicerSpec"
  [:map
   {:closed true}
@@ -1281,13 +1290,13 @@
  "RichLinkProperties"
  [:map
   {:closed true}
-  [:uri {:optional false} :string]
-  [:mimeType {:optional true} :string]],
+  [:mimeType {:optional true} :string]
+  [:uri {:optional true} :string]],
  "UpdateBandingRequest"
  [:map
   {:closed true}
-  [:bandedRange {:optional true} [:ref "BandedRange"]]
-  [:fields {:optional true} :string]],
+  [:fields {:optional true} :string]
+  [:bandedRange {:optional true} [:ref "BandedRange"]]],
  "Slicer"
  [:map
   {:closed true}
@@ -1303,10 +1312,8 @@
  "UpdateDataSourceResponse"
  [:map
   {:closed true}
-  [:dataSource {:optional true} [:ref "DataSource"]]
-  [:dataExecutionStatus
-   {:optional true}
-   [:ref "DataExecutionStatus"]]],
+  [:dataExecutionStatus {:optional true} [:ref "DataExecutionStatus"]]
+  [:dataSource {:optional true} [:ref "DataSource"]]],
  "ChartSourceRange"
  [:map
   {:closed true}
@@ -1320,15 +1327,15 @@
  "ManualRuleGroup"
  [:map
   {:closed true}
-  [:groupName {:optional true} [:ref "ExtendedValue"]]
-  [:items {:optional true} [:vector [:ref "ExtendedValue"]]]],
+  [:items {:optional true} [:vector [:ref "ExtendedValue"]]]
+  [:groupName {:optional true} [:ref "ExtendedValue"]]],
  "RefreshDataSourceRequest"
  [:map
   {:closed true}
   [:isAll {:optional true} :boolean]
-  [:dataSourceId {:optional true} :string]
   [:references {:optional true} [:ref "DataSourceObjectReferences"]]
-  [:force {:optional true} :boolean]],
+  [:force {:optional true} :boolean]
+  [:dataSourceId {:optional true} :string]],
  "BooleanCondition"
  [:map
   {:closed true}
@@ -1384,18 +1391,16 @@
  "DataFilterValueRange"
  [:map
   {:closed true}
-  [:dataFilter {:optional true} [:ref "DataFilter"]]
+  [:values {:optional true} [:vector [:vector :any]]]
   [:majorDimension
    {:optional true}
    [:enum "DIMENSION_UNSPECIFIED" "ROWS" "COLUMNS"]]
-  [:values {:optional true} [:vector [:vector :any]]]],
+  [:dataFilter {:optional true} [:ref "DataFilter"]]],
  "BatchClearValuesRequest"
  [:map {:closed true} [:ranges {:optional true} [:vector :string]]],
  "PivotValue"
  [:map
   {:closed true}
-  [:name {:optional true} :string]
-  [:formula {:optional true} :string]
   [:calculatedDisplayType
    {:optional true}
    [:enum
@@ -1403,6 +1408,10 @@
     "PERCENT_OF_ROW_TOTAL"
     "PERCENT_OF_COLUMN_TOTAL"
     "PERCENT_OF_GRAND_TOTAL"]]
+  [:dataSourceColumnReference
+   {:optional true}
+   [:ref "DataSourceColumnReference"]]
+  [:formula {:optional true} :string]
   [:summarizeFunction
    {:optional true}
    [:enum
@@ -1422,19 +1431,13 @@
     "VARP"
     "CUSTOM"
     "NONE"]]
-  [:dataSourceColumnReference
-   {:optional true}
-   [:ref "DataSourceColumnReference"]]
+  [:name {:optional true} :string]
   [:sourceColumnOffset {:optional true} :int]],
  "DeleteTableRequest"
  [:map {:closed true} [:tableId {:optional true} :string]],
  "PasteDataRequest"
  [:map
   {:closed true}
-  [:delimiter {:optional true} :string]
-  [:coordinate {:optional true} [:ref "GridCoordinate"]]
-  [:html {:optional true} :boolean]
-  [:data {:optional true} :string]
   [:type
    {:optional true}
    [:enum
@@ -1444,12 +1447,15 @@
     "PASTE_NO_BORDERS"
     "PASTE_FORMULA"
     "PASTE_DATA_VALIDATION"
-    "PASTE_CONDITIONAL_FORMATTING"]]],
+    "PASTE_CONDITIONAL_FORMATTING"]]
+  [:delimiter {:optional true} :string]
+  [:html {:optional true} :boolean]
+  [:data {:optional true} :string]
+  [:coordinate {:optional true} [:ref "GridCoordinate"]]],
  "CutPasteRequest"
  [:map
   {:closed true}
   [:source {:optional true} [:ref "GridRange"]]
-  [:destination {:optional true} [:ref "GridCoordinate"]]
   [:pasteType
    {:optional true}
    [:enum
@@ -1459,13 +1465,14 @@
     "PASTE_NO_BORDERS"
     "PASTE_FORMULA"
     "PASTE_DATA_VALIDATION"
-    "PASTE_CONDITIONAL_FORMATTING"]]],
+    "PASTE_CONDITIONAL_FORMATTING"]]
+  [:destination {:optional true} [:ref "GridCoordinate"]]],
  "UpdateDimensionPropertiesRequest"
  [:map
   {:closed true}
-  [:fields {:optional true} :string]
-  [:range {:optional true} [:ref "DimensionRange"]]
   [:properties {:optional true} [:ref "DimensionProperties"]]
+  [:range {:optional true} [:ref "DimensionRange"]]
+  [:fields {:optional true} :string]
   [:dataSourceSheetRange
    {:optional true}
    [:ref "DataSourceSheetDimensionRange"]]],
@@ -1482,7 +1489,6 @@
  "ConditionValue"
  [:map
   {:closed true}
-  [:userEnteredValue {:optional true} :string]
   [:relativeDate
    {:optional true}
    [:enum
@@ -1492,27 +1498,28 @@
     "PAST_WEEK"
     "YESTERDAY"
     "TODAY"
-    "TOMORROW"]]],
+    "TOMORROW"]]
+  [:userEnteredValue {:optional true} :string]],
  "BasicChartDomain"
  [:map
   {:closed true}
-  [:reversed {:optional true} :boolean]
-  [:domain {:optional true} [:ref "ChartData"]]],
+  [:domain {:optional true} [:ref "ChartData"]]
+  [:reversed {:optional true} :boolean]],
  "Spreadsheet"
  [:map
   {:closed true}
-  [:dataSources {:optional true} [:vector [:ref "DataSource"]]]
-  [:spreadsheetUrl {:optional true} :string]
-  [:spreadsheetId {:optional true} :string]
-  [:sheets {:optional true} [:vector [:ref "Sheet"]]]
   [:properties {:optional true} [:ref "SpreadsheetProperties"]]
+  [:spreadsheetUrl {:optional true} :string]
   [:namedRanges {:optional true} [:vector [:ref "NamedRange"]]]
+  [:spreadsheetId {:optional true} :string]
   [:dataSourceSchedules
    {:optional true}
    [:vector [:ref "DataSourceRefreshSchedule"]]]
   [:developerMetadata
    {:optional true}
-   [:vector [:ref "DeveloperMetadata"]]]],
+   [:vector [:ref "DeveloperMetadata"]]]
+  [:sheets {:optional true} [:vector [:ref "Sheet"]]]
+  [:dataSources {:optional true} [:vector [:ref "DataSource"]]]],
  "SetBasicFilterRequest"
  [:map {:closed true} [:filter {:optional true} [:ref "BasicFilter"]]],
  "BatchGetValuesByDataFilterRequest"
@@ -1521,12 +1528,12 @@
   [:dateTimeRenderOption
    {:optional true}
    [:enum "SERIAL_NUMBER" "FORMATTED_STRING"]]
-  [:majorDimension
-   {:optional true}
-   [:enum "DIMENSION_UNSPECIFIED" "ROWS" "COLUMNS"]]
   [:valueRenderOption
    {:optional true}
    [:enum "FORMATTED_VALUE" "UNFORMATTED_VALUE" "FORMULA"]]
+  [:majorDimension
+   {:optional true}
+   [:enum "DIMENSION_UNSPECIFIED" "ROWS" "COLUMNS"]]
   [:dataFilters {:optional true} [:vector [:ref "DataFilter"]]]],
  "CandlestickChartSpec"
  [:map
@@ -1536,24 +1543,25 @@
  "FilterView"
  [:map
   {:closed true}
-  [:criteria {:optional true} [:map-of :string :any]]
+  [:sortSpecs {:optional true} [:vector [:ref "SortSpec"]]]
+  [:filterViewId {:optional true} :int]
   [:filterSpecs {:optional true} [:vector [:ref "FilterSpec"]]]
   [:title {:optional true} :string]
-  [:tableId {:optional true} :string]
   [:namedRangeId {:optional true} :string]
-  [:sortSpecs {:optional true} [:vector [:ref "SortSpec"]]]
   [:range {:optional true} [:ref "GridRange"]]
-  [:filterViewId {:optional true} :int]],
+  [:tableId {:optional true} :string]
+  [:criteria {:optional true} [:map-of :string :any]]],
  "DuplicateSheetResponse"
  [:map
   {:closed true}
   [:properties {:optional true} [:ref "SheetProperties"]]],
+ [:spreadsheets :create] [:ref "Spreadsheet"],
  "PivotFilterCriteria"
  [:map
   {:closed true}
+  [:condition {:optional true} [:ref "BooleanCondition"]]
   [:visibleValues {:optional true} [:vector :string]]
-  [:visibleByDefault {:optional true} :boolean]
-  [:condition {:optional true} [:ref "BooleanCondition"]]],
+  [:visibleByDefault {:optional true} :boolean]],
  "DataSourceColumnReference"
  [:map {:closed true} [:name {:optional true} :string]],
  "SearchDeveloperMetadataRequest"
@@ -1567,12 +1575,12 @@
  "DataSource"
  [:map
   {:closed true}
+  [:spec {:optional true} [:ref "DataSourceSpec"]]
   [:sheetId {:optional true} :int]
-  [:dataSourceId {:optional true} :string]
   [:calculatedColumns
    {:optional true}
    [:vector [:ref "DataSourceColumn"]]]
-  [:spec {:optional true} [:ref "DataSourceSpec"]]],
+  [:dataSourceId {:optional true} :string]],
  "DeveloperMetadataLocation"
  [:map
   {:closed true}
@@ -1591,17 +1599,19 @@
  [:map
   {:closed true}
   [:dataSourceFormulaCell {:optional true} [:ref "GridCoordinate"]]
-  [:chartId {:optional true} :int]
+  [:sheetId {:optional true} :string]
   [:dataSourcePivotTableAnchorCell
    {:optional true}
    [:ref "GridCoordinate"]]
-  [:dataSourceTableAnchorCell {:optional true} [:ref "GridCoordinate"]]
-  [:sheetId {:optional true} :string]],
+  [:chartId {:optional true} :int]
+  [:dataSourceTableAnchorCell
+   {:optional true}
+   [:ref "GridCoordinate"]]],
  "BatchGetValuesResponse"
  [:map
   {:closed true}
-  [:valueRanges {:optional true} [:vector [:ref "ValueRange"]]]
-  [:spreadsheetId {:optional true} :string]],
+  [:spreadsheetId {:optional true} :string]
+  [:valueRanges {:optional true} [:vector [:ref "ValueRange"]]]],
  "Sheet"
  [:map
   {:closed true}
@@ -1625,6 +1635,7 @@
   [:data {:optional true} [:vector [:ref "GridData"]]]],
  "DuplicateFilterViewResponse"
  [:map {:closed true} [:filter {:optional true} [:ref "FilterView"]]],
+ [:developer-metadata :search] [:ref "SearchDeveloperMetadataRequest"],
  "ChartAxisViewWindowOptions"
  [:map
   {:closed true}
@@ -1646,22 +1657,22 @@
  "BatchUpdateValuesByDataFilterRequest"
  [:map
   {:closed true}
-  [:includeValuesInResponse {:optional true} :boolean]
-  [:responseDateTimeRenderOption
-   {:optional true}
-   [:enum "SERIAL_NUMBER" "FORMATTED_STRING"]]
-  [:valueInputOption
-   {:optional true}
-   [:enum "INPUT_VALUE_OPTION_UNSPECIFIED" "RAW" "USER_ENTERED"]]
   [:data {:optional true} [:vector [:ref "DataFilterValueRange"]]]
   [:responseValueRenderOption
    {:optional true}
-   [:enum "FORMATTED_VALUE" "UNFORMATTED_VALUE" "FORMULA"]]],
+   [:enum "FORMATTED_VALUE" "UNFORMATTED_VALUE" "FORMULA"]]
+  [:valueInputOption
+   {:optional true}
+   [:enum "INPUT_VALUE_OPTION_UNSPECIFIED" "RAW" "USER_ENTERED"]]
+  [:responseDateTimeRenderOption
+   {:optional true}
+   [:enum "SERIAL_NUMBER" "FORMATTED_STRING"]]
+  [:includeValuesInResponse {:optional true} :boolean]],
  "FilterSpec"
  [:map
   {:closed true}
-  [:columnIndex {:optional true} :int]
   [:filterCriteria {:optional true} [:ref "FilterCriteria"]]
+  [:columnIndex {:optional true} :int]
   [:dataSourceColumnReference
    {:optional true}
    [:ref "DataSourceColumnReference"]]],
@@ -1690,20 +1701,20 @@
  "AppendDimensionRequest"
  [:map
   {:closed true}
-  [:sheetId {:optional true} :int]
   [:length {:optional true} :int]
   [:dimension
    {:optional true}
-   [:enum "DIMENSION_UNSPECIFIED" "ROWS" "COLUMNS"]]],
+   [:enum "DIMENSION_UNSPECIFIED" "ROWS" "COLUMNS"]]
+  [:sheetId {:optional true} :int]],
  "FilterCriteria"
  [:map
   {:closed true}
-  [:condition {:optional true} [:ref "BooleanCondition"]]
-  [:hiddenValues {:optional true} [:vector :string]]
-  [:visibleForegroundColorStyle {:optional true} [:ref "ColorStyle"]]
-  [:visibleBackgroundColorStyle {:optional true} [:ref "ColorStyle"]]
   [:visibleForegroundColor {:optional true} [:ref "Color"]]
-  [:visibleBackgroundColor {:optional true} [:ref "Color"]]],
+  [:visibleBackgroundColorStyle {:optional true} [:ref "ColorStyle"]]
+  [:visibleBackgroundColor {:optional true} [:ref "Color"]]
+  [:condition {:optional true} [:ref "BooleanCondition"]]
+  [:visibleForegroundColorStyle {:optional true} [:ref "ColorStyle"]]
+  [:hiddenValues {:optional true} [:vector :string]]],
  "Border"
  [:map
   {:closed true}
@@ -1782,9 +1793,6 @@
  "CopyPasteRequest"
  [:map
   {:closed true}
-  [:destination {:optional true} [:ref "GridRange"]]
-  [:source {:optional true} [:ref "GridRange"]]
-  [:pasteOrientation {:optional true} [:enum "NORMAL" "TRANSPOSE"]]
   [:pasteType
    {:optional true}
    [:enum
@@ -1794,13 +1802,16 @@
     "PASTE_NO_BORDERS"
     "PASTE_FORMULA"
     "PASTE_DATA_VALIDATION"
-    "PASTE_CONDITIONAL_FORMATTING"]]],
+    "PASTE_CONDITIONAL_FORMATTING"]]
+  [:pasteOrientation {:optional true} [:enum "NORMAL" "TRANSPOSE"]]
+  [:destination {:optional true} [:ref "GridRange"]]
+  [:source {:optional true} [:ref "GridRange"]]],
  "GridCoordinate"
  [:map
   {:closed true}
   [:columnIndex {:optional true} :int]
-  [:sheetId {:optional true} :int]
-  [:rowIndex {:optional true} :int]],
+  [:rowIndex {:optional true} :int]
+  [:sheetId {:optional true} :int]],
  "ProtectedRange"
  [:map
   {:closed true}
@@ -1816,8 +1827,8 @@
  "CandlestickDomain"
  [:map
   {:closed true}
-  [:reversed {:optional true} :boolean]
-  [:data {:optional true} [:ref "ChartData"]]],
+  [:data {:optional true} [:ref "ChartData"]]
+  [:reversed {:optional true} :boolean]],
  "ManualRule"
  [:map
   {:closed true}
@@ -1830,20 +1841,20 @@
  "UpdateEmbeddedObjectBorderRequest"
  [:map
   {:closed true}
-  [:border {:optional true} [:ref "EmbeddedObjectBorder"]]
+  [:fields {:optional true} :string]
   [:objectId {:optional true} :int]
-  [:fields {:optional true} :string]],
+  [:border {:optional true} [:ref "EmbeddedObjectBorder"]]],
  "TreemapChartColorScale"
  [:map
   {:closed true}
+  [:maxValueColorStyle {:optional true} [:ref "ColorStyle"]]
+  [:minValueColor {:optional true} [:ref "Color"]]
   [:noDataColor {:optional true} [:ref "Color"]]
+  [:maxValueColor {:optional true} [:ref "Color"]]
   [:midValueColor {:optional true} [:ref "Color"]]
   [:noDataColorStyle {:optional true} [:ref "ColorStyle"]]
-  [:midValueColorStyle {:optional true} [:ref "ColorStyle"]]
-  [:maxValueColor {:optional true} [:ref "Color"]]
   [:minValueColorStyle {:optional true} [:ref "ColorStyle"]]
-  [:minValueColor {:optional true} [:ref "Color"]]
-  [:maxValueColorStyle {:optional true} [:ref "ColorStyle"]]],
+  [:midValueColorStyle {:optional true} [:ref "ColorStyle"]]],
  "TextPosition"
  [:map
   {:closed true}
@@ -1883,10 +1894,6 @@
  "PieChartSpec"
  [:map
   {:closed true}
-  [:pieHole {:optional true} :double]
-  [:series {:optional true} [:ref "ChartData"]]
-  [:threeDimensional {:optional true} :boolean]
-  [:domain {:optional true} [:ref "ChartData"]]
   [:legendPosition
    {:optional true}
    [:enum
@@ -1896,7 +1903,11 @@
     "RIGHT_LEGEND"
     "TOP_LEGEND"
     "NO_LEGEND"
-    "LABELED_LEGEND"]]],
+    "LABELED_LEGEND"]]
+  [:threeDimensional {:optional true} :boolean]
+  [:pieHole {:optional true} :double]
+  [:domain {:optional true} [:ref "ChartData"]]
+  [:series {:optional true} [:ref "ChartData"]]],
  "DataSourceRefreshWeeklySchedule"
  [:map
   {:closed true}
@@ -1916,11 +1927,11 @@
  "OverlayPosition"
  [:map
   {:closed true}
-  [:anchorCell {:optional true} [:ref "GridCoordinate"]]
-  [:offsetXPixels {:optional true} :int]
   [:offsetYPixels {:optional true} :int]
-  [:heightPixels {:optional true} :int]
-  [:widthPixels {:optional true} :int]],
+  [:offsetXPixels {:optional true} :int]
+  [:widthPixels {:optional true} :int]
+  [:anchorCell {:optional true} [:ref "GridCoordinate"]]
+  [:heightPixels {:optional true} :int]],
  "DeleteDeveloperMetadataResponse"
  [:map
   {:closed true}
@@ -1930,9 +1941,9 @@
  "SetDataValidationRequest"
  [:map
   {:closed true}
+  [:filteredRowsIncluded {:optional true} :boolean]
   [:range {:optional true} [:ref "GridRange"]]
-  [:rule {:optional true} [:ref "DataValidationRule"]]
-  [:filteredRowsIncluded {:optional true} :boolean]],
+  [:rule {:optional true} [:ref "DataValidationRule"]]],
  "SearchDeveloperMetadataResponse"
  [:map
   {:closed true}
@@ -1981,53 +1992,59 @@
  "BooleanRule"
  [:map
   {:closed true}
-  [:condition {:optional true} [:ref "BooleanCondition"]]
-  [:format {:optional true} [:ref "CellFormat"]]],
+  [:format {:optional true} [:ref "CellFormat"]]
+  [:condition {:optional true} [:ref "BooleanCondition"]]],
  "DataSourceParameter"
  [:map
   {:closed true}
-  [:namedRangeId {:optional true} :string]
+  [:name {:optional true} :string]
   [:range {:optional true} [:ref "GridRange"]]
-  [:name {:optional true} :string]],
+  [:namedRangeId {:optional true} :string]],
  "RepeatCellRequest"
  [:map
   {:closed true}
   [:range {:optional true} [:ref "GridRange"]]
-  [:cell {:optional true} [:ref "CellData"]]
-  [:fields {:optional true} :string]],
+  [:fields {:optional true} :string]
+  [:cell {:optional true} [:ref "CellData"]]],
+ [:values :clear] [:ref "ClearValuesRequest"],
+ [:values :batch-update-by-data-filter]
+ [:ref "BatchUpdateValuesByDataFilterRequest"],
+ [:values :batch-update] [:ref "BatchUpdateValuesRequest"],
  "ChartHistogramRule"
  [:map
   {:closed true}
-  [:minValue {:optional true} :double]
   [:intervalSize {:optional true} :double]
-  [:maxValue {:optional true} :double]],
+  [:maxValue {:optional true} :double]
+  [:minValue {:optional true} :double]],
  "DataSourceTable"
  [:map
   {:closed true}
+  [:filterSpecs {:optional true} [:vector [:ref "FilterSpec"]]]
   [:columnSelectionType
    {:optional true}
    [:enum
     "DATA_SOURCE_TABLE_COLUMN_SELECTION_TYPE_UNSPECIFIED"
     "SELECTED"
     "SYNC_ALL"]]
-  [:dataSourceId {:optional true} :string]
-  [:dataExecutionStatus {:optional true} [:ref "DataExecutionStatus"]]
-  [:filterSpecs {:optional true} [:vector [:ref "FilterSpec"]]]
-  [:sortSpecs {:optional true} [:vector [:ref "SortSpec"]]]
-  [:rowLimit {:optional true} :int]
   [:columns
    {:optional true}
-   [:vector [:ref "DataSourceColumnReference"]]]],
+   [:vector [:ref "DataSourceColumnReference"]]]
+  [:rowLimit {:optional true} :int]
+  [:dataExecutionStatus {:optional true} [:ref "DataExecutionStatus"]]
+  [:sortSpecs {:optional true} [:vector [:ref "SortSpec"]]]
+  [:dataSourceId {:optional true} :string]],
  "RefreshDataSourceObjectExecutionStatus"
  [:map
   {:closed true}
-  [:dataExecutionStatus {:optional true} [:ref "DataExecutionStatus"]]
-  [:reference {:optional true} [:ref "DataSourceObjectReference"]]],
+  [:reference {:optional true} [:ref "DataSourceObjectReference"]]
+  [:dataExecutionStatus
+   {:optional true}
+   [:ref "DataExecutionStatus"]]],
  "BatchClearValuesResponse"
  [:map
   {:closed true}
-  [:spreadsheetId {:optional true} :string]
-  [:clearedRanges {:optional true} [:vector :string]]],
+  [:clearedRanges {:optional true} [:vector :string]]
+  [:spreadsheetId {:optional true} :string]],
  "DeleteDataSourceRequest"
  [:map {:closed true} [:dataSourceId {:optional true} :string]],
  "InsertRangeRequest"
@@ -2040,26 +2057,26 @@
  "BasicFilter"
  [:map
   {:closed true}
+  [:sortSpecs {:optional true} [:vector [:ref "SortSpec"]]]
   [:tableId {:optional true} :string]
   [:range {:optional true} [:ref "GridRange"]]
   [:criteria {:optional true} [:map-of :string :any]]
-  [:sortSpecs {:optional true} [:vector [:ref "SortSpec"]]]
   [:filterSpecs {:optional true} [:vector [:ref "FilterSpec"]]]],
  "BandedRange"
  [:map
   {:closed true}
   [:bandedRangeId {:optional true} :int]
-  [:bandedRangeReference {:optional true} :string]
-  [:range {:optional true} [:ref "GridRange"]]
+  [:rowProperties {:optional true} [:ref "BandingProperties"]]
   [:columnProperties {:optional true} [:ref "BandingProperties"]]
-  [:rowProperties {:optional true} [:ref "BandingProperties"]]],
+  [:bandedRangeReference {:optional true} :string]
+  [:range {:optional true} [:ref "GridRange"]]],
  "DataValidationRule"
  [:map
   {:closed true}
+  [:showCustomUi {:optional true} :boolean]
   [:condition {:optional true} [:ref "BooleanCondition"]]
-  [:inputMessage {:optional true} :string]
   [:strict {:optional true} :boolean]
-  [:showCustomUi {:optional true} :boolean]],
+  [:inputMessage {:optional true} :string]],
  "AddProtectedRangeRequest"
  [:map
   {:closed true}
@@ -2067,29 +2084,31 @@
  "DataSourceSpec"
  [:map
   {:closed true}
-  [:parameters {:optional true} [:vector [:ref "DataSourceParameter"]]]
+  [:looker {:optional true} [:ref "LookerDataSourceSpec"]]
   [:bigQuery {:optional true} [:ref "BigQueryDataSourceSpec"]]
-  [:looker {:optional true} [:ref "LookerDataSourceSpec"]]],
+  [:parameters
+   {:optional true}
+   [:vector [:ref "DataSourceParameter"]]]],
  "BatchUpdateSpreadsheetRequest"
  [:map
   {:closed true}
+  [:responseRanges {:optional true} [:vector :string]]
   [:includeSpreadsheetInResponse {:optional true} :boolean]
-  [:requests {:optional true} [:vector [:ref "Request"]]]
   [:responseIncludeGridData {:optional true} :boolean]
-  [:responseRanges {:optional true} [:vector :string]]],
+  [:requests {:optional true} [:vector [:ref "Request"]]]],
  "UpdateConditionalFormatRuleResponse"
  [:map
   {:closed true}
-  [:newRule {:optional true} [:ref "ConditionalFormatRule"]]
-  [:oldRule {:optional true} [:ref "ConditionalFormatRule"]]
   [:newIndex {:optional true} :int]
-  [:oldIndex {:optional true} :int]],
+  [:oldIndex {:optional true} :int]
+  [:newRule {:optional true} [:ref "ConditionalFormatRule"]]
+  [:oldRule {:optional true} [:ref "ConditionalFormatRule"]]],
  "CancelDataSourceRefreshRequest"
  [:map
   {:closed true}
+  [:dataSourceId {:optional true} :string]
   [:references {:optional true} [:ref "DataSourceObjectReferences"]]
-  [:isAll {:optional true} :boolean]
-  [:dataSourceId {:optional true} :string]],
+  [:isAll {:optional true} :boolean]],
  "UpdateProtectedRangeRequest"
  [:map
   {:closed true}
@@ -2101,15 +2120,15 @@
   [:dataSourceColumnReference
    {:optional true}
    [:ref "DataSourceColumnReference"]]
-  [:columnOffsetIndex {:optional true} :int]
-  [:filterCriteria {:optional true} [:ref "PivotFilterCriteria"]]],
+  [:filterCriteria {:optional true} [:ref "PivotFilterCriteria"]]
+  [:columnOffsetIndex {:optional true} :int]],
  "UpdateCellsRequest"
  [:map
   {:closed true}
-  [:fields {:optional true} :string]
+  [:range {:optional true} [:ref "GridRange"]]
   [:rows {:optional true} [:vector [:ref "RowData"]]]
   [:start {:optional true} [:ref "GridCoordinate"]]
-  [:range {:optional true} [:ref "GridRange"]]],
+  [:fields {:optional true} :string]],
  "AppendValuesResponse"
  [:map
   {:closed true}
@@ -2119,15 +2138,21 @@
  "DataSourceSheetProperties"
  [:map
   {:closed true}
-  [:dataSourceId {:optional true} :string]
   [:columns {:optional true} [:vector [:ref "DataSourceColumn"]]]
-  [:dataExecutionStatus
-   {:optional true}
-   [:ref "DataExecutionStatus"]]],
+  [:dataExecutionStatus {:optional true} [:ref "DataExecutionStatus"]]
+  [:dataSourceId {:optional true} :string]],
  "DataExecutionStatus"
  [:map
   {:closed true}
-  [:errorMessage {:optional true} :string]
+  [:state
+   {:optional true}
+   [:enum
+    "DATA_EXECUTION_STATE_UNSPECIFIED"
+    "NOT_STARTED"
+    "RUNNING"
+    "CANCELLING"
+    "SUCCEEDED"
+    "FAILED"]]
   [:errorCode
    {:optional true}
    [:enum
@@ -2152,39 +2177,31 @@
     "OBJECT_SPEC_INVALID"
     "DATA_EXECUTION_CANCELLED"]]
   [:lastRefreshTime {:optional true} :string]
-  [:state
-   {:optional true}
-   [:enum
-    "DATA_EXECUTION_STATE_UNSPECIFIED"
-    "NOT_STARTED"
-    "RUNNING"
-    "CANCELLING"
-    "SUCCEEDED"
-    "FAILED"]]],
+  [:errorMessage {:optional true} :string]],
  "MergeCellsRequest"
  [:map
   {:closed true}
-  [:range {:optional true} [:ref "GridRange"]]
   [:mergeType
    {:optional true}
-   [:enum "MERGE_ALL" "MERGE_COLUMNS" "MERGE_ROWS"]]],
+   [:enum "MERGE_ALL" "MERGE_COLUMNS" "MERGE_ROWS"]]
+  [:range {:optional true} [:ref "GridRange"]]],
  "Table"
  [:map
   {:closed true}
+  [:name {:optional true} :string]
+  [:range {:optional true} [:ref "GridRange"]]
+  [:rowsProperties {:optional true} [:ref "TableRowsProperties"]]
+  [:tableId {:optional true} :string]
   [:columnProperties
    {:optional true}
-   [:vector [:ref "TableColumnProperties"]]]
-  [:tableId {:optional true} :string]
-  [:name {:optional true} :string]
-  [:rowsProperties {:optional true} [:ref "TableRowsProperties"]]
-  [:range {:optional true} [:ref "GridRange"]]],
+   [:vector [:ref "TableColumnProperties"]]]],
  "Color"
  [:map
   {:closed true}
-  [:alpha {:optional true} :double]
-  [:blue {:optional true} :double]
+  [:red {:optional true} :double]
   [:green {:optional true} :double]
-  [:red {:optional true} :double]],
+  [:blue {:optional true} :double]
+  [:alpha {:optional true} :double]],
  "AddChartResponse"
  [:map
   {:closed true}
@@ -2192,9 +2209,6 @@
  "InterpolationPoint"
  [:map
   {:closed true}
-  [:colorStyle {:optional true} [:ref "ColorStyle"]]
-  [:value {:optional true} :string]
-  [:color {:optional true} [:ref "Color"]]
   [:type
    {:optional true}
    [:enum
@@ -2203,34 +2217,37 @@
     "MAX"
     "NUMBER"
     "PERCENT"
-    "PERCENTILE"]]],
+    "PERCENTILE"]]
+  [:colorStyle {:optional true} [:ref "ColorStyle"]]
+  [:value {:optional true} :string]
+  [:color {:optional true} [:ref "Color"]]],
  "BaselineValueFormat"
  [:map
   {:closed true}
   [:positiveColor {:optional true} [:ref "Color"]]
-  [:negativeColor {:optional true} [:ref "Color"]]
+  [:position {:optional true} [:ref "TextPosition"]]
+  [:textFormat {:optional true} [:ref "TextFormat"]]
   [:comparisonType
    {:optional true}
    [:enum
     "COMPARISON_TYPE_UNDEFINED"
     "ABSOLUTE_DIFFERENCE"
     "PERCENTAGE_DIFFERENCE"]]
-  [:position {:optional true} [:ref "TextPosition"]]
-  [:negativeColorStyle {:optional true} [:ref "ColorStyle"]]
   [:positiveColorStyle {:optional true} [:ref "ColorStyle"]]
-  [:textFormat {:optional true} [:ref "TextFormat"]]
-  [:description {:optional true} :string]],
+  [:negativeColor {:optional true} [:ref "Color"]]
+  [:description {:optional true} :string]
+  [:negativeColorStyle {:optional true} [:ref "ColorStyle"]]],
  "AddSheetRequest"
  [:map
   {:closed true}
   [:properties {:optional true} [:ref "SheetProperties"]]],
+ [:values :batch-get-by-data-filter]
+ [:ref "BatchGetValuesByDataFilterRequest"],
  "DeleteBandingRequest"
  [:map {:closed true} [:bandedRangeId {:optional true} :int]],
  "HistogramChartSpec"
  [:map
   {:closed true}
-  [:outlierPercentile {:optional true} :double]
-  [:bucketSize {:optional true} :double]
   [:showItemDividers {:optional true} :boolean]
   [:legendPosition
    {:optional true}
@@ -2242,7 +2259,9 @@
     "TOP_LEGEND"
     "NO_LEGEND"
     "INSIDE_LEGEND"]]
-  [:series {:optional true} [:vector [:ref "HistogramSeries"]]]],
+  [:series {:optional true} [:vector [:ref "HistogramSeries"]]]
+  [:bucketSize {:optional true} :double]
+  [:outlierPercentile {:optional true} :double]],
  "ChartGroupRule"
  [:map
   {:closed true}
@@ -2258,22 +2277,23 @@
  [:map
   {:closed true}
   [:updatedData {:optional true} [:ref "ValueRange"]]
-  [:updatedRows {:optional true} :int]
-  [:updatedColumns {:optional true} :int]
-  [:spreadsheetId {:optional true} :string]
+  [:updatedCells {:optional true} :int]
   [:updatedRange {:optional true} :string]
-  [:updatedCells {:optional true} :int]],
+  [:updatedRows {:optional true} :int]
+  [:spreadsheetId {:optional true} :string]
+  [:updatedColumns {:optional true} :int]],
  "ScorecardChartSpec"
  [:map
   {:closed true}
-  [:baselineValueData {:optional true} [:ref "ChartData"]]
   [:scaleFactor {:optional true} :double]
-  [:customFormatOptions
-   {:optional true}
-   [:ref "ChartCustomNumberFormatOptions"]]
+  [:keyValueData {:optional true} [:ref "ChartData"]]
   [:numberFormatSource
    {:optional true}
    [:enum "CHART_NUMBER_FORMAT_SOURCE_UNDEFINED" "FROM_DATA" "CUSTOM"]]
+  [:keyValueFormat {:optional true} [:ref "KeyValueFormat"]]
+  [:customFormatOptions
+   {:optional true}
+   [:ref "ChartCustomNumberFormatOptions"]]
   [:aggregateType
    {:optional true}
    [:enum
@@ -2284,28 +2304,27 @@
     "MEDIAN"
     "MIN"
     "SUM"]]
-  [:keyValueData {:optional true} [:ref "ChartData"]]
   [:baselineValueFormat {:optional true} [:ref "BaselineValueFormat"]]
-  [:keyValueFormat {:optional true} [:ref "KeyValueFormat"]]],
+  [:baselineValueData {:optional true} [:ref "ChartData"]]],
  "DeleteSheetRequest"
  [:map {:closed true} [:sheetId {:optional true} :int]],
  "UpdateDeveloperMetadataRequest"
  [:map
   {:closed true}
-  [:developerMetadata {:optional true} [:ref "DeveloperMetadata"]]
   [:fields {:optional true} :string]
+  [:developerMetadata {:optional true} [:ref "DeveloperMetadata"]]
   [:dataFilters {:optional true} [:vector [:ref "DataFilter"]]]],
  "ChartCustomNumberFormatOptions"
  [:map
   {:closed true}
-  [:prefix {:optional true} :string]
-  [:suffix {:optional true} :string]],
+  [:suffix {:optional true} :string]
+  [:prefix {:optional true} :string]],
  "HistogramSeries"
  [:map
   {:closed true}
   [:barColor {:optional true} [:ref "Color"]]
-  [:barColorStyle {:optional true} [:ref "ColorStyle"]]
-  [:data {:optional true} [:ref "ChartData"]]],
+  [:data {:optional true} [:ref "ChartData"]]
+  [:barColorStyle {:optional true} [:ref "ColorStyle"]]],
  "ErrorValue"
  [:map
   {:closed true}
@@ -2329,6 +2348,7 @@
  [:map
   {:closed true}
   [:chart {:optional true} [:ref "EmbeddedChart"]]],
+ [:values :append] [:ref "ValueRange"],
  "AddDimensionGroupResponse"
  [:map
   {:closed true}
@@ -2343,6 +2363,11 @@
  "DeveloperMetadataLookup"
  [:map
   {:closed true}
+  [:metadataLocation
+   {:optional true}
+   [:ref "DeveloperMetadataLocation"]]
+  [:metadataId {:optional true} :int]
+  [:metadataKey {:optional true} :string]
   [:locationType
    {:optional true}
    [:enum
@@ -2351,30 +2376,25 @@
     "COLUMN"
     "SHEET"
     "SPREADSHEET"]]
-  [:metadataValue {:optional true} :string]
+  [:locationMatchingStrategy
+   {:optional true}
+   [:enum
+    "DEVELOPER_METADATA_LOCATION_MATCHING_STRATEGY_UNSPECIFIED"
+    "EXACT_LOCATION"
+    "INTERSECTING_LOCATION"]]
   [:visibility
    {:optional true}
    [:enum
     "DEVELOPER_METADATA_VISIBILITY_UNSPECIFIED"
     "DOCUMENT"
     "PROJECT"]]
-  [:metadataKey {:optional true} :string]
-  [:metadataId {:optional true} :int]
-  [:metadataLocation
-   {:optional true}
-   [:ref "DeveloperMetadataLocation"]]
-  [:locationMatchingStrategy
-   {:optional true}
-   [:enum
-    "DEVELOPER_METADATA_LOCATION_MATCHING_STRATEGY_UNSPECIFIED"
-    "EXACT_LOCATION"
-    "INTERSECTING_LOCATION"]]],
+  [:metadataValue {:optional true} :string]],
  "WaterfallChartCustomSubtotal"
  [:map
   {:closed true}
+  [:subtotalIndex {:optional true} :int]
   [:dataIsSubtotal {:optional true} :boolean]
-  [:label {:optional true} :string]
-  [:subtotalIndex {:optional true} :int]],
+  [:label {:optional true} :string]],
  "DataSourceFormula"
  [:map
   {:closed true}
@@ -2387,17 +2407,17 @@
  "UpdateBordersRequest"
  [:map
   {:closed true}
-  [:left {:optional true} [:ref "Border"]]
-  [:right {:optional true} [:ref "Border"]]
-  [:innerHorizontal {:optional true} [:ref "Border"]]
-  [:range {:optional true} [:ref "GridRange"]]
   [:top {:optional true} [:ref "Border"]]
   [:innerVertical {:optional true} [:ref "Border"]]
-  [:bottom {:optional true} [:ref "Border"]]],
+  [:left {:optional true} [:ref "Border"]]
+  [:range {:optional true} [:ref "GridRange"]]
+  [:innerHorizontal {:optional true} [:ref "Border"]]
+  [:bottom {:optional true} [:ref "Border"]]
+  [:right {:optional true} [:ref "Border"]]],
  "CandlestickData"
  [:map
   {:closed true}
-  [:lowSeries {:optional true} [:ref "CandlestickSeries"]]
   [:openSeries {:optional true} [:ref "CandlestickSeries"]]
-  [:closeSeries {:optional true} [:ref "CandlestickSeries"]]
-  [:highSeries {:optional true} [:ref "CandlestickSeries"]]]}
+  [:lowSeries {:optional true} [:ref "CandlestickSeries"]]
+  [:highSeries {:optional true} [:ref "CandlestickSeries"]]
+  [:closeSeries {:optional true} [:ref "CandlestickSeries"]]]}
