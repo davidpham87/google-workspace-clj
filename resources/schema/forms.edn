@@ -1,0 +1,364 @@
+{"RowQuestion"
+ [:map {:closed true} [:title {:optional false} :string]],
+ "QuestionItem"
+ [:map
+  {:closed true}
+  [:question {:optional false} [:ref "Question"]]
+  [:image {:optional true} [:ref "Image"]]],
+ "FormResponse"
+ [:map
+  {:closed true}
+  [:respondentEmail {:optional true} :string]
+  [:totalScore {:optional true} :double]
+  [:lastSubmittedTime {:optional true} :string]
+  [:formId {:optional true} :string]
+  [:createTime {:optional true} :string]
+  [:answers {:optional true} [:map-of :string :any]]
+  [:responseId {:optional true} :string]],
+ "Empty" [:map {:closed true}],
+ "DateQuestion"
+ [:map
+  {:closed true}
+  [:includeTime {:optional true} :boolean]
+  [:includeYear {:optional true} :boolean]],
+ "MediaProperties"
+ [:map
+  {:closed true}
+  [:width {:optional true} :int]
+  [:alignment
+   {:optional true}
+   [:enum "ALIGNMENT_UNSPECIFIED" "LEFT" "RIGHT" "CENTER"]]],
+ "PublishSettings"
+ [:map
+  {:closed true}
+  [:publishState {:optional true} [:ref "PublishState"]]],
+ "Request"
+ [:map
+  {:closed true}
+  [:updateItem {:optional true} [:ref "UpdateItemRequest"]]
+  [:deleteItem {:optional true} [:ref "DeleteItemRequest"]]
+  [:createItem {:optional true} [:ref "CreateItemRequest"]]
+  [:moveItem {:optional true} [:ref "MoveItemRequest"]]
+  [:updateFormInfo {:optional true} [:ref "UpdateFormInfoRequest"]]
+  [:updateSettings {:optional true} [:ref "UpdateSettingsRequest"]]],
+ "BatchUpdateFormResponse"
+ [:map
+  {:closed true}
+  [:replies {:optional true} [:vector [:ref "Response"]]]
+  [:writeControl {:optional true} [:ref "WriteControl"]]
+  [:form {:optional true} [:ref "Form"]]],
+ "QuestionGroupItem"
+ [:map
+  {:closed true}
+  [:questions {:optional false} [:vector [:ref "Question"]]]
+  [:grid {:optional true} [:ref "Grid"]]
+  [:image {:optional true} [:ref "Image"]]],
+ "TextQuestion"
+ [:map {:closed true} [:paragraph {:optional true} :boolean]],
+ "VideoItem"
+ [:map
+  {:closed true}
+  [:caption {:optional true} :string]
+  [:video {:optional false} [:ref "Video"]]],
+ "Option"
+ [:map
+  {:closed true}
+  [:goToAction
+   {:optional true}
+   [:enum
+    "GO_TO_ACTION_UNSPECIFIED"
+    "NEXT_SECTION"
+    "RESTART_FORM"
+    "SUBMIT_FORM"]]
+  [:value {:optional false} :string]
+  [:isOther {:optional true} :boolean]
+  [:image {:optional true} [:ref "Image"]]
+  [:goToSectionId {:optional true} :string]],
+ "QuizSettings"
+ [:map {:closed true} [:isQuiz {:optional true} :boolean]],
+ "BatchUpdateFormRequest"
+ [:map
+  {:closed true}
+  [:requests {:optional false} [:vector [:ref "Request"]]]
+  [:includeFormInResponse {:optional true} :boolean]
+  [:writeControl {:optional true} [:ref "WriteControl"]]],
+ "Grading"
+ [:map
+  {:closed true}
+  [:correctAnswers {:optional false} [:ref "CorrectAnswers"]]
+  [:generalFeedback {:optional true} [:ref "Feedback"]]
+  [:whenRight {:optional true} [:ref "Feedback"]]
+  [:pointValue {:optional false} :int]
+  [:whenWrong {:optional true} [:ref "Feedback"]]],
+ "UpdateFormInfoRequest"
+ [:map
+  {:closed true}
+  [:info {:optional true} [:ref "Info"]]
+  [:updateMask {:optional false} :string]],
+ "Video"
+ [:map
+  {:closed true}
+  [:youtubeUri {:optional false} :string]
+  [:properties {:optional true} [:ref "MediaProperties"]]],
+ "UpdateItemRequest"
+ [:map
+  {:closed true}
+  [:updateMask {:optional false} :string]
+  [:location {:optional false} [:ref "Location"]]
+  [:item {:optional false} [:ref "Item"]]],
+ "ListWatchesResponse"
+ [:map
+  {:closed true}
+  [:watches {:optional true} [:vector [:ref "Watch"]]]],
+ "Grade"
+ [:map
+  {:closed true}
+  [:correct {:optional true} :boolean]
+  [:score {:optional true} :double]
+  [:feedback {:optional true} [:ref "Feedback"]]],
+ "TextLink"
+ [:map
+  {:closed true}
+  [:uri {:optional false} :string]
+  [:displayText {:optional false} :string]],
+ "TextItem" [:map {:closed true}],
+ "Question"
+ [:map
+  {:closed true}
+  [:fileUploadQuestion {:optional true} [:ref "FileUploadQuestion"]]
+  [:choiceQuestion {:optional true} [:ref "ChoiceQuestion"]]
+  [:ratingQuestion {:optional true} [:ref "RatingQuestion"]]
+  [:timeQuestion {:optional true} [:ref "TimeQuestion"]]
+  [:rowQuestion {:optional true} [:ref "RowQuestion"]]
+  [:scaleQuestion {:optional true} [:ref "ScaleQuestion"]]
+  [:textQuestion {:optional true} [:ref "TextQuestion"]]
+  [:questionId {:optional true} :string]
+  [:grading {:optional true} [:ref "Grading"]]
+  [:required {:optional true} :boolean]
+  [:dateQuestion {:optional true} [:ref "DateQuestion"]]],
+ "Location" [:map {:closed true} [:index {:optional true} :int]],
+ "ListFormResponsesResponse"
+ [:map
+  {:closed true}
+  [:responses {:optional true} [:vector [:ref "FormResponse"]]]
+  [:nextPageToken {:optional true} :string]],
+ "TextAnswer" [:map {:closed true} [:value {:optional true} :string]],
+ "RatingQuestion"
+ [:map
+  {:closed true}
+  [:ratingScaleLevel {:optional false} :int]
+  [:iconType
+   {:optional false}
+   [:enum "RATING_ICON_TYPE_UNSPECIFIED" "STAR" "HEART" "THUMB_UP"]]],
+ "Info"
+ [:map
+  {:closed true}
+  [:description {:optional true} :string]
+  [:title {:optional false} :string]
+  [:documentTitle {:optional true} :string]],
+ "Watch"
+ [:map
+  {:closed true}
+  [:id {:optional true} :string]
+  [:expireTime {:optional true} :string]
+  [:createTime {:optional true} :string]
+  [:errorType
+   {:optional true}
+   [:enum
+    "ERROR_TYPE_UNSPECIFIED"
+    "PROJECT_NOT_AUTHORIZED"
+    "NO_USER_ACCESS"
+    "OTHER_ERRORS"]]
+  [:target {:optional false} [:ref "WatchTarget"]]
+  [:eventType
+   {:optional false}
+   [:enum "EVENT_TYPE_UNSPECIFIED" "SCHEMA" "RESPONSES"]]
+  [:state
+   {:optional true}
+   [:enum "STATE_UNSPECIFIED" "ACTIVE" "SUSPENDED"]]],
+ "Grid"
+ [:map
+  {:closed true}
+  [:shuffleQuestions {:optional true} :boolean]
+  [:columns {:optional false} [:ref "ChoiceQuestion"]]],
+ "RenewWatchRequest" [:map {:closed true}],
+ "ScaleQuestion"
+ [:map
+  {:closed true}
+  [:lowLabel {:optional true} :string]
+  [:low {:optional false} :int]
+  [:high {:optional false} :int]
+  [:highLabel {:optional true} :string]],
+ "CreateWatchRequest"
+ [:map
+  {:closed true}
+  [:watchId {:optional true} :string]
+  [:watch {:optional false} [:ref "Watch"]]],
+ "Response"
+ [:map
+  {:closed true}
+  [:createItem {:optional true} [:ref "CreateItemResponse"]]],
+ "CorrectAnswer"
+ [:map {:closed true} [:value {:optional false} :string]],
+ "ImageItem"
+ [:map {:closed true} [:image {:optional false} [:ref "Image"]]],
+ "PageBreakItem" [:map {:closed true}],
+ "Form"
+ [:map
+  {:closed true}
+  [:responderUri {:optional true} :string]
+  [:info {:optional false} [:ref "Info"]]
+  [:linkedSheetId {:optional true} :string]
+  [:revisionId {:optional true} :string]
+  [:publishSettings {:optional true} [:ref "PublishSettings"]]
+  [:items {:optional false} [:vector [:ref "Item"]]]
+  [:formId {:optional true} :string]
+  [:settings {:optional true} [:ref "FormSettings"]]],
+ "FileUploadQuestion"
+ [:map
+  {:closed true}
+  [:folderId {:optional false} :string]
+  [:maxFileSize {:optional true} :string]
+  [:types
+   {:optional true}
+   [:vector
+    [:enum
+     "FILE_TYPE_UNSPECIFIED"
+     "ANY"
+     "DOCUMENT"
+     "PRESENTATION"
+     "SPREADSHEET"
+     "DRAWING"
+     "PDF"
+     "IMAGE"
+     "VIDEO"
+     "AUDIO"]]]
+  [:maxFiles {:optional true} :int]],
+ "WriteControl"
+ [:map
+  {:closed true}
+  [:requiredRevisionId {:optional true} :string]
+  [:targetRevisionId {:optional true} :string]],
+ "MoveItemRequest"
+ [:map
+  {:closed true}
+  [:originalLocation {:optional false} [:ref "Location"]]
+  [:newLocation {:optional false} [:ref "Location"]]],
+ "SetPublishSettingsRequest"
+ [:map
+  {:closed true}
+  [:publishSettings {:optional false} [:ref "PublishSettings"]]
+  [:updateMask {:optional true} :string]],
+ "PublishState"
+ [:map
+  {:closed true}
+  [:isPublished {:optional false} :boolean]
+  [:isAcceptingResponses {:optional false} :boolean]],
+ "FileUploadAnswer"
+ [:map
+  {:closed true}
+  [:mimeType {:optional true} :string]
+  [:fileId {:optional true} :string]
+  [:fileName {:optional true} :string]],
+ "VideoLink"
+ [:map
+  {:closed true}
+  [:youtubeUri {:optional true} :string]
+  [:displayText {:optional false} :string]],
+ "CreateItemRequest"
+ [:map
+  {:closed true}
+  [:location {:optional false} [:ref "Location"]]
+  [:item {:optional false} [:ref "Item"]]],
+ "UpdateSettingsRequest"
+ [:map
+  {:closed true}
+  [:updateMask {:optional false} :string]
+  [:settings {:optional false} [:ref "FormSettings"]]],
+ "FileUploadAnswers"
+ [:map
+  {:closed true}
+  [:answers {:optional true} [:vector [:ref "FileUploadAnswer"]]]],
+ "ChoiceQuestion"
+ [:map
+  {:closed true}
+  [:options {:optional false} [:vector [:ref "Option"]]]
+  [:type
+   {:optional false}
+   [:enum "CHOICE_TYPE_UNSPECIFIED" "RADIO" "CHECKBOX" "DROP_DOWN"]]
+  [:shuffle {:optional true} :boolean]],
+ "CloudPubsubTopic"
+ [:map {:closed true} [:topicName {:optional false} :string]],
+ "CreateItemResponse"
+ [:map
+  {:closed true}
+  [:itemId {:optional true} :string]
+  [:questionId {:optional true} [:vector :string]]],
+ "ExtraMaterial"
+ [:map
+  {:closed true}
+  [:video {:optional true} [:ref "VideoLink"]]
+  [:link {:optional true} [:ref "TextLink"]]],
+ "CorrectAnswers"
+ [:map
+  {:closed true}
+  [:answers {:optional true} [:vector [:ref "CorrectAnswer"]]]],
+ "TextAnswers"
+ [:map
+  {:closed true}
+  [:answers {:optional true} [:vector [:ref "TextAnswer"]]]],
+ "FormSettings"
+ [:map
+  {:closed true}
+  [:emailCollectionType
+   {:optional true}
+   [:enum
+    "EMAIL_COLLECTION_TYPE_UNSPECIFIED"
+    "DO_NOT_COLLECT"
+    "VERIFIED"
+    "RESPONDER_INPUT"]]
+  [:quizSettings {:optional true} [:ref "QuizSettings"]]],
+ "SetPublishSettingsResponse"
+ [:map
+  {:closed true}
+  [:publishSettings {:optional true} [:ref "PublishSettings"]]
+  [:formId {:optional false} :string]],
+ "Image"
+ [:map
+  {:closed true}
+  [:sourceUri {:optional true} :string]
+  [:contentUri {:optional true} :string]
+  [:properties {:optional true} [:ref "MediaProperties"]]
+  [:altText {:optional true} :string]],
+ "Feedback"
+ [:map
+  {:closed true}
+  [:text {:optional false} :string]
+  [:material {:optional true} [:vector [:ref "ExtraMaterial"]]]],
+ "WatchTarget"
+ [:map
+  {:closed true}
+  [:topic {:optional true} [:ref "CloudPubsubTopic"]]],
+ "DeleteItemRequest"
+ [:map {:closed true} [:location {:optional false} [:ref "Location"]]],
+ "Item"
+ [:map
+  {:closed true}
+  [:description {:optional true} :string]
+  [:imageItem {:optional true} [:ref "ImageItem"]]
+  [:pageBreakItem {:optional true} [:ref "PageBreakItem"]]
+  [:questionItem {:optional true} [:ref "QuestionItem"]]
+  [:title {:optional true} :string]
+  [:textItem {:optional true} [:ref "TextItem"]]
+  [:questionGroupItem {:optional true} [:ref "QuestionGroupItem"]]
+  [:videoItem {:optional true} [:ref "VideoItem"]]
+  [:itemId {:optional true} :string]],
+ "TimeQuestion"
+ [:map {:closed true} [:duration {:optional true} :boolean]],
+ "Answer"
+ [:map
+  {:closed true}
+  [:grade {:optional true} [:ref "Grade"]]
+  [:fileUploadAnswers {:optional true} [:ref "FileUploadAnswers"]]
+  [:questionId {:optional true} :string]
+  [:textAnswers {:optional true} [:ref "TextAnswers"]]]}

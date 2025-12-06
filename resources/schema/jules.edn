@@ -1,0 +1,155 @@
+{"Empty" [:map {:closed true}],
+ "Media"
+ [:map
+  {:closed true}
+  [:data {:optional true} :string]
+  [:mimeType {:optional true} :string]],
+ "GitPatch"
+ [:map
+  {:closed true}
+  [:baseCommitId {:optional true} :string]
+  [:unidiffPatch {:optional true} :string]
+  [:suggestedCommitMessage {:optional true} :string]],
+ "ListSessionsResponse"
+ [:map
+  {:closed true}
+  [:sessions {:optional true} [:vector [:ref "Session"]]]
+  [:nextPageToken {:optional true} :string]],
+ "Source"
+ [:map
+  {:closed true}
+  [:githubRepo {:optional true} [:ref "GitHubRepo"]]
+  [:name {:optional true} :string]
+  [:id {:optional true} :string]],
+ "UserMessaged"
+ [:map {:closed true} [:userMessage {:optional true} :string]],
+ "PlanGenerated"
+ [:map {:closed true} [:plan {:optional true} [:ref "Plan"]]],
+ "ChangeSet"
+ [:map
+  {:closed true}
+  [:gitPatch {:optional true} [:ref "GitPatch"]]
+  [:source {:optional true} :string]],
+ "BashOutput"
+ [:map
+  {:closed true}
+  [:command {:optional true} :string]
+  [:exitCode {:optional true} :int]
+  [:output {:optional true} :string]],
+ "PullRequest"
+ [:map
+  {:closed true}
+  [:title {:optional true} :string]
+  [:description {:optional true} :string]
+  [:url {:optional true} :string]],
+ "ApprovePlanRequest" [:map {:closed true}],
+ "Activity"
+ [:map
+  {:closed true}
+  [:description {:optional true} :string]
+  [:sessionFailed {:optional true} [:ref "SessionFailed"]]
+  [:progressUpdated {:optional true} [:ref "ProgressUpdated"]]
+  [:planApproved {:optional true} [:ref "PlanApproved"]]
+  [:name {:optional true} :string]
+  [:createTime {:optional true} :string]
+  [:planGenerated {:optional true} [:ref "PlanGenerated"]]
+  [:agentMessaged {:optional true} [:ref "AgentMessaged"]]
+  [:userMessaged {:optional true} [:ref "UserMessaged"]]
+  [:id {:optional true} :string]
+  [:originator {:optional true} :string]
+  [:artifacts {:optional true} [:vector [:ref "Artifact"]]]
+  [:sessionCompleted {:optional true} [:ref "SessionCompleted"]]],
+ "GitHubRepoContext"
+ [:map {:closed true} [:startingBranch {:optional false} :string]],
+ "SessionOutput"
+ [:map
+  {:closed true}
+  [:pullRequest {:optional true} [:ref "PullRequest"]]],
+ "Artifact"
+ [:map
+  {:closed true}
+  [:media {:optional true} [:ref "Media"]]
+  [:changeSet {:optional true} [:ref "ChangeSet"]]
+  [:bashOutput {:optional true} [:ref "BashOutput"]]],
+ "PlanApproved"
+ [:map {:closed true} [:planId {:optional true} :string]],
+ "PlanStep"
+ [:map
+  {:closed true}
+  [:id {:optional true} :string]
+  [:description {:optional true} :string]
+  [:index {:optional true} :int]
+  [:title {:optional true} :string]],
+ "GitHubBranch"
+ [:map {:closed true} [:displayName {:optional true} :string]],
+ "AgentMessaged"
+ [:map {:closed true} [:agentMessage {:optional true} :string]],
+ "SourceContext"
+ [:map
+  {:closed true}
+  [:source {:optional false} :string]
+  [:githubRepoContext {:optional true} [:ref "GitHubRepoContext"]]],
+ "ListSourcesResponse"
+ [:map
+  {:closed true}
+  [:nextPageToken {:optional true} :string]
+  [:sources {:optional true} [:vector [:ref "Source"]]]],
+ "Plan"
+ [:map
+  {:closed true}
+  [:createTime {:optional true} :string]
+  [:steps {:optional true} [:vector [:ref "PlanStep"]]]
+  [:id {:optional true} :string]],
+ "SendMessageResponse" [:map {:closed true}],
+ "GitHubRepo"
+ [:map
+  {:closed true}
+  [:owner {:optional true} :string]
+  [:branches {:optional true} [:vector [:ref "GitHubBranch"]]]
+  [:isPrivate {:optional true} :boolean]
+  [:repo {:optional true} :string]
+  [:defaultBranch {:optional true} [:ref "GitHubBranch"]]],
+ "ListActivitiesResponse"
+ [:map
+  {:closed true}
+  [:nextPageToken {:optional true} :string]
+  [:activities {:optional true} [:vector [:ref "Activity"]]]],
+ "SendMessageRequest"
+ [:map {:closed true} [:prompt {:optional false} :string]],
+ "ApprovePlanResponse" [:map {:closed true}],
+ "SessionCompleted" [:map {:closed true}],
+ "SessionFailed"
+ [:map {:closed true} [:reason {:optional true} :string]],
+ "Session"
+ [:map
+  {:closed true}
+  [:requirePlanApproval {:optional true} :boolean]
+  [:automationMode
+   {:optional true}
+   [:enum "AUTOMATION_MODE_UNSPECIFIED" "AUTO_CREATE_PR"]]
+  [:name {:optional true} :string]
+  [:createTime {:optional true} :string]
+  [:state
+   {:optional true}
+   [:enum
+    "STATE_UNSPECIFIED"
+    "QUEUED"
+    "PLANNING"
+    "AWAITING_PLAN_APPROVAL"
+    "AWAITING_USER_FEEDBACK"
+    "IN_PROGRESS"
+    "PAUSED"
+    "FAILED"
+    "COMPLETED"]]
+  [:title {:optional true} :string]
+  [:updateTime {:optional true} :string]
+  [:prompt {:optional false} :string]
+  [:id {:optional true} :string]
+  [:url {:optional true} :string]
+  [:outputs {:optional true} [:vector [:ref "SessionOutput"]]]
+  [:sourceContext {:optional false} [:ref "SourceContext"]]],
+ "ProgressUpdated"
+ [:map
+  {:closed true}
+  [:title {:optional true} :string]
+  [:description {:optional true} :string]]}

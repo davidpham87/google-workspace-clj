@@ -1,0 +1,1224 @@
+{"BatchEmbedTextRequest"
+ [:map
+  {:closed true}
+  [:requests {:optional true} [:vector [:ref "EmbedTextRequest"]]]
+  [:texts {:optional true} [:vector :string]]],
+ "PredictLongRunningRequest"
+ [:map
+  {:closed true}
+  [:parameters {:optional true} :any]
+  [:instances {:optional false} [:vector :any]]],
+ "InlinedResponse"
+ [:map
+  {:closed true}
+  [:response {:optional true} [:ref "GenerateContentResponse"]]
+  [:metadata {:optional true} [:map-of :string :any]]
+  [:error {:optional true} [:ref "Status"]]],
+ "StringList"
+ [:map {:closed true} [:values {:optional true} [:vector :string]]],
+ "Empty" [:map {:closed true}],
+ "ListDocumentsResponse"
+ [:map
+  {:closed true}
+  [:nextPageToken {:optional true} :string]
+  [:documents {:optional true} [:vector [:ref "Document"]]]],
+ "Schema"
+ [:map
+  {:closed true}
+  [:propertyOrdering {:optional true} [:vector :string]]
+  [:description {:optional true} :string]
+  [:enum {:optional true} [:vector :string]]
+  [:properties {:optional true} [:map-of :string :any]]
+  [:format {:optional true} :string]
+  [:maxProperties {:optional true} :string]
+  [:anyOf {:optional true} [:vector [:ref "Schema"]]]
+  [:default {:optional true} :any]
+  [:maximum {:optional true} :double]
+  [:type
+   {:optional false}
+   [:enum
+    "TYPE_UNSPECIFIED"
+    "STRING"
+    "NUMBER"
+    "INTEGER"
+    "BOOLEAN"
+    "ARRAY"
+    "OBJECT"
+    "NULL"]]
+  [:minLength {:optional true} :string]
+  [:title {:optional true} :string]
+  [:minProperties {:optional true} :string]
+  [:minimum {:optional true} :double]
+  [:minItems {:optional true} :string]
+  [:maxLength {:optional true} :string]
+  [:example {:optional true} :any]
+  [:items {:optional true} [:ref "Schema"]]
+  [:nullable {:optional true} :boolean]
+  [:required {:optional true} [:vector :string]]
+  [:maxItems {:optional true} :string]
+  [:pattern {:optional true} :string]],
+ "CustomLongRunningOperation"
+ [:map
+  {:closed true}
+  [:response {:optional true} [:map-of :string :any]]
+  [:done {:optional true} :boolean]
+  [:error {:optional true} [:ref "Status"]]
+  [:metadata {:optional true} [:map-of :string :any]]
+  [:name {:optional true} :string]],
+ "GoogleSearchRetrieval"
+ [:map
+  {:closed true}
+  [:dynamicRetrievalConfig
+   {:optional true}
+   [:ref "DynamicRetrievalConfig"]]],
+ "SafetyFeedback"
+ [:map
+  {:closed true}
+  [:rating {:optional true} [:ref "SafetyRating"]]
+  [:setting {:optional true} [:ref "SafetySetting"]]],
+ "GenerateContentBatch"
+ [:map
+  {:closed true}
+  [:displayName {:optional false} :string]
+  [:name {:optional true} :string]
+  [:batchStats {:optional true} [:ref "BatchStats"]]
+  [:endTime {:optional true} :string]
+  [:createTime {:optional true} :string]
+  [:state
+   {:optional true}
+   [:enum
+    "BATCH_STATE_UNSPECIFIED"
+    "BATCH_STATE_PENDING"
+    "BATCH_STATE_RUNNING"
+    "BATCH_STATE_SUCCEEDED"
+    "BATCH_STATE_FAILED"
+    "BATCH_STATE_CANCELLED"
+    "BATCH_STATE_EXPIRED"]]
+  [:output {:optional true} [:ref "GenerateContentBatchOutput"]]
+  [:updateTime {:optional true} :string]
+  [:priority {:optional true} :string]
+  [:inputConfig {:optional false} [:ref "InputConfig"]]
+  [:model {:optional false} :string]],
+ "EmbedTextResponse"
+ [:map
+  {:closed true}
+  [:embedding {:optional true} [:ref "Embedding"]]],
+ "Candidate"
+ [:map
+  {:closed true}
+  [:logprobsResult {:optional true} [:ref "LogprobsResult"]]
+  [:index {:optional true} :int]
+  [:content {:optional true} [:ref "Content"]]
+  [:tokenCount {:optional true} :int]
+  [:safetyRatings {:optional true} [:vector [:ref "SafetyRating"]]]
+  [:finishReason
+   {:optional true}
+   [:enum
+    "FINISH_REASON_UNSPECIFIED"
+    "STOP"
+    "MAX_TOKENS"
+    "SAFETY"
+    "RECITATION"
+    "LANGUAGE"
+    "OTHER"
+    "BLOCKLIST"
+    "PROHIBITED_CONTENT"
+    "SPII"
+    "MALFORMED_FUNCTION_CALL"
+    "IMAGE_SAFETY"
+    "IMAGE_PROHIBITED_CONTENT"
+    "IMAGE_OTHER"
+    "NO_IMAGE"
+    "IMAGE_RECITATION"
+    "UNEXPECTED_TOOL_CALL"
+    "TOO_MANY_TOOL_CALLS"
+    "MISSING_THOUGHT_SIGNATURE"]]
+  [:finishMessage {:optional true} :string]
+  [:urlContextMetadata {:optional true} [:ref "UrlContextMetadata"]]
+  [:citationMetadata {:optional true} [:ref "CitationMetadata"]]
+  [:groundingMetadata {:optional true} [:ref "GroundingMetadata"]]
+  [:avgLogprobs {:optional true} :double]
+  [:groundingAttributions
+   {:optional true}
+   [:vector [:ref "GroundingAttribution"]]]],
+ "TextPrompt" [:map {:closed true} [:text {:optional false} :string]],
+ "CountMessageTokensRequest"
+ [:map
+  {:closed true}
+  [:prompt {:optional false} [:ref "MessagePrompt"]]],
+ "ImportFileRequest"
+ [:map
+  {:closed true}
+  [:chunkingConfig {:optional true} [:ref "ChunkingConfig"]]
+  [:customMetadata {:optional true} [:vector [:ref "CustomMetadata"]]]
+  [:fileName {:optional false} :string]],
+ "Dataset"
+ [:map
+  {:closed true}
+  [:examples {:optional true} [:ref "TuningExamples"]]],
+ "GeneratedFile"
+ [:map
+  {:closed true}
+  [:mimeType {:optional true} :string]
+  [:state
+   {:optional true}
+   [:enum "STATE_UNSPECIFIED" "GENERATING" "GENERATED" "FAILED"]]
+  [:name {:optional true} :string]
+  [:error {:optional true} [:ref "Status"]]],
+ "UploadToFileSearchStoreRequest"
+ [:map
+  {:closed true}
+  [:chunkingConfig {:optional true} [:ref "ChunkingConfig"]]
+  [:mimeType {:optional true} :string]
+  [:customMetadata {:optional true} [:vector [:ref "CustomMetadata"]]]
+  [:displayName {:optional true} :string]],
+ "SpeakerVoiceConfig"
+ [:map
+  {:closed true}
+  [:speaker {:optional false} :string]
+  [:voiceConfig {:optional false} [:ref "VoiceConfig"]]],
+ "RetrievalConfig"
+ [:map
+  {:closed true}
+  [:languageCode {:optional true} :string]
+  [:latLng {:optional true} [:ref "LatLng"]]],
+ "FunctionResponse"
+ [:map
+  {:closed true}
+  [:parts {:optional true} [:vector [:ref "FunctionResponsePart"]]]
+  [:response {:optional false} [:map-of :string :any]]
+  [:name {:optional false} :string]
+  [:scheduling
+   {:optional true}
+   [:enum "SCHEDULING_UNSPECIFIED" "SILENT" "WHEN_IDLE" "INTERRUPT"]]
+  [:id {:optional true} :string]
+  [:willContinue {:optional true} :boolean]],
+ "CountTextTokensRequest"
+ [:map {:closed true} [:prompt {:optional false} [:ref "TextPrompt"]]],
+ "EmbedContentBatchOutput"
+ [:map
+  {:closed true}
+  [:inlinedResponses
+   {:optional true}
+   [:ref "InlinedEmbedContentResponses"]]
+  [:responsesFile {:optional true} :string]],
+ "FileSearchStore"
+ [:map
+  {:closed true}
+  [:createTime {:optional true} :string]
+  [:activeDocumentsCount {:optional true} :string]
+  [:name {:optional true} :string]
+  [:sizeBytes {:optional true} :string]
+  [:displayName {:optional true} :string]
+  [:pendingDocumentsCount {:optional true} :string]
+  [:updateTime {:optional true} :string]
+  [:failedDocumentsCount {:optional true} :string]],
+ "MetadataFilter"
+ [:map
+  {:closed true}
+  [:key {:optional false} :string]
+  [:conditions {:optional false} [:vector [:ref "Condition"]]]],
+ "SearchEntryPoint"
+ [:map
+  {:closed true}
+  [:sdkBlob {:optional true} :string]
+  [:renderedContent {:optional true} :string]],
+ "InputEmbedContentConfig"
+ [:map
+  {:closed true}
+  [:fileName {:optional true} :string]
+  [:requests {:optional true} [:ref "InlinedEmbedContentRequests"]]],
+ "Example"
+ [:map
+  {:closed true}
+  [:input {:optional false} [:ref "Message"]]
+  [:output {:optional false} [:ref "Message"]]],
+ "ListOperationsResponse"
+ [:map
+  {:closed true}
+  [:unreachable {:optional true} [:vector :string]]
+  [:operations {:optional true} [:vector [:ref "Operation"]]]
+  [:nextPageToken {:optional true} :string]],
+ "CountTokensResponse"
+ [:map
+  {:closed true}
+  [:totalTokens {:optional true} :int]
+  [:cacheTokensDetails
+   {:optional true}
+   [:vector [:ref "ModalityTokenCount"]]]
+  [:cachedContentTokenCount {:optional true} :int]
+  [:promptTokensDetails
+   {:optional true}
+   [:vector [:ref "ModalityTokenCount"]]]],
+ "Permission"
+ [:map
+  {:closed true}
+  [:name {:optional true} :string]
+  [:emailAddress {:optional true} :string]
+  [:granteeType
+   {:optional true}
+   [:enum "GRANTEE_TYPE_UNSPECIFIED" "USER" "GROUP" "EVERYONE"]]
+  [:role
+   {:optional false}
+   [:enum "ROLE_UNSPECIFIED" "OWNER" "WRITER" "READER"]]],
+ "GenerateTextRequest"
+ [:map
+  {:closed true}
+  [:temperature {:optional true} :double]
+  [:topP {:optional true} :double]
+  [:prompt {:optional false} [:ref "TextPrompt"]]
+  [:maxOutputTokens {:optional true} :int]
+  [:candidateCount {:optional true} :int]
+  [:stopSequences {:optional true} [:vector :string]]
+  [:safetySettings {:optional true} [:vector [:ref "SafetySetting"]]]
+  [:topK {:optional true} :int]],
+ "Tool"
+ [:map
+  {:closed true}
+  [:functionDeclarations
+   {:optional true}
+   [:vector [:ref "FunctionDeclaration"]]]
+  [:urlContext {:optional true} [:ref "UrlContext"]]
+  [:computerUse {:optional true} [:ref "ComputerUse"]]
+  [:fileSearch {:optional true} [:ref "FileSearch"]]
+  [:codeExecution {:optional true} [:ref "CodeExecution"]]
+  [:googleMaps {:optional true} [:ref "GoogleMaps"]]
+  [:googleSearchRetrieval
+   {:optional true}
+   [:ref "GoogleSearchRetrieval"]]
+  [:googleSearch {:optional true} [:ref "GoogleSearch"]]],
+ "TransferOwnershipRequest"
+ [:map {:closed true} [:emailAddress {:optional false} :string]],
+ "GroundingPassage"
+ [:map
+  {:closed true}
+  [:content {:optional true} [:ref "Content"]]
+  [:id {:optional true} :string]],
+ "CodeExecution" [:map {:closed true}],
+ "InputConfig"
+ [:map
+  {:closed true}
+  [:fileName {:optional true} :string]
+  [:requests {:optional true} [:ref "InlinedRequests"]]],
+ "BatchGenerateContentRequest"
+ [:map
+  {:closed true}
+  [:batch {:optional false} [:ref "GenerateContentBatch"]]],
+ "ComputerUse"
+ [:map
+  {:closed true}
+  [:environment
+   {:optional false}
+   [:enum "ENVIRONMENT_UNSPECIFIED" "ENVIRONMENT_BROWSER"]]
+  [:excludedPredefinedFunctions {:optional true} [:vector :string]]],
+ "ContentEmbedding"
+ [:map
+  {:closed true}
+  [:shape {:optional true} [:vector :int]]
+  [:values {:optional true} [:vector :double]]],
+ "CreateFileRequest"
+ [:map {:closed true} [:file {:optional true} [:ref "File"]]],
+ "UsageMetadata"
+ [:map
+  {:closed true}
+  [:candidatesTokenCount {:optional true} :int]
+  [:toolUsePromptTokenCount {:optional true} :int]
+  [:toolUsePromptTokensDetails
+   {:optional true}
+   [:vector [:ref "ModalityTokenCount"]]]
+  [:cachedContentTokenCount {:optional true} :int]
+  [:candidatesTokensDetails
+   {:optional true}
+   [:vector [:ref "ModalityTokenCount"]]]
+  [:promptTokenCount {:optional true} :int]
+  [:promptTokensDetails
+   {:optional true}
+   [:vector [:ref "ModalityTokenCount"]]]
+  [:cacheTokensDetails
+   {:optional true}
+   [:vector [:ref "ModalityTokenCount"]]]
+  [:totalTokenCount {:optional true} :int]
+  [:thoughtsTokenCount {:optional true} :int]],
+ "CitationSource"
+ [:map
+  {:closed true}
+  [:startIndex {:optional true} :int]
+  [:license {:optional true} :string]
+  [:endIndex {:optional true} :int]
+  [:uri {:optional true} :string]],
+ "EmbedContentBatch"
+ [:map
+  {:closed true}
+  [:displayName {:optional false} :string]
+  [:name {:optional true} :string]
+  [:batchStats {:optional true} [:ref "EmbedContentBatchStats"]]
+  [:endTime {:optional true} :string]
+  [:createTime {:optional true} :string]
+  [:state
+   {:optional true}
+   [:enum
+    "BATCH_STATE_UNSPECIFIED"
+    "BATCH_STATE_PENDING"
+    "BATCH_STATE_RUNNING"
+    "BATCH_STATE_SUCCEEDED"
+    "BATCH_STATE_FAILED"
+    "BATCH_STATE_CANCELLED"
+    "BATCH_STATE_EXPIRED"]]
+  [:output {:optional true} [:ref "EmbedContentBatchOutput"]]
+  [:updateTime {:optional true} :string]
+  [:priority {:optional true} :string]
+  [:inputConfig {:optional false} [:ref "InputEmbedContentConfig"]]
+  [:model {:optional false} :string]],
+ "FunctionDeclaration"
+ [:map
+  {:closed true}
+  [:description {:optional false} :string]
+  [:parameters {:optional true} [:ref "Schema"]]
+  [:responseJsonSchema {:optional true} :any]
+  [:response {:optional true} [:ref "Schema"]]
+  [:behavior
+   {:optional true}
+   [:enum "UNSPECIFIED" "BLOCKING" "NON_BLOCKING"]]
+  [:parametersJsonSchema {:optional true} :any]
+  [:name {:optional false} :string]],
+ "ContentFilter"
+ [:map
+  {:closed true}
+  [:message {:optional true} :string]
+  [:reason
+   {:optional true}
+   [:enum "BLOCKED_REASON_UNSPECIFIED" "SAFETY" "OTHER"]]],
+ "Hyperparameters"
+ [:map
+  {:closed true}
+  [:learningRate {:optional true} :double]
+  [:batchSize {:optional true} :int]
+  [:learningRateMultiplier {:optional true} :double]
+  [:epochCount {:optional true} :int]],
+ "FileData"
+ [:map
+  {:closed true}
+  [:fileUri {:optional false} :string]
+  [:mimeType {:optional true} :string]],
+ "AsyncBatchEmbedContentRequest"
+ [:map
+  {:closed true}
+  [:batch {:optional false} [:ref "EmbedContentBatch"]]],
+ "File"
+ [:map
+  {:closed true}
+  [:sha256Hash {:optional true} :string]
+  [:expirationTime {:optional true} :string]
+  [:displayName {:optional true} :string]
+  [:name {:optional true} :string]
+  [:sizeBytes {:optional true} :string]
+  [:createTime {:optional true} :string]
+  [:state
+   {:optional true}
+   [:enum "STATE_UNSPECIFIED" "PROCESSING" "ACTIVE" "FAILED"]]
+  [:source
+   {:optional true}
+   [:enum "SOURCE_UNSPECIFIED" "UPLOADED" "GENERATED" "REGISTERED"]]
+  [:updateTime {:optional true} :string]
+  [:mimeType {:optional true} :string]
+  [:error {:optional true} [:ref "Status"]]
+  [:uri {:optional true} :string]
+  [:videoMetadata {:optional true} [:ref "VideoFileMetadata"]]
+  [:downloadUri {:optional true} :string]],
+ "Corpus"
+ [:map
+  {:closed true}
+  [:createTime {:optional true} :string]
+  [:updateTime {:optional true} :string]
+  [:displayName {:optional true} :string]
+  [:name {:optional true} :string]],
+ "PredictResponse"
+ [:map {:closed true} [:predictions {:optional true} [:vector :any]]],
+ "RetrievalMetadata"
+ [:map
+  {:closed true}
+  [:googleSearchDynamicRetrievalScore {:optional true} :double]],
+ "ListTunedModelsResponse"
+ [:map
+  {:closed true}
+  [:nextPageToken {:optional true} :string]
+  [:tunedModels {:optional true} [:vector [:ref "TunedModel"]]]],
+ "MessagePrompt"
+ [:map
+  {:closed true}
+  [:examples {:optional true} [:vector [:ref "Example"]]]
+  [:messages {:optional false} [:vector [:ref "Message"]]]
+  [:context {:optional true} :string]],
+ "TuningSnapshot"
+ [:map
+  {:closed true}
+  [:meanLoss {:optional true} :double]
+  [:computeTime {:optional true} :string]
+  [:epoch {:optional true} :int]
+  [:step {:optional true} :int]],
+ "GroundingMetadata"
+ [:map
+  {:closed true}
+  [:groundingChunks {:optional true} [:vector [:ref "GroundingChunk"]]]
+  [:googleMapsWidgetContextToken {:optional true} :string]
+  [:groundingSupports
+   {:optional true}
+   [:vector [:ref "GroundingSupport"]]]
+  [:retrievalMetadata {:optional true} [:ref "RetrievalMetadata"]]
+  [:searchEntryPoint {:optional true} [:ref "SearchEntryPoint"]]
+  [:webSearchQueries {:optional true} [:vector :string]]],
+ "ListFileSearchStoresResponse"
+ [:map
+  {:closed true}
+  [:fileSearchStores
+   {:optional true}
+   [:vector [:ref "FileSearchStore"]]]
+  [:nextPageToken {:optional true} :string]],
+ "GenerateContentResponse"
+ [:map
+  {:closed true}
+  [:modelVersion {:optional true} :string]
+  [:candidates {:optional true} [:vector [:ref "Candidate"]]]
+  [:responseId {:optional true} :string]
+  [:promptFeedback {:optional true} [:ref "PromptFeedback"]]
+  [:usageMetadata {:optional true} [:ref "UsageMetadata"]]],
+ "MultiSpeakerVoiceConfig"
+ [:map
+  {:closed true}
+  [:speakerVoiceConfigs
+   {:optional false}
+   [:vector [:ref "SpeakerVoiceConfig"]]]],
+ "DownloadFileResponse" [:map {:closed true}],
+ "Operation"
+ [:map
+  {:closed true}
+  [:done {:optional true} :boolean]
+  [:metadata {:optional true} [:map-of :string :any]]
+  [:response {:optional true} [:map-of :string :any]]
+  [:error {:optional true} [:ref "Status"]]
+  [:name {:optional true} :string]],
+ "CountTokensRequest"
+ [:map
+  {:closed true}
+  [:contents {:optional true} [:vector [:ref "Content"]]]
+  [:generateContentRequest
+   {:optional true}
+   [:ref "GenerateContentRequest"]]],
+ "GoogleMaps"
+ [:map {:closed true} [:enableWidget {:optional true} :boolean]],
+ "SemanticRetrieverChunk"
+ [:map
+  {:closed true}
+  [:chunk {:optional true} :string]
+  [:source {:optional true} :string]],
+ "Status"
+ [:map
+  {:closed true}
+  [:message {:optional true} :string]
+  [:details {:optional true} [:vector [:map-of :string :any]]]
+  [:code {:optional true} :int]],
+ "GroundingChunk"
+ [:map
+  {:closed true}
+  [:maps {:optional true} [:ref "Maps"]]
+  [:web {:optional true} [:ref "Web"]]
+  [:retrievedContext {:optional true} [:ref "RetrievedContext"]]],
+ "ListModelsResponse"
+ [:map
+  {:closed true}
+  [:models {:optional true} [:vector [:ref "Model"]]]
+  [:nextPageToken {:optional true} :string]],
+ "Interval"
+ [:map
+  {:closed true}
+  [:endTime {:optional true} :string]
+  [:startTime {:optional true} :string]],
+ "GroundingPassageId"
+ [:map
+  {:closed true}
+  [:passageId {:optional true} :string]
+  [:partIndex {:optional true} :int]],
+ "GroundingSupport"
+ [:map
+  {:closed true}
+  [:confidenceScores {:optional true} [:vector :double]]
+  [:groundingChunkIndices {:optional true} [:vector :int]]
+  [:segment {:optional true} [:ref "Segment"]]],
+ "GenerateAnswerResponse"
+ [:map
+  {:closed true}
+  [:inputFeedback {:optional true} [:ref "InputFeedback"]]
+  [:answerableProbability {:optional true} :double]
+  [:answer {:optional true} [:ref "Candidate"]]],
+ "ListFilesResponse"
+ [:map
+  {:closed true}
+  [:files {:optional true} [:vector [:ref "File"]]]
+  [:nextPageToken {:optional true} :string]],
+ "TransferOwnershipResponse" [:map {:closed true}],
+ "ReviewSnippet"
+ [:map
+  {:closed true}
+  [:title {:optional true} :string]
+  [:reviewId {:optional true} :string]
+  [:googleMapsUri {:optional true} :string]],
+ "GoogleSearch"
+ [:map
+  {:closed true}
+  [:timeRangeFilter {:optional true} [:ref "Interval"]]],
+ "ChunkingConfig"
+ [:map
+  {:closed true}
+  [:whiteSpaceConfig {:optional true} [:ref "WhiteSpaceConfig"]]],
+ "TuningTask"
+ [:map
+  {:closed true}
+  [:startTime {:optional true} :string]
+  [:trainingData {:optional false} [:ref "Dataset"]]
+  [:hyperparameters {:optional true} [:ref "Hyperparameters"]]
+  [:completeTime {:optional true} :string]
+  [:snapshots {:optional true} [:vector [:ref "TuningSnapshot"]]]],
+ "CachedContent"
+ [:map
+  {:closed true}
+  [:displayName {:optional true} :string]
+  [:systemInstruction {:optional true} [:ref "Content"]]
+  [:name {:optional true} :string]
+  [:toolConfig {:optional true} [:ref "ToolConfig"]]
+  [:tools {:optional true} [:vector [:ref "Tool"]]]
+  [:createTime {:optional true} :string]
+  [:updateTime {:optional true} :string]
+  [:ttl {:optional true} :string]
+  [:usageMetadata {:optional true} [:ref "CachedContentUsageMetadata"]]
+  [:expireTime {:optional true} :string]
+  [:contents {:optional true} [:vector [:ref "Content"]]]
+  [:model {:optional false} :string]],
+ "GenerateAnswerRequest"
+ [:map
+  {:closed true}
+  [:safetySettings {:optional true} [:vector [:ref "SafetySetting"]]]
+  [:answerStyle
+   {:optional false}
+   [:enum
+    "ANSWER_STYLE_UNSPECIFIED"
+    "ABSTRACTIVE"
+    "EXTRACTIVE"
+    "VERBOSE"]]
+  [:inlinePassages {:optional true} [:ref "GroundingPassages"]]
+  [:semanticRetriever
+   {:optional true}
+   [:ref "SemanticRetrieverConfig"]]
+  [:contents {:optional false} [:vector [:ref "Content"]]]
+  [:temperature {:optional true} :double]],
+ "Model"
+ [:map
+  {:closed true}
+  [:description {:optional true} :string]
+  [:displayName {:optional true} :string]
+  [:name {:optional false} :string]
+  [:maxTemperature {:optional true} :double]
+  [:thinking {:optional true} :boolean]
+  [:inputTokenLimit {:optional true} :int]
+  [:topP {:optional true} :double]
+  [:outputTokenLimit {:optional true} :int]
+  [:supportedGenerationMethods {:optional true} [:vector :string]]
+  [:baseModelId {:optional false} :string]
+  [:topK {:optional true} :int]
+  [:version {:optional false} :string]
+  [:temperature {:optional true} :double]],
+ "ListGeneratedFilesResponse"
+ [:map
+  {:closed true}
+  [:generatedFiles {:optional true} [:vector [:ref "GeneratedFile"]]]
+  [:nextPageToken {:optional true} :string]],
+ "FunctionResponseBlob"
+ [:map
+  {:closed true}
+  [:mimeType {:optional true} :string]
+  [:data {:optional true} :string]],
+ "Segment"
+ [:map
+  {:closed true}
+  [:text {:optional true} :string]
+  [:partIndex {:optional true} :int]
+  [:startIndex {:optional true} :int]
+  [:endIndex {:optional true} :int]],
+ "ToolConfig"
+ [:map
+  {:closed true}
+  [:functionCallingConfig
+   {:optional true}
+   [:ref "FunctionCallingConfig"]]
+  [:retrievalConfig {:optional true} [:ref "RetrievalConfig"]]],
+ "GroundingAttribution"
+ [:map
+  {:closed true}
+  [:sourceId {:optional true} [:ref "AttributionSourceId"]]
+  [:content {:optional true} [:ref "Content"]]],
+ "TopCandidates"
+ [:map
+  {:closed true}
+  [:candidates
+   {:optional true}
+   [:vector [:ref "LogprobsResultCandidate"]]]],
+ "GenerateMessageRequest"
+ [:map
+  {:closed true}
+  [:temperature {:optional true} :double]
+  [:prompt {:optional false} [:ref "MessagePrompt"]]
+  [:topP {:optional true} :double]
+  [:topK {:optional true} :int]
+  [:candidateCount {:optional true} :int]],
+ "FunctionResponsePart"
+ [:map
+  {:closed true}
+  [:inlineData {:optional true} [:ref "FunctionResponseBlob"]]],
+ "GenerateTextResponse"
+ [:map
+  {:closed true}
+  [:filters {:optional true} [:vector [:ref "ContentFilter"]]]
+  [:candidates {:optional true} [:vector [:ref "TextCompletion"]]]
+  [:safetyFeedback
+   {:optional true}
+   [:vector [:ref "SafetyFeedback"]]]],
+ "CreateFileResponse"
+ [:map {:closed true} [:file {:optional true} [:ref "File"]]],
+ "PrebuiltVoiceConfig"
+ [:map {:closed true} [:voiceName {:optional true} :string]],
+ "InlinedEmbedContentRequest"
+ [:map
+  {:closed true}
+  [:metadata {:optional true} [:map-of :string :any]]
+  [:request {:optional false} [:ref "EmbedContentRequest"]]],
+ "GenerationConfig"
+ [:map
+  {:closed true}
+  [:responseMimeType {:optional true} :string]
+  [:responseSchema {:optional true} [:ref "Schema"]]
+  [:responseJsonSchema {:optional true} :any]
+  [:presencePenalty {:optional true} :double]
+  [:stopSequences {:optional true} [:vector :string]]
+  [:thinkingConfig {:optional true} [:ref "ThinkingConfig"]]
+  [:enableEnhancedCivicAnswers {:optional true} :boolean]
+  [:topP {:optional true} :double]
+  [:maxOutputTokens {:optional true} :int]
+  [:seed {:optional true} :int]
+  [:logprobs {:optional true} :int]
+  [:responseLogprobs {:optional true} :boolean]
+  [:speechConfig {:optional true} [:ref "SpeechConfig"]]
+  [:responseModalities
+   {:optional true}
+   [:vector [:enum "MODALITY_UNSPECIFIED" "TEXT" "IMAGE" "AUDIO"]]]
+  [:frequencyPenalty {:optional true} :double]
+  [:imageConfig {:optional true} [:ref "ImageConfig"]]
+  [:topK {:optional true} :int]
+  [:candidateCount {:optional true} :int]
+  [:mediaResolution
+   {:optional true}
+   [:enum
+    "MEDIA_RESOLUTION_UNSPECIFIED"
+    "MEDIA_RESOLUTION_LOW"
+    "MEDIA_RESOLUTION_MEDIUM"
+    "MEDIA_RESOLUTION_HIGH"]]
+  [:_responseJsonSchema {:optional true} :any]
+  [:temperature {:optional true} :double]],
+ "GenerateContentBatchOutput"
+ [:map
+  {:closed true}
+  [:responsesFile {:optional true} :string]
+  [:inlinedResponses {:optional true} [:ref "InlinedResponses"]]],
+ "PromptFeedback"
+ [:map
+  {:closed true}
+  [:safetyRatings {:optional true} [:vector [:ref "SafetyRating"]]]
+  [:blockReason
+   {:optional true}
+   [:enum
+    "BLOCK_REASON_UNSPECIFIED"
+    "SAFETY"
+    "OTHER"
+    "BLOCKLIST"
+    "PROHIBITED_CONTENT"
+    "IMAGE_SAFETY"]]],
+ "Message"
+ [:map
+  {:closed true}
+  [:content {:optional false} :string]
+  [:citationMetadata {:optional true} [:ref "CitationMetadata"]]
+  [:author {:optional true} :string]],
+ "TextCompletion"
+ [:map
+  {:closed true}
+  [:output {:optional true} :string]
+  [:citationMetadata {:optional true} [:ref "CitationMetadata"]]
+  [:safetyRatings {:optional true} [:vector [:ref "SafetyRating"]]]],
+ "ImageConfig"
+ [:map
+  {:closed true}
+  [:aspectRatio {:optional true} :string]
+  [:imageSize {:optional true} :string]],
+ "BatchEmbedContentsResponse"
+ [:map
+  {:closed true}
+  [:embeddings {:optional true} [:vector [:ref "ContentEmbedding"]]]],
+ "CachedContentUsageMetadata"
+ [:map {:closed true} [:totalTokenCount {:optional true} :int]],
+ "CountMessageTokensResponse"
+ [:map {:closed true} [:tokenCount {:optional true} :int]],
+ "InlinedResponses"
+ [:map
+  {:closed true}
+  [:inlinedResponses
+   {:optional true}
+   [:vector [:ref "InlinedResponse"]]]],
+ "CountTextTokensResponse"
+ [:map {:closed true} [:tokenCount {:optional true} :int]],
+ "RetrievedContext"
+ [:map
+  {:closed true}
+  [:fileSearchStore {:optional true} :string]
+  [:title {:optional true} :string]
+  [:text {:optional true} :string]
+  [:uri {:optional true} :string]],
+ "EmbedTextRequest"
+ [:map
+  {:closed true}
+  [:model {:optional false} :string]
+  [:text {:optional true} :string]],
+ "ExecutableCode"
+ [:map
+  {:closed true}
+  [:language {:optional false} [:enum "LANGUAGE_UNSPECIFIED" "PYTHON"]]
+  [:code {:optional false} :string]],
+ "Part"
+ [:map
+  {:closed true}
+  [:inlineData {:optional true} [:ref "Blob"]]
+  [:codeExecutionResult {:optional true} [:ref "CodeExecutionResult"]]
+  [:thought {:optional true} :boolean]
+  [:partMetadata {:optional true} [:map-of :string :any]]
+  [:executableCode {:optional true} [:ref "ExecutableCode"]]
+  [:functionCall {:optional true} [:ref "FunctionCall"]]
+  [:fileData {:optional true} [:ref "FileData"]]
+  [:videoMetadata {:optional true} [:ref "VideoMetadata"]]
+  [:thoughtSignature {:optional true} :string]
+  [:functionResponse {:optional true} [:ref "FunctionResponse"]]
+  [:text {:optional true} :string]],
+ "TunedModelSource"
+ [:map
+  {:closed true}
+  [:tunedModel {:optional true} :string]
+  [:baseModel {:optional true} :string]],
+ "Content"
+ [:map
+  {:closed true}
+  [:role {:optional true} :string]
+  [:parts {:optional true} [:vector [:ref "Part"]]]],
+ "SafetySetting"
+ [:map
+  {:closed true}
+  [:threshold
+   {:optional false}
+   [:enum
+    "HARM_BLOCK_THRESHOLD_UNSPECIFIED"
+    "BLOCK_LOW_AND_ABOVE"
+    "BLOCK_MEDIUM_AND_ABOVE"
+    "BLOCK_ONLY_HIGH"
+    "BLOCK_NONE"
+    "OFF"]]
+  [:category
+   {:optional false}
+   [:enum
+    "HARM_CATEGORY_UNSPECIFIED"
+    "HARM_CATEGORY_DEROGATORY"
+    "HARM_CATEGORY_TOXICITY"
+    "HARM_CATEGORY_VIOLENCE"
+    "HARM_CATEGORY_SEXUAL"
+    "HARM_CATEGORY_MEDICAL"
+    "HARM_CATEGORY_DANGEROUS"
+    "HARM_CATEGORY_HARASSMENT"
+    "HARM_CATEGORY_HATE_SPEECH"
+    "HARM_CATEGORY_SEXUALLY_EXPLICIT"
+    "HARM_CATEGORY_DANGEROUS_CONTENT"
+    "HARM_CATEGORY_CIVIC_INTEGRITY"]]],
+ "TuningExample"
+ [:map
+  {:closed true}
+  [:textInput {:optional true} :string]
+  [:output {:optional false} :string]],
+ "InlinedEmbedContentRequests"
+ [:map
+  {:closed true}
+  [:requests
+   {:optional false}
+   [:vector [:ref "InlinedEmbedContentRequest"]]]],
+ "GenerateMessageResponse"
+ [:map
+  {:closed true}
+  [:filters {:optional true} [:vector [:ref "ContentFilter"]]]
+  [:messages {:optional true} [:vector [:ref "Message"]]]
+  [:candidates {:optional true} [:vector [:ref "Message"]]]],
+ "CustomMetadata"
+ [:map
+  {:closed true}
+  [:numericValue {:optional true} :double]
+  [:stringValue {:optional true} :string]
+  [:key {:optional false} :string]
+  [:stringListValue {:optional true} [:ref "StringList"]]],
+ "EmbedContentResponse"
+ [:map
+  {:closed true}
+  [:embedding {:optional true} [:ref "ContentEmbedding"]]],
+ "PredictRequest"
+ [:map
+  {:closed true}
+  [:parameters {:optional true} :any]
+  [:instances {:optional false} [:vector :any]]],
+ "ListPermissionsResponse"
+ [:map
+  {:closed true}
+  [:nextPageToken {:optional true} :string]
+  [:permissions {:optional true} [:vector [:ref "Permission"]]]],
+ "SemanticRetrieverConfig"
+ [:map
+  {:closed true}
+  [:metadataFilters {:optional true} [:vector [:ref "MetadataFilter"]]]
+  [:query {:optional false} [:ref "Content"]]
+  [:minimumRelevanceScore {:optional true} :double]
+  [:source {:optional false} :string]
+  [:maxChunksCount {:optional true} :int]],
+ "InlinedRequests"
+ [:map
+  {:closed true}
+  [:requests {:optional false} [:vector [:ref "InlinedRequest"]]]],
+ "GroundingPassages"
+ [:map
+  {:closed true}
+  [:passages {:optional true} [:vector [:ref "GroundingPassage"]]]],
+ "LogprobsResultCandidate"
+ [:map
+  {:closed true}
+  [:token {:optional true} :string]
+  [:tokenId {:optional true} :int]
+  [:logProbability {:optional true} :double]],
+ "GenerateContentRequest"
+ [:map
+  {:closed true}
+  [:systemInstruction {:optional true} [:ref "Content"]]
+  [:generationConfig {:optional true} [:ref "GenerationConfig"]]
+  [:toolConfig {:optional true} [:ref "ToolConfig"]]
+  [:tools {:optional true} [:vector [:ref "Tool"]]]
+  [:contents {:optional false} [:vector [:ref "Content"]]]
+  [:safetySettings {:optional true} [:vector [:ref "SafetySetting"]]]
+  [:model {:optional false} :string]
+  [:cachedContent {:optional true} :string]],
+ "TuningExamples"
+ [:map
+  {:closed true}
+  [:examples {:optional true} [:vector [:ref "TuningExample"]]]],
+ "Web"
+ [:map
+  {:closed true}
+  [:title {:optional true} :string]
+  [:uri {:optional true} :string]],
+ "PlaceAnswerSources"
+ [:map
+  {:closed true}
+  [:reviewSnippets {:optional true} [:vector [:ref "ReviewSnippet"]]]],
+ "ThinkingConfig"
+ [:map
+  {:closed true}
+  [:thinkingBudget {:optional true} :int]
+  [:includeThoughts {:optional true} :boolean]
+  [:thinkingLevel
+   {:optional true}
+   [:enum "THINKING_LEVEL_UNSPECIFIED" "LOW" "HIGH"]]],
+ "InputFeedback"
+ [:map
+  {:closed true}
+  [:safetyRatings {:optional true} [:vector [:ref "SafetyRating"]]]
+  [:blockReason
+   {:optional true}
+   [:enum "BLOCK_REASON_UNSPECIFIED" "SAFETY" "OTHER"]]],
+ "FunctionCall"
+ [:map
+  {:closed true}
+  [:id {:optional true} :string]
+  [:name {:optional false} :string]
+  [:args {:optional true} [:map-of :string :any]]],
+ "AttributionSourceId"
+ [:map
+  {:closed true}
+  [:groundingPassage {:optional true} [:ref "GroundingPassageId"]]
+  [:semanticRetrieverChunk
+   {:optional true}
+   [:ref "SemanticRetrieverChunk"]]],
+ "SafetyRating"
+ [:map
+  {:closed true}
+  [:blocked {:optional true} :boolean]
+  [:category
+   {:optional false}
+   [:enum
+    "HARM_CATEGORY_UNSPECIFIED"
+    "HARM_CATEGORY_DEROGATORY"
+    "HARM_CATEGORY_TOXICITY"
+    "HARM_CATEGORY_VIOLENCE"
+    "HARM_CATEGORY_SEXUAL"
+    "HARM_CATEGORY_MEDICAL"
+    "HARM_CATEGORY_DANGEROUS"
+    "HARM_CATEGORY_HARASSMENT"
+    "HARM_CATEGORY_HATE_SPEECH"
+    "HARM_CATEGORY_SEXUALLY_EXPLICIT"
+    "HARM_CATEGORY_DANGEROUS_CONTENT"
+    "HARM_CATEGORY_CIVIC_INTEGRITY"]]
+  [:probability
+   {:optional false}
+   [:enum
+    "HARM_PROBABILITY_UNSPECIFIED"
+    "NEGLIGIBLE"
+    "LOW"
+    "MEDIUM"
+    "HIGH"]]],
+ "DynamicRetrievalConfig"
+ [:map
+  {:closed true}
+  [:mode {:optional true} [:enum "MODE_UNSPECIFIED" "MODE_DYNAMIC"]]
+  [:dynamicThreshold {:optional true} :double]],
+ "TunedModel"
+ [:map
+  {:closed true}
+  [:description {:optional true} :string]
+  [:displayName {:optional true} :string]
+  [:name {:optional true} :string]
+  [:createTime {:optional true} :string]
+  [:state
+   {:optional true}
+   [:enum "STATE_UNSPECIFIED" "CREATING" "ACTIVE" "FAILED"]]
+  [:topP {:optional true} :double]
+  [:baseModel {:optional true} :string]
+  [:updateTime {:optional true} :string]
+  [:tuningTask {:optional false} [:ref "TuningTask"]]
+  [:readerProjectNumbers {:optional true} [:vector :string]]
+  [:topK {:optional true} :int]
+  [:tunedModelSource {:optional true} [:ref "TunedModelSource"]]
+  [:temperature {:optional true} :double]],
+ "ListCachedContentsResponse"
+ [:map
+  {:closed true}
+  [:nextPageToken {:optional true} :string]
+  [:cachedContents {:optional true} [:vector [:ref "CachedContent"]]]],
+ "VoiceConfig"
+ [:map
+  {:closed true}
+  [:prebuiltVoiceConfig
+   {:optional true}
+   [:ref "PrebuiltVoiceConfig"]]],
+ "Condition"
+ [:map
+  {:closed true}
+  [:operation
+   {:optional false}
+   [:enum
+    "OPERATOR_UNSPECIFIED"
+    "LESS"
+    "LESS_EQUAL"
+    "EQUAL"
+    "GREATER_EQUAL"
+    "GREATER"
+    "NOT_EQUAL"
+    "INCLUDES"
+    "EXCLUDES"]]
+  [:numericValue {:optional true} :double]
+  [:stringValue {:optional true} :string]],
+ "UrlContextMetadata"
+ [:map
+  {:closed true}
+  [:urlMetadata {:optional true} [:vector [:ref "UrlMetadata"]]]],
+ "FunctionCallingConfig"
+ [:map
+  {:closed true}
+  [:allowedFunctionNames {:optional true} [:vector :string]]
+  [:mode
+   {:optional true}
+   [:enum "MODE_UNSPECIFIED" "AUTO" "ANY" "NONE" "VALIDATED"]]],
+ "InlinedRequest"
+ [:map
+  {:closed true}
+  [:metadata {:optional true} [:map-of :string :any]]
+  [:request {:optional false} [:ref "GenerateContentRequest"]]],
+ "EmbedContentRequest"
+ [:map
+  {:closed true}
+  [:taskType
+   {:optional true}
+   [:enum
+    "TASK_TYPE_UNSPECIFIED"
+    "RETRIEVAL_QUERY"
+    "RETRIEVAL_DOCUMENT"
+    "SEMANTIC_SIMILARITY"
+    "CLASSIFICATION"
+    "CLUSTERING"
+    "QUESTION_ANSWERING"
+    "FACT_VERIFICATION"
+    "CODE_RETRIEVAL_QUERY"]]
+  [:outputDimensionality {:optional true} :int]
+  [:model {:optional false} :string]
+  [:title {:optional true} :string]
+  [:content {:optional false} [:ref "Content"]]],
+ "InlinedEmbedContentResponse"
+ [:map
+  {:closed true}
+  [:response {:optional true} [:ref "EmbedContentResponse"]]
+  [:error {:optional true} [:ref "Status"]]
+  [:metadata {:optional true} [:map-of :string :any]]],
+ "VideoFileMetadata"
+ [:map {:closed true} [:videoDuration {:optional true} :string]],
+ "Blob"
+ [:map
+  {:closed true}
+  [:mimeType {:optional true} :string]
+  [:data {:optional true} :string]],
+ "VideoMetadata"
+ [:map
+  {:closed true}
+  [:startOffset {:optional true} :string]
+  [:endOffset {:optional true} :string]
+  [:fps {:optional true} :double]],
+ "LogprobsResult"
+ [:map
+  {:closed true}
+  [:chosenCandidates
+   {:optional true}
+   [:vector [:ref "LogprobsResultCandidate"]]]
+  [:topCandidates {:optional true} [:vector [:ref "TopCandidates"]]]
+  [:logProbabilitySum {:optional true} :double]],
+ "BatchStats"
+ [:map
+  {:closed true}
+  [:successfulRequestCount {:optional true} :string]
+  [:requestCount {:optional true} :string]
+  [:pendingRequestCount {:optional true} :string]
+  [:failedRequestCount {:optional true} :string]],
+ "BatchEmbedTextResponse"
+ [:map
+  {:closed true}
+  [:embeddings {:optional true} [:vector [:ref "Embedding"]]]],
+ "Maps"
+ [:map
+  {:closed true}
+  [:placeId {:optional true} :string]
+  [:uri {:optional true} :string]
+  [:placeAnswerSources {:optional true} [:ref "PlaceAnswerSources"]]
+  [:text {:optional true} :string]
+  [:title {:optional true} :string]],
+ "SpeechConfig"
+ [:map
+  {:closed true}
+  [:voiceConfig {:optional true} [:ref "VoiceConfig"]]
+  [:multiSpeakerVoiceConfig
+   {:optional true}
+   [:ref "MultiSpeakerVoiceConfig"]]
+  [:languageCode {:optional true} :string]],
+ "Document"
+ [:map
+  {:closed true}
+  [:state
+   {:optional true}
+   [:enum
+    "STATE_UNSPECIFIED"
+    "STATE_PENDING"
+    "STATE_ACTIVE"
+    "STATE_FAILED"]]
+  [:sizeBytes {:optional true} :string]
+  [:mimeType {:optional true} :string]
+  [:customMetadata {:optional true} [:vector [:ref "CustomMetadata"]]]
+  [:name {:optional true} :string]
+  [:displayName {:optional true} :string]
+  [:updateTime {:optional true} :string]
+  [:createTime {:optional true} :string]],
+ "WhiteSpaceConfig"
+ [:map
+  {:closed true}
+  [:maxTokensPerChunk {:optional true} :int]
+  [:maxOverlapTokens {:optional true} :int]],
+ "BatchEmbedContentsRequest"
+ [:map
+  {:closed true}
+  [:requests
+   {:optional false}
+   [:vector [:ref "EmbedContentRequest"]]]],
+ "CodeExecutionResult"
+ [:map
+  {:closed true}
+  [:output {:optional true} :string]
+  [:outcome
+   {:optional false}
+   [:enum
+    "OUTCOME_UNSPECIFIED"
+    "OUTCOME_OK"
+    "OUTCOME_FAILED"
+    "OUTCOME_DEADLINE_EXCEEDED"]]],
+ "ModalityTokenCount"
+ [:map
+  {:closed true}
+  [:tokenCount {:optional true} :int]
+  [:modality
+   {:optional true}
+   [:enum
+    "MODALITY_UNSPECIFIED"
+    "TEXT"
+    "IMAGE"
+    "VIDEO"
+    "AUDIO"
+    "DOCUMENT"]]],
+ "LatLng"
+ [:map
+  {:closed true}
+  [:longitude {:optional true} :double]
+  [:latitude {:optional true} :double]],
+ "UrlMetadata"
+ [:map
+  {:closed true}
+  [:urlRetrievalStatus
+   {:optional true}
+   [:enum
+    "URL_RETRIEVAL_STATUS_UNSPECIFIED"
+    "URL_RETRIEVAL_STATUS_SUCCESS"
+    "URL_RETRIEVAL_STATUS_ERROR"
+    "URL_RETRIEVAL_STATUS_PAYWALL"
+    "URL_RETRIEVAL_STATUS_UNSAFE"]]
+  [:retrievedUrl {:optional true} :string]],
+ "Embedding"
+ [:map {:closed true} [:value {:optional true} [:vector :double]]],
+ "InlinedEmbedContentResponses"
+ [:map
+  {:closed true}
+  [:inlinedResponses
+   {:optional true}
+   [:vector [:ref "InlinedEmbedContentResponse"]]]],
+ "EmbedContentBatchStats"
+ [:map
+  {:closed true}
+  [:pendingRequestCount {:optional true} :string]
+  [:requestCount {:optional true} :string]
+  [:successfulRequestCount {:optional true} :string]
+  [:failedRequestCount {:optional true} :string]],
+ "ListCorporaResponse"
+ [:map
+  {:closed true}
+  [:nextPageToken {:optional true} :string]
+  [:corpora {:optional true} [:vector [:ref "Corpus"]]]],
+ "FileSearch"
+ [:map
+  {:closed true}
+  [:fileSearchStoreNames {:optional false} [:vector :string]]
+  [:topK {:optional true} :int]
+  [:metadataFilter {:optional true} :string]],
+ "CitationMetadata"
+ [:map
+  {:closed true}
+  [:citationSources
+   {:optional true}
+   [:vector [:ref "CitationSource"]]]],
+ "UrlContext" [:map {:closed true}]}
