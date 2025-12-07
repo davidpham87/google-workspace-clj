@@ -1,4 +1,4 @@
-(ns test
+(ns runner
   (:require [clojure.test :refer [run-tests deftest is testing]]
             [google-clj-workspace.keep :as keep]
             [google-clj-workspace.forms :as forms]
@@ -9,6 +9,7 @@
             [google-clj-workspace.client :as client]
             [google-clj-workspace.util :as util]
             [google-clj-workspace.jules-test] ;; Import the new test namespace
+            [google-clj-workspace.generative-test]
             [clojure.string :as str]
             [babashka.curl]))
 
@@ -96,7 +97,7 @@
         (is (= 200 (:status (jules/sources {} {:op :list}))))))))
 
 (defn -main []
-  (let [test-results (run-tests 'test 'google-clj-workspace.jules-test)]
+  (let [test-results (run-tests 'runner 'google-clj-workspace.jules-test 'google-clj-workspace.generative-test)]
     (when (pos? (+ (:fail test-results) (:error test-results)))
       (System/exit 1))))
 

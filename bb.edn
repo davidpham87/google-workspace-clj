@@ -1,4 +1,14 @@
-{:paths ["src" "test"]
+{:paths ["src" "resources"]
  :deps {metosin/malli {:mvn/version "0.20.0"}
-        camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.3"}}
- :tasks {update-api (do (require 'google-clj-workspace.gen) ((resolve 'google-clj-workspace.gen/-main)))}}
+        camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.3"}
+        babashka/babashka.curl {:mvn/version "0.1.2"}
+        cheshire/cheshire {:mvn/version "5.11.0"}
+        babashka/fs {:mvn/version "0.5.30"}
+        babashka/process {:mvn/version "0.6.24"}}
+ :aliases {:test {:extra-paths ["test"]
+                  :extra-deps {org.clojure/test.check {:mvn/version "1.1.1"}}}}
+ :tasks {update-api (do (require 'google-clj-workspace.gen) ((resolve 'google-clj-workspace.gen/-main)))
+         test {:doc "Run tests"
+               :extra-paths ["test"]
+               :extra-deps {org.clojure/test.check {:mvn/version "1.1.1"}}
+               :task (do (require 'runner) ((resolve 'runner/-main)))}}}
